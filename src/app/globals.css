@@ -78,7 +78,7 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-body{  font-family: "Quattrocento", serif;}
+body{  font-family: "Quattrocento", serif;overflow-x: hidden;}
 @font-face {
   font-family: 'FancyCutCondPro';
   src: url('/assets/fonts/fancycutpro.ttf') format('woff');
@@ -91,4 +91,22 @@ body{  font-family: "Quattrocento", serif;}
   font-family: "Quattrocento", serif;
   font-weight: 200;
   
+}
+
+.img_after{position: relative;
+  transition: 1s all ease-in-out;
+}
+.img_after:hover::after{right: -100px;
+    top: -10px;
+    transition: all 0.3s ease-in-out;
+}
+.img_after::after{
+    content: "";
+    background: url(/assets/img/article-read-corner.png) no-repeat;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    contain-intrinsic-height: unset;
 }

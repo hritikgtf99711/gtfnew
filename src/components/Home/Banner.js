@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
+import Portfolio from './Portfolio';
 
 const videoSources = [
   "./assets/video/video_1.mp4",
@@ -31,7 +32,7 @@ export default function Banner() {
   const [direction, setDirection] = useState(0);
   const sectionRef = useRef(null);
   const bottomSectionRef = useRef(null);
-  const width = useMotionValue('100%'); // Motion value for width animation
+  const width = useMotionValue('80%'); // Motion value for width animation
 
   // Autoscroll functionality
   useEffect(() => {
@@ -86,7 +87,7 @@ export default function Banner() {
       clipPath: direction > 0 
         ? 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
         : 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)',
-      opacity: 0,
+      // opacity: 0,
       x: direction > 0 ? 100 : -100
     }),
     center: {
@@ -102,7 +103,7 @@ export default function Banner() {
       clipPath: direction < 0 
         ? 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
         : 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)',
-      opacity: 0,
+      // opacity: 0,
       x: direction < 0 ? 100 : -100,
       transition: {
         duration: 0.8,
@@ -239,7 +240,7 @@ export default function Banner() {
   };
 
   return (
-    <section className="relative h-screen overflow-hidden bg-black" ref={sectionRef} onMouseMove={handleMouseMove}>
+    <section className="relative h-screen  bg-black" ref={sectionRef} onMouseMove={handleMouseMove}>
       <div className='absolute top-0 left-0 w-full z-30'>
         <div className='container mx-auto py-6 flex justify-start'>
           <figure className=''>
@@ -415,24 +416,6 @@ export default function Banner() {
           </div>
         </div>
 
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={togglePlayPause}
-          className="absolute bottom-6 left-6 z-20 bg-white/20 backdrop-blur-md rounded-full p-3 text-white hover:bg-white/30 transition-colors"
-        >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={isPlaying}
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              {isPlaying ? <Pause size={24} /> : <Play size={24} />}
-            </motion.div>
-          </AnimatePresence>
-        </motion.button>        
 
         <motion.div
           animate={{ x: [-10, 0, -10] }}
@@ -465,25 +448,10 @@ export default function Banner() {
             </motion.button>
           ))}
         </div>
+
       </div>
-      <div className='h-[100%] mt-[-220px] relative'>
-        <motion.div
-          className="container m-auto h-[100%]"
-          ref={bottomSectionRef}
-          style={{ width }}
-          transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-        >
-          <div className='bg-[#fff] h-[100%] p-[40px]'>
-          </div>
-          <div className='absolute top-0 left-0 w-full z-30'>
-            <div className='container mx-auto py-6 flex justify-end'>
-              <figure className=''>
-                <img src="./assets/img/logo_dark.svg" alt="bg" className='w-[150px] h-full object-cover'/>
-              </figure>
-            </div>
-          </div>
-        </motion.div>
-      </div>
+      <Portfolio/>
+      
     </section>
   );
 }
