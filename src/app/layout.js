@@ -5,6 +5,8 @@ import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import Lenis from "@studio-freight/lenis"; // Install: npm i @studio-freight/lenis
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -13,6 +15,26 @@ const fontSans = FontSans({
 
 export default function RootLayout({ children }) {
   const pathname = usePathname(); // Get current path
+
+  useEffect(() => {
+    // Initialize Lenis
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => t, // Linear easing, you can customize
+      smooth: true,
+      direction: "vertical",
+      gestureOrientation: "vertical",
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => lenis.destroy(); // Cleanup on unmount
+  }, []);
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -24,7 +46,12 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          fontSans.variable
+        )}
+      >
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={pathname} // AnimatePresence detects route change
