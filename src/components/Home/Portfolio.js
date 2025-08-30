@@ -69,7 +69,7 @@ export default function Portfolio() {
   };
 
   return (
-    <div className="relative h-[100vh] mt-[-300px]">
+    <div className="relative z-[1] h-[100vh] mt-[-300px]">
       <motion.div
         ref={bottomSectionRef}
         className="bg-white h-[100vh] p-[30px] m-auto"

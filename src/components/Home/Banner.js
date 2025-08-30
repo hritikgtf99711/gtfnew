@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from 'framer-motion';
@@ -31,8 +30,7 @@ export default function Banner() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [direction, setDirection] = useState(0);
   const sectionRef = useRef(null);
-  const bottomSectionRef = useRef(null);
-  const width = useMotionValue('80%'); // Motion value for width animation
+  const width = useMotionValue('80%');
 
   // Autoscroll functionality
   useEffect(() => {
@@ -48,15 +46,12 @@ export default function Banner() {
     const handleWheel = (event) => {
       const delta = event.deltaY;
       if (delta > 0) {
-        // Wheel down: expand to full width
         width.set('100vw');
       } else if (delta < 0) {
-        // Wheel up: revert to container width
         width.set('100%');
       }
     };
 
-    // Add wheel event listener
     window.addEventListener('wheel', handleWheel);
     return () => window.removeEventListener('wheel', handleWheel);
   }, [width]);
@@ -82,12 +77,35 @@ export default function Banner() {
     setMousePosition({ x: moveX, y: moveY });
   };
 
+  const wrapperVariants = {
+    initial: {
+      x: '100%',
+      opacity: 0,
+    },
+    animate: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        duration: 1.2,
+        ease: [0.25, 0.46, 0.45, 0.94],
+        staggerChildren: 0.2
+      }
+    },
+    exit: {
+      x: '-100%',
+      opacity: 0,
+      transition: {
+        duration: 1.2,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      }
+    }
+  };
+
   const slideVariants = {
     enter: (direction) => ({
       clipPath: direction > 0 
         ? 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
         : 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)',
-      // opacity: 0,
       x: direction > 0 ? 100 : -100
     }),
     center: {
@@ -103,7 +121,6 @@ export default function Banner() {
       clipPath: direction < 0 
         ? 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
         : 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)',
-      // opacity: 0,
       x: direction < 0 ? 100 : -100,
       transition: {
         duration: 0.8,
@@ -240,7 +257,16 @@ export default function Banner() {
   };
 
   return (
-    <section className="relative h-screen  bg-black" ref={sectionRef} onMouseMove={handleMouseMove}>
+    <>
+    <motion.section
+      variants={wrapperVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      className="relative h-screen bg-black"
+      ref={sectionRef}
+      onMouseMove={handleMouseMove}
+    >
       <div className='absolute top-0 left-0 w-full z-30'>
         <div className='container mx-auto py-6 flex justify-start'>
           <figure className=''>
@@ -416,7 +442,6 @@ export default function Banner() {
           </div>
         </div>
 
-
         <motion.div
           animate={{ x: [-10, 0, -10] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -427,31 +452,10 @@ export default function Banner() {
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-1 h-16 bg-gradient-to-b from-transparent via-white/60 to-transparent"
         />
-
-        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20 flex gap-2">
-          {videoSources.map((_, index) => (
-            <motion.button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className="w-2 h-2 rounded-full"
-              variants={progressBarVariants}
-              animate={index === currentIndex ? 'active' : 'inactive'}
-              whileHover={{ scale: 1.4 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <motion.div
-                className="w-full h-full rounded-full"
-                initial={{ width: "0%" }}
-                animate={index === currentIndex ? { width: "100%" } : { width: "0%" }}
-                transition={{ duration: 5, ease: "linear" }}
-              />
-            </motion.button>
-          ))}
-        </div>
-
       </div>
-      <Portfolio/>
-      
-    </section>
+     
+    </motion.section>
+     <Portfolio />
+     </>
   );
 }
