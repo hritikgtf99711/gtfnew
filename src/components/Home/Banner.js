@@ -8,7 +8,7 @@ import Portfolio from './Portfolio';
 const videoSources = [
   "./assets/video/video_1.mp4",
   "./assets/video/video_2.mp4", 
-  "./assets/video/video_2.mp4"
+  "./assets/video/video_2.mp4" 
 ];
 
 const videoContent = [
