@@ -100,7 +100,7 @@ body{  font-family: "Quattrocento", serif;overflow-x: hidden;}
     top: -10px;
     transition: all 0.3s ease-in-out;
 }
-.img_after::after{
+/* .img_after::after{
     content: "";
     background: url(/assets/img/article-read-corner.png) no-repeat;
     width: 30px;
@@ -109,4 +109,4 @@ body{  font-family: "Quattrocento", serif;overflow-x: hidden;}
     right: 0;
     top: 0;
     contain-intrinsic-height: unset;
-}
+} */

@@ -1,0 +1,19 @@
+.header_main .logo img{
+  
+}
+
+.header_main .hamburger {
+  display: flex;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.header_main .hamburger .hamburger-line{
+  height:24px;
+  width:1px;
+  background:#fff;
+}
+
+.header_main .hamburger .hamburger-line:nth-child(1){
+  height:16px;
+}
