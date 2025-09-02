@@ -24,10 +24,10 @@ export default function Portfolio() {
   const [selectedProject, setSelectedProject] = useState(null);
 
   // ---------- boot / sequence state ----------
-  const [isFixed, setIsFixed] = useState(true);        // section fixed fullscreen initially
-  const [booting, setBooting] = useState(true);        // brown box + clip phase
-  const [showBox, setShowBox] = useState(false);       // mount box after bg shows
-  const [showClip, setShowClip] = useState(false);     // show image after brown fades
+  const [isFixed, setIsFixed] = useState(true); // section fixed fullscreen initially
+  const [booting, setBooting] = useState(true); // brown box + clip phase
+  const [showBox, setShowBox] = useState(false); // mount box after bg shows
+  const [showClip, setShowClip] = useState(false); // show image after brown fades
   const [revealContent, setRevealContent] = useState(false);
 
   // clip frames
@@ -44,10 +44,10 @@ export default function Portfolio() {
   const sectionControls = useAnimation(); // moves the section
 
   // BOOT BOX motion values (pure JS control)
-  const boxScale = useMotionValue(0.2);   // start smaller
-  const boxOpacity = useMotionValue(0);   // start invisible
-  const boxY = useMotionValue(0);         // box glide down
-  const bgOpacity = useMotionValue(1);    // brown overlay 1 → 0
+  const boxScale = useMotionValue(0.2); // start smaller
+  const boxOpacity = useMotionValue(0); // start invisible
+  const boxY = useMotionValue(0); // box glide down
+  const bgOpacity = useMotionValue(1); // brown overlay 1 → 0
 
   // ---------- utility: hard clear any leftover overflow from html/body ----------
   const clearOverflow = () => {
@@ -85,7 +85,15 @@ export default function Portfolio() {
       e.stopPropagation();
     };
     const preventKeys = (e) => {
-      const keys = ["ArrowUp","ArrowDown","PageUp","PageDown","Home","End"," "];
+      const keys = [
+        "ArrowUp",
+        "ArrowDown",
+        "PageUp",
+        "PageDown",
+        "Home",
+        "End",
+        " ",
+      ];
       if (keys.includes(e.key)) {
         e.preventDefault();
         e.stopPropagation();
@@ -152,7 +160,7 @@ export default function Portfolio() {
       // 4) play the clip
       setFrameIndex(0);
       const frameDelay = 140; // per frame
-      const holdAfter = 420;  // hold on last frame
+      const holdAfter = 420; // hold on last frame
       const followDelay = 200; // section follows box after 200ms
 
       intervalId = window.setInterval(() => {
@@ -163,10 +171,13 @@ export default function Portfolio() {
             // 5) box glides to anchor, section follows after 200ms
             setTimeout(async () => {
               const anchorTop =
-                (anchorRef.current && anchorRef.current.getBoundingClientRect().top) || 0;
+                (anchorRef.current &&
+                  anchorRef.current.getBoundingClientRect().top) ||
+                0;
 
               await animate(boxY, anchorTop, {
-                duration: 0.9, ease: [0.2, 0.7, 0.2, 1],
+                duration: 0.9,
+                ease: [0.2, 0.7, 0.2, 1],
               });
 
               setTimeout(async () => {
@@ -211,14 +222,25 @@ export default function Portfolio() {
     target: bottomSectionRef,
     offset: ["start end", "end start"],
   });
-  const scaleTransform = useTransform(scrollYProgress, [0, 0.8, 1], [0.8, 1.05, 0.8]);
+  const scaleTransform = useTransform(
+    scrollYProgress,
+    [0, 0.8, 1],
+    [0.8, 1.05, 0.8]
+  );
 
   // ---------- modal variants (kept) ----------
   const modalVariants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: {
-      opacity: 1, scale: 1,
-      transition: { type: "spring", stiffness: 120, damping: 15, when: "beforeChildren", staggerChildren: 0.5 },
+      opacity: 1,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 120,
+        damping: 15,
+        when: "beforeChildren",
+        staggerChildren: 0.5,
+      },
     },
     exit: { opacity: 0, scale: 0.8, transition: { duration: 0.3 } },
   };
@@ -241,7 +263,11 @@ export default function Portfolio() {
   };
   const parentStagger = {
     hidden: { opacity: 0, y: 12 },
-    show: { opacity: 1, y: 0, transition: { when: "beforeChildren", staggerChildren: 0.08 } },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { when: "beforeChildren", staggerChildren: 0.08 },
+    },
   };
   const childFade = {
     hidden: { opacity: 0, y: 8 },
@@ -252,14 +278,20 @@ export default function Portfolio() {
   const handleCloseModal = () => setSelectedProject(null);
 
   return (
-    <div className="relative h-[100vh] mt-[-300px]">
+    <div className="relative h-[100vh] mt-[-16vw]">
+      <div className="mx-[8vw] top-[60px] relative uppercase text-white">
+        <h2>All Chapters</h2>
+      </div>
+
       {/* natural landing spot */}
       <div ref={anchorRef} />
 
       {/* SECTION: fixed full-screen while booting; relative after landing */}
       <motion.div
         ref={bottomSectionRef}
-        className={`${isFixed ? "fixed inset-0 z-[70]" : "relative h-[100vh]"} bg-white p-[30px] m-auto overflow-hidden`}
+        className={`${
+          isFixed ? "fixed inset-0 z-[70]" : "relative h-[100vh]"
+        } bg-white p-[30px] m-auto overflow-hidden`}
         style={{
           scale: isFixed ? 1 : scaleTransform, // disable scroll scaling while fixed
           width: isFixed ? "100vw" : undefined,
@@ -278,9 +310,9 @@ export default function Portfolio() {
               width: 500,
               height: 600,
               willChange: "transform, opacity",
-              scale: boxScale,      // JS-driven
-              opacity: boxOpacity,  // JS-driven fade-in
-              y: boxY,              // JS-driven glide later
+              scale: boxScale, // JS-driven
+              opacity: boxOpacity, // JS-driven fade-in
+              y: boxY, // JS-driven glide later
             }}
           >
             {/* image (starts after brown overlay is removed) */}
@@ -299,7 +331,11 @@ export default function Portfolio() {
             {/* brown overlay (fades to 0 via JS; sits above image until gone) */}
             <motion.div
               className="absolute inset-0"
-              style={{ backgroundColor: "#5a3b2f", opacity: bgOpacity, pointerEvents: "none" }}
+              style={{
+                backgroundColor: "#5a3b2f",
+                opacity: bgOpacity,
+                pointerEvents: "none",
+              }}
             />
           </motion.div>
         )}
@@ -309,11 +345,17 @@ export default function Portfolio() {
           variants={parentStagger}
           initial="hidden"
           animate={revealContent ? "show" : "hidden"}
-          className={`relative w-full h-full transition-opacity duration-300 ${booting ? "opacity-0" : "opacity-100"}`}
+          className={`relative w-full h-full transition-opacity duration-300 ${
+            booting ? "opacity-0" : "opacity-100"
+          }`}
         >
           <div className="text-center mb-10">
-            <motion.h3 variants={childFade} className="text-[30px]">Portfolio</motion.h3>
-            <motion.h2 variants={childFade} className="text-[50px]">Our Projects</motion.h2>
+            <motion.h3 variants={childFade} className="text-[30px]">
+              Portfolio
+            </motion.h3>
+            <motion.h2 variants={childFade} className="text-[50px]">
+              Our Projects
+            </motion.h2>
           </div>
 
           <motion.div variants={childFade} className="w-full z-30">
@@ -323,13 +365,23 @@ export default function Portfolio() {
                   <motion.div
                     key={i}
                     layoutId={`project-${i}`}
-                    className={`${i === 2 ? "basis-[80%]" : "basis-[50%]"} img_after duration-300 ${
+                    className={`${
+                      i === 2 ? "basis-[80%]" : "basis-[50%]"
+                    } img_after duration-300 ${
                       i === 1 || i === 4 ? "mt-[auto]" : ""
-                    } ${i !== 2 && "hover:basis-[60%]"} group relative overflow-hidden cursor-pointer`}
+                    } ${
+                      i !== 2 && "hover:basis-[60%]"
+                    } group relative overflow-hidden cursor-pointer`}
                     onClick={() => handleCardClick(i)}
-                    transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+                    transition={{
+                      duration: 0.3,
+                      ease: [0.25, 0.46, 0.45, 0.94],
+                    }}
                     initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: revealContent ? 1 : 0, y: revealContent ? 0 : 12 }}
+                    animate={{
+                      opacity: revealContent ? 1 : 0,
+                      y: revealContent ? 0 : 12,
+                    }}
                     whileHover={{ y: -4 }}
                   >
                     <motion.img
@@ -343,7 +395,9 @@ export default function Portfolio() {
                       layoutId={`content-${i}`}
                     >
                       <h3 className="text-lg font-semibold">Project {i + 1}</h3>
-                      <p className="text-sm">Brief description of Project {i + 1}</p>
+                      <p className="text-sm">
+                        Brief description of Project {i + 1}
+                      </p>
                     </motion.div>
                   </motion.div>
                 ))}
@@ -377,9 +431,12 @@ export default function Portfolio() {
                 className="text-black text-center"
                 variants={contentVariants}
               >
-                <h3 className="text-2xl font-semibold mb-2">Project {selectedProject + 1}</h3>
+                <h3 className="text-2xl font-semibold mb-2">
+                  Project {selectedProject + 1}
+                </h3>
                 <p className="text-base">
-                  Detailed description of Project {selectedProject + 1}. This is an expanded view with more information about the project.
+                  Detailed description of Project {selectedProject + 1}. This is
+                  an expanded view with more information about the project.
                 </p>
                 <button
                   className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"

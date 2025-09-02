@@ -5,8 +5,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Header from "../header/Index";
 
 const videoSources = [
-  "./assets/video/main_video.mp4",
   "./assets/video/video_banner_2.mp4",
+  "./assets/video/main_video.mp4",
   "./assets/video/video_banner_3.mp4",
 ];
 
@@ -160,7 +160,7 @@ export default function Banner() {
 
         <div className="container m-auto h-full relative">
           <div className="absolute flex w-full justify-between items-baseline bottom-[30%] right-0 z-20 text-white">
-            <div className="video_content_container items-center flex gap-[30px] basis-[46%]">
+            <div className="video_content_container items-center flex gap-[30px] basis-[100%]">
               <div className="relative w-[140px] h-[180px] overflow-hidden">
                 <AnimatePresence initial={false} custom={direction} mode="wait">
                   <motion.div
@@ -192,7 +192,7 @@ export default function Banner() {
                     initial="enter"
                     animate="center"
                     exit="exit"
-                    className="text-[54px] leading-normal text-start notoserif"
+                    className="text-[100px] leading-[100px] text-start notoserif uppercase"
                   >
                     {videoContent[currentIndex].title.split(" ").map((word, idx) => (
                       <motion.span
