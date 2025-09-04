@@ -1,10 +1,13 @@
 "use client";
-import React, { useRef, useState } from "react";
-import { motion, AnimatePresence, useTransform, useScroll,useMotionValueEvent } from "framer-motion";
+import React, { useRef, useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import gsap from "gsap";
+import { useTransform } from "framer-motion";
 
-export default function Portfolio({ portfolioIndex, scaleTransform, isHidden }) {
+export default function Portfolio({ smoothScrollProgress }) {
   const bottomSectionRef = useRef(null);
   const [cardsVisible, setCardsVisible] = useState(false);
+  const cardRefs = useRef([]);
 
   const frames = [
     { img: "/assets/img/slide_1.webp", name: "Project 1" },
@@ -14,80 +17,86 @@ export default function Portfolio({ portfolioIndex, scaleTransform, isHidden }) 
     { img: "/assets/img/slide_5.webp", name: "Project 5" },
   ];
 
-  const { scrollYProgress } = useScroll();
+  console.log(smoothScrollProgress)
+  // useEffect(() => {
+  //   setCardsVisible(true);
 
-
-  const cardVariants = {
-    initial: {
-      flexBasis: "50%",
-      opacity: 1,
-      y: 12,
-    },
-    visible: (i) => ({
-      flexBasis: i === 2 ? "80%" : "50%",
-      opacity: 1,
-      transition: {
-        flexBasis: { duration: 0.1, ease: "linear" },
-        y: { duration: 0.1, ease: "linear" },
-        opacity: { duration: 0.3 },
-      },
-    }),
-  };
-
-  // Trigger card visibility on mount
-  React.useEffect(() => {
-    setCardsVisible(true);
-  }, []);
+  //   // Animate only odd cards (1, 3, 5 → indexes 0, 2, 4)
+  //   cardRefs.current.forEach((card, i) => {
+      
+  //       gsap.fromTo(
+  //         card,
+  //         { y: 0 },
+  //         {
+  //           marginTop: i==1?250:i==4?120: 0, // alternate directions
+  //           ease: "none",
+  //           scrollTrigger: {
+  //             trigger: bottomSectionRef.current,
+  //             start: "-200 bottom",
+  //             end: "bottom top",
+  //             scrub: true,
+  //           },
+  //         }
+  //       );
+ 
+  //   });
+  // }, []);
 
   const handleCardClick = (index) => {
     console.log(`Clicked project ${index + 1}`);
   };
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-  console.log("Page scroll: ", latest)
-})
-
   return (
     <motion.div
       ref={bottomSectionRef}
-      className="relative w-full h-full p-[80px] flex justify-center m-auto items-center"
+      className="relative w-full h-full flex justify-center m-auto items-center"
     >
-      <motion.div className="w-full z-30">
+      <motion.div className="w-full z-30 p-[40px]">
         <div className="container mx-auto py-6 flex justify-center">
           <div className="flex gap-4 items-start text-black font-serif">
             <AnimatePresence>
-              {frames.map((o, i) => (
-                <motion.div
+              {frames.map((o, i) => {
+                  const yTransform =
+                i === 1 || i === 4
+                  ? useTransform(smoothScrollProgress, [0, 0.5, 1], [0, 50, -100])
+                  : 0;
+             return   <motion.div
                   key={i}
-                  layoutId={`project-${i}`}
-                  custom={i}
-                  variants={cardVariants}
-                  initial="initial"
-                  animate={cardsVisible ? "visible" : "initial"}
+                  ref={(el) => (cardRefs.current[i] = el)}
+                  initial={{ flexBasis: "50%", opacity: 1 }}
+                  animate={{
+                    flexBasis: i === 2 ? "80%" : "50%",
+                    opacity: 1,
+                    transition: { duration: 0.3, ease: "linear" },
+                  }}
+                    style={{
+                    y: yTransform,
+                  }}
                   className={`img_after duration-300 group relative overflow-hidden cursor-pointer ${
                     i !== 2 && "hover:basis-[60%]"
                   }`}
                   onClick={() => handleCardClick(i)}
-                  style={i === 1 || i === 4 ? { y:scrollYProgress } : {}}
                 >
                   <div className="relative">
                     <motion.img
                       src={o.img}
                       alt={`Project ${i + 1}`}
                       className="w-full h-auto"
-                      layoutId={`image-${i}`}
                     />
                     <motion.div
                       className="content-info absolute inset-0 flex flex-col top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 justify-center bg-[#fff] items-center text-black origin-center h-[90%] w-[90%] scale-0 transition-all duration-300 group-hover:scale-[1]"
-                      layoutId={`content-${i}`}
                     >
-                      <h3 className="text-lg font-semibold">Project {i + 1}</h3>
-                      <p className="text-sm">Brief description of Project {i + 1}</p>
+                      <h3 className="text-lg font-semibold">
+                        Project {i + 1}
+                      </h3>
+                      <p className="text-sm">
+                        Brief description of Project {i + 1}
+                      </p>
                     </motion.div>
                   </div>
                   <h4 className="mt-[5px]">{o.name}</h4>
                 </motion.div>
-              ))}
+})}
             </AnimatePresence>
           </div>
         </div>

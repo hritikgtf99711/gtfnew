@@ -7,15 +7,17 @@ import { useRef, useState } from "react";
 import Header from "@/components/header/Index";
 import Clients from "./Client";
 import WhoWeAre from "@/components/common/WhowWeAre";
+import { useScroll, useSpring } from "framer-motion";
 
 export default function Home() {
   const bannervideoref = useRef();
-  const [scaleTransform, setscaleTransform] = useState(0);
   const headerRef = useRef();
+  const [scaleTransform, setscaleTransform] = useState(0);
   const [isHidden, setIsHidden] = useState(false);
-
-  // 🔥 background controller
   const [activeImage, setActiveImage] = useState(null);
+
+  // ✅ Unique refs for each section
+  const sectionRefs = [useRef(), useRef(), useRef(), useRef()];
 
   const changesImageArr = [
     "/assets/img/mide_section_img.jpg",
@@ -25,16 +27,21 @@ export default function Home() {
     "/assets/img/portfolio/portfolio_5.jpg",
   ];
 
+  // ✅ Scroll tracking for each section
+  const scrollProgress = sectionRefs.map((ref) => {
+    const { scrollYProgress } = useScroll({
+      target: ref,
+      offset: ["start center", "end center"],
+    });
+    return useSpring(scrollYProgress, { stiffness: 100, damping: 30, mass: 1 });
+  });
+
   return (
     <>
-      <Header
-        isHidden={isHidden}
-        setIsHidden={setIsHidden}
-        ref={headerRef}
-      />
+      <Header isHidden={isHidden} setIsHidden={setIsHidden} ref={headerRef} />
       <Banner bannervideoref={bannervideoref} />
 
-      {/* ✅ Single background layer */}
+      {/* Background image */}
       <div className="fixed inset-0 z-[-1]">
         {activeImage && (
           <img
@@ -45,7 +52,6 @@ export default function Home() {
         )}
       </div>
 
-      {/* ✅ Multiple BoxSlides */}
       <BoxSlides
         hide={1}
         scaleTransform={scaleTransform}
@@ -53,12 +59,16 @@ export default function Home() {
         isHidden={isHidden}
         setIsHidden={setIsHidden}
         headerRef={headerRef}
+        sectionRef={sectionRefs[0]}
+        smoothScrollProgress={scrollProgress[0]}
         index={0}
         bannervideoref={bannervideoref}
         via={true}
         onActive={() => setActiveImage(changesImageArr[0])}
+        subHeading={"Our Projects"}
+        heading={"Projects"}
       >
-        <Portfolio scaleTransform={scaleTransform} isHidden={isHidden} />
+        <Portfolio scaleTransform={scaleTransform} smoothScrollProgress={scrollProgress[1]} isHidden={isHidden} />
       </BoxSlides>
 
       <BoxSlides
@@ -67,6 +77,8 @@ export default function Home() {
         isHidden={isHidden}
         setIsHidden={setIsHidden}
         headerRef={headerRef}
+        sectionRef={sectionRefs[1]}
+        smoothScrollProgress={scrollProgress[1]}
         index={1}
         bannervideoref={bannervideoref}
         via={false}
@@ -81,6 +93,8 @@ export default function Home() {
         isHidden={isHidden}
         setIsHidden={setIsHidden}
         headerRef={headerRef}
+        sectionRef={sectionRefs[2]}
+        smoothScrollProgress={scrollProgress[2]}
         index={2}
         bannervideoref={bannervideoref}
         via={false}
@@ -95,6 +109,8 @@ export default function Home() {
         isHidden={isHidden}
         setIsHidden={setIsHidden}
         headerRef={headerRef}
+        sectionRef={sectionRefs[3]}
+        smoothScrollProgress={scrollProgress[3]}
         index={3}
         bannervideoref={bannervideoref}
         via={false}
