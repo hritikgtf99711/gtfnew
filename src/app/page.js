@@ -19,7 +19,21 @@ const ZigzagBoxes = () => {
       groupRef.current.scale.set(scale.get(), stretchY.get(), scale.get());
     }
   });
+  
+  scrollProgress.forEach((progress, index) => {
+  useMotionValueEvent(progress, "change", (latest) => {
+    setlatest(latest)
+    if (index === 0) {
+      bannervideoref.current.style.opacity = latest < 0.5 ? "1" : "0";
+    }
 
+    if (latest >= 0) {
+      setActiveImage(changesImageArr[index === 0 ? 1 : index]);
+    } else if (latest < 5 && index > 0.5 && scrollProgress[index - 1]) {
+      setActiveImage(changesImageArr[index === 1 ? 1 : index - 1]);
+    }
+  });
+});
   return (
     <group ref={groupRef}>
       {[...Array(10)].map((_, i) => (
