@@ -13,13 +13,11 @@ const videoSources = [
   "./assets/video/banner_video_1.mp4",
   "./assets/video/banner_video_2.mp4",
   "./assets/video/banner_video_3.mp4",
-   "./assets/video/banner_video_1.mp4",
+  "./assets/video/banner_video_1.mp4",
   "./assets/video/banner_video_2.mp4",
   "./assets/video/banner_video_3.mp4",
-
   "./assets/video/banner_video_2.mp4",
   "./assets/video/banner_video_3.mp4",
- 
 ];
 
 const videoContent = [
@@ -64,6 +62,7 @@ const parentVariant = {
     transition: { duration: 3, ease: "linear" },
   },
 };
+
 const childVariant = {
   initial: { scale: 1, skewX: "-4deg", translateX: "-110%", willChange: "transform" },
   active: {
@@ -83,11 +82,12 @@ const childVariant = {
   next: {
     scale: 1.03784,
     skewX: "-4deg",
-    translateX: "-110%", // <-- Fix: add this line
+    translateX: "-110%",
     willChange: "transform",
     transition: { duration: 3, ease: "linear" },
   },
 };
+
 const smallVideoVariants = {
   initial: {
     clipPath: "polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)",
@@ -142,42 +142,55 @@ const nextUpVariants = {
   },
 };
 
-export default function Banner({ bannervideoref }) {
-    const SLIDE_DURATION = 5000; // 5 seconds per slide
+export default function Banner({ sectionRef}) {
+  const SLIDE_DURATION = 5000; // 5 seconds per slide
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
   const videoRef = useRef(null);
   const progressIntervalRef = useRef(null);
-useEffect(() => {
-  setProgress(0);
 
-  const video = videoRef.current;
-  if (!video) return;
+  // Handle mouse movement for custom cursor
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setCursorPosition({ x: e.clientX, y: e.clientY });
+    };
 
-  // Reset video to start
-  video.currentTime = 0;
-  video.play();
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
-  const handleTimeUpdate = () => {
-    if (video.duration) {
-      setProgress((video.currentTime / video.duration) * 100);
-    }
-  };
+  // Video playback and progress logic
+  useEffect(() => {
+    setProgress(0);
 
-  const handleEnded = () => {
-    nextSlide();
-  };
+    const video = videoRef.current;
+    if (!video) return;
 
-  video.addEventListener("timeupdate", handleTimeUpdate);
-  video.addEventListener("ended", handleEnded);
+    video.currentTime = 0;
+    video.play();
 
-  return () => {
-    video.removeEventListener("timeupdate", handleTimeUpdate);
-    video.removeEventListener("ended", handleEnded);
-  };
-}, [activeIndex]);
+    const handleTimeUpdate = () => {
+      if (video.duration) {
+        setProgress((video.currentTime / video.duration) * 100);
+      }
+    };
+
+    const handleEnded = () => {
+      nextSlide();
+    };
+
+    video.addEventListener("timeupdate", handleTimeUpdate);
+    video.addEventListener("ended", handleEnded);
+
+    return () => {
+      video.removeEventListener("timeupdate", handleTimeUpdate);
+      video.removeEventListener("ended", handleEnded);
+    };
+  }, [activeIndex]);
 
   useEffect(() => {
     const onNext = () => {
@@ -188,11 +201,7 @@ useEffect(() => {
     return () => window.removeEventListener("bg:next", onNext);
   }, []);
 
-  const { scrollYProgress } = useScroll({
-    target: bannervideoref,
-    offset: ["start end", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 0.5], [100, 0]);
+  // const y = useTransform(scrollYProgress, [0, 0.5], [100, 0]);
 
   const nextSlide = () => {
     setActiveIndex((p) => (p + 1) % videoSources.length);
@@ -214,8 +223,29 @@ useEffect(() => {
   return (
     <section
       className="h-[100vh] relative pb-[16vw] h-[100svh]"
-      ref={bannervideoref}
+      ref={sectionRef}
     >
+      <motion.div
+        className="fixed z-50"
+        style={{
+          x: cursorPosition.x - 20, // Adjust for cursor size
+          y: cursorPosition.y - 20,
+        }}
+        animate={{
+          scale: isHovering ? 1.5 : 1,
+          opacity: isHovering?0:1,
+        }}
+        transition={{ duration: 0.2 }}
+      >
+        <div
+          className="py-[10px] border-[1px] border-[#fff] cursor-pointer group  p-[30px] rounded-[0] flex items-center justify-center"
+        >
+       
+            <span className=" text-xs uppercase font-semibold  group-hover:translate-y-[-4px] text-white">Read More</span>
+      
+        </div>
+      </motion.div>
+
       <div className="HeroCarousel_heroCarousel__BYein HeroCarousel_isInView__UEmOO">
         <div className="HeroCarousel_carouselWrapper__Mis0X">
           <div className="HeroCarousel_bgCarousel__sRuW8">
@@ -233,7 +263,7 @@ useEffect(() => {
                       variants={parentVariant}
                       initial="initial"
                       animate={state}
-                      exit="next" // when unmount, slide out to right
+                      exit="next"
                       className={`HeroCarousel_videoMask__9E8ZB ${
                         state === "active"
                           ? "HeroCarousel_active__Xmb4Z"
@@ -247,7 +277,7 @@ useEffect(() => {
                         initial="initial"
                         animate={state}
                         className="HeroCarousel_videoMask__9E8ZB HeroCarousel_cover__QI8qE"
-                        style={{ y }}
+                        // style={{ y }}
                       >
                         <video
                           ref={index === activeIndex ? videoRef : null}
@@ -266,7 +296,7 @@ useEffect(() => {
             </div>
           </div>
         </div>
-        <div className="absolute flex bottom-[12vw] w-[86%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-between items-end right-0 z-20 text-white">
+        <div className="absolute  flex bottom-[12vw] w-[86%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-between items-end right-0 z-[999] text-white">
           <div className="video_content_container items-center flex gap-[30px] basis-[45%]">
             <div className="relative basis-[154px] shrink-0 grow-0 h-[190px] overflow-hidden">
               <AnimatePresence initial={false} mode="wait">
@@ -304,7 +334,8 @@ useEffect(() => {
               </AnimatePresence>
             </div>
           </div>
-          <div className="basis-[228px] gap-4">
+          <div className="basis-[228px] cursor-normal gap-4"   onMouseEnter={() => setIsHovering(true)}
+                    onMouseLeave={() => setIsHovering(false)}>
             <div className="text-right relative overflow-hidden">
               <div className="flex gap-[5px] items-center justify-between relative mb-[15px]">
                 <div className="flex-1 text-start">
@@ -332,6 +363,8 @@ useEffect(() => {
                     }}
                     whileTap={{ scale: 0.95 }}
                     onClick={prevSlide}
+                    
+                  
                     className="basis-[30px] z-20 cursor-pointer transition-colors p-[5px]"
                   >
                     <ChevronLeft size={20} />
@@ -344,6 +377,7 @@ useEffect(() => {
                     }}
                     whileTap={{ scale: 0.95 }}
                     onClick={nextSlide}
+             
                     className="basis-[30px] z-20 cursor-pointer transition-colors p-[5px]"
                   >
                     <ChevronRight size={20} />
@@ -353,15 +387,15 @@ useEffect(() => {
             </div>
             <div className="bottom-[240px] left-0 w-full h-[1px] bg-white/20 z-20">
               <motion.div
-  className="h-[1px] bg-white duration-300"
-  style={{ width: `${progress}%` }}
-  transition={{ duration: 0.1, ease: "linear" }}
-/>
+                className="h-[1px] bg-white duration-300"
+                style={{ width: `${progress}%` }}
+                transition={{ duration: 0.1, ease: "linear" }}
+              />
             </div>
           </div>
         </div>
       </div>
-                    <div className="absolute top-0 left-0 bg-[#000] opacity-[.5] h-[100%] w-[100%]"></div>
+      <div className="absolute top-0 left-0 bg-[#000] opacity-[.5] h-[100%] w-[100%]"></div>
     </section>
   );
 }

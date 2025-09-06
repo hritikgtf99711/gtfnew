@@ -1,10 +1,7 @@
-"use client";
-import React, { useRef, useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import gsap from "gsap";
-import { useTransform } from "framer-motion";
-
-export default function Portfolio({ smoothScrollProgress }) {
+import React, { useRef, useState } from "react";
+import { motion, AnimatePresence, useTransform, useMotionValueEvent } from "framer-motion";
+import { useScroll } from "framer-motion";
+export default function Portfolio({ smoothScrollProgress,sectionRef }) {
   const bottomSectionRef = useRef(null);
   const [cardsVisible, setCardsVisible] = useState(false);
   const cardRefs = useRef([]);
@@ -17,30 +14,13 @@ export default function Portfolio({ smoothScrollProgress }) {
     { img: "/assets/img/slide_5.webp", name: "Project 5" },
   ];
 
-  console.log(smoothScrollProgress)
-  // useEffect(() => {
-  //   setCardsVisible(true);
 
-  //   // Animate only odd cards (1, 3, 5 → indexes 0, 2, 4)
-  //   cardRefs.current.forEach((card, i) => {
-      
-  //       gsap.fromTo(
-  //         card,
-  //         { y: 0 },
-  //         {
-  //           marginTop: i==1?250:i==4?120: 0, // alternate directions
-  //           ease: "none",
-  //           scrollTrigger: {
-  //             trigger: bottomSectionRef.current,
-  //             start: "-200 bottom",
-  //             end: "bottom top",
-  //             scrub: true,
-  //           },
-  //         }
-  //       );
- 
-  //   });
-  // }, []);
+  const {scrollY}=useScroll({
+      target: sectionRef,
+      offset: ["start end", "end start"],
+    });
+  const yTransformCard1 = useTransform(scrollY, [0, 0.5, 1], [0, 100, 250]);
+  const yTransformCard4 = useTransform(scrollY, [0, 0.5, 1], [0, 100, 200]);
 
   const handleCardClick = (index) => {
     console.log(`Clicked project ${index + 1}`);
@@ -55,22 +35,16 @@ export default function Portfolio({ smoothScrollProgress }) {
         <div className="container mx-auto py-6 flex justify-center">
           <div className="flex gap-4 items-start text-black font-serif">
             <AnimatePresence>
-              {frames.map((o, i) => {
-                  const yTransform =
-                i === 1 || i === 4
-                  ? useTransform(smoothScrollProgress, [0, 0.5, 1], [0, 50, -100])
-                  : 0;
-             return   <motion.div
+              {frames.map((o, i) => (
+                <motion.div
                   key={i}
                   ref={(el) => (cardRefs.current[i] = el)}
-                  initial={{ flexBasis: "50%", opacity: 1 }}
+                  initial={{ flexBasis: "50%", }}
                   animate={{
                     flexBasis: i === 2 ? "80%" : "50%",
-                    opacity: 1,
-                    transition: { duration: 0.3, ease: "linear" },
                   }}
-                    style={{
-                    y: yTransform,
+                  style={{
+                    y: i === 1 ? yTransformCard1 : i === 4 ? yTransformCard4 : 0,
                   }}
                   className={`img_after duration-300 group relative overflow-hidden cursor-pointer ${
                     i !== 2 && "hover:basis-[60%]"
@@ -86,17 +60,13 @@ export default function Portfolio({ smoothScrollProgress }) {
                     <motion.div
                       className="content-info absolute inset-0 flex flex-col top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 justify-center bg-[#fff] items-center text-black origin-center h-[90%] w-[90%] scale-0 transition-all duration-300 group-hover:scale-[1]"
                     >
-                      <h3 className="text-lg font-semibold">
-                        Project {i + 1}
-                      </h3>
-                      <p className="text-sm">
-                        Brief description of Project {i + 1}
-                      </p>
+                      <h3 className="text-lg font-semibold">Project {i + 1}</h3>
+                      <p className="text-sm">Brief description of Project {i + 1}</p>
                     </motion.div>
                   </div>
                   <h4 className="mt-[5px]">{o.name}</h4>
                 </motion.div>
-})}
+              ))}
             </AnimatePresence>
           </div>
         </div>
