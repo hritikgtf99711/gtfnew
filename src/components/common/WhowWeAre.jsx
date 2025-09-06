@@ -186,11 +186,10 @@ const WhoWeAre = () => {
   };
 
   return (
-    <section className="w-full mix-blend-multiply overflow-hidden">
+    <section className="w-full  overflow-hidden">
       <motion.div
         ref={containerRef}
         className="pin-container"
-        style={{ position: "sticky", top: 0, height: "100vh" }}
       >
         <motion.section
           ref={sectionRef}
@@ -202,7 +201,7 @@ const WhoWeAre = () => {
             style={{ display: "flex", width: "fit-content" }}
           >
             {/* Left Text Section */}
-            <div className="flex flex-row bg-pink-200 justify-between h-full min-w-[100vw]">
+            <div className="flex flex-row justify-between h-full min-w-[100vw]">
               <div className="grid grid-cols-12 items-center gap-[40px]">
                 <div className="w-[100vw] col-span-12 pt-[20px] px-[35px]">
                   <h2 className="font-[Oswald] mb-[15px] text-[25px] text-left">

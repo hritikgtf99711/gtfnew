@@ -7,7 +7,7 @@ import { useRef, useState } from "react";
 import Header from "@/components/header/Index";
 import Clients from "./Client";
 import WhoWeAre from "@/components/common/WhowWeAre";
-import { useScroll, useSpring } from "framer-motion";
+import { useScroll, useSpring,useMotionValueEvent } from "framer-motion";
 
 export default function Home() {
   const bannervideoref = useRef();
@@ -15,33 +15,45 @@ export default function Home() {
   const [scaleTransform, setscaleTransform] = useState(0);
   const [isHidden, setIsHidden] = useState(false);
   const [activeImage, setActiveImage] = useState(null);
+  const [latestN,setlatest]=useState();
 
-  // ✅ Unique refs for each section
   const sectionRefs = [useRef(), useRef(), useRef(), useRef()];
 
   const changesImageArr = [
     "/assets/img/mide_section_img.jpg",
     "/assets/img/mide_section_img.jpg",
     "/assets/img/mide_section_img_2.jpg",
-    "/assets/img/portfolio/portfolio_4.jpg",
+    "/assets/img/mide_section_img_3.jpg",
     "/assets/img/portfolio/portfolio_5.jpg",
   ];
 
-  // ✅ Scroll tracking for each section
   const scrollProgress = sectionRefs.map((ref) => {
     const { scrollYProgress } = useScroll({
       target: ref,
-      offset: ["start center", "end center"],
+      offset: ["start end", "end start"],
     });
-    return useSpring(scrollYProgress, { stiffness: 100, damping: 30, mass: 1 });
+    return useSpring(scrollYProgress, { stiffness: 100, damping: 30, mass: 1});
   });
+  
+  scrollProgress.forEach((progress, index) => {
+  useMotionValueEvent(progress, "change", (latest) => {
+    setlatest(latest)
+    if (index === 0) {
+      bannervideoref.current.style.opacity = latest < 0.5 ? "1" : "0";
+    }
 
+    if (latest >= 0) {
+      setActiveImage(changesImageArr[index === 0 ? 1 : index]);
+    } else if (latest < 5 && index > 0.5 && scrollProgress[index - 1]) {
+      setActiveImage(changesImageArr[index === 1 ? 1 : index - 1]);
+    }
+  });
+});
   return (
     <>
       <Header isHidden={isHidden} setIsHidden={setIsHidden} ref={headerRef} />
       <Banner bannervideoref={bannervideoref} />
 
-      {/* Background image */}
       <div className="fixed inset-0 z-[-1]">
         {activeImage && (
           <img
@@ -64,11 +76,12 @@ export default function Home() {
         index={0}
         bannervideoref={bannervideoref}
         via={true}
+        latestN={latestN}
         onActive={() => setActiveImage(changesImageArr[0])}
         subHeading={"Our Projects"}
         heading={"Projects"}
       >
-        <Portfolio scaleTransform={scaleTransform} smoothScrollProgress={scrollProgress[1]} isHidden={isHidden} />
+        <Portfolio sectionRef={sectionRefs[0]} scaleTransform={scaleTransform} smoothScrollProgress={scrollProgress[1]} isHidden={isHidden} />
       </BoxSlides>
 
       <BoxSlides

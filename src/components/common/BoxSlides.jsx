@@ -3,19 +3,13 @@
 import React, { useRef, useState, useEffect } from "react";
 import {
   motion,
-  useScroll,
   useTransform,
-  useInView,
   AnimatePresence,
-  useSpring,
 } from "framer-motion";
-import Portfolio from "./BoxAnimation";
 
 export default function BoxSlides({
   children,
   via,
-  index,
-  bannervideoref,
   isHidden,
   hide,
   setscaleTransform,
@@ -23,24 +17,14 @@ export default function BoxSlides({
   sectionRef,
   smoothScrollProgress,
   heading,
+  latestN
 }) {
   const [activeImage, setActiveImage] = useState(null);
 
-  const changesImageArr = [
-    "/assets/img/mide_section_img.jpg",
-    "/assets/img/mide_section_img.jpg",
-    "/assets/img/mide_section_img_2.jpg",
-    "/assets/img/portfolio/portfolio_4.jpg",
-    "/assets/img/portfolio/portfolio_5.jpg",
-  ];
-
-
-
-  // Scale transforms
   const scaleTransform = useTransform(
     smoothScrollProgress,
-    [0, 0.3, 0.7, 1],
-    [0.85, 1, 1, 0.85]
+    [0.1, 0.2, 0.3,0.4, 0.7, 1],
+    [0.85,0.8,0.9,1, 1, 0.85]
   );
 
   const imageScaleTransform = useTransform(
@@ -67,10 +51,9 @@ export default function BoxSlides({
     [-0.5, 0, 0.8]
   );
 
-  // Text clipping transforms
   const subHeadingClip = useTransform(
     smoothScrollProgress,
-    [0, 0.2, 0.5, 1],
+    [0, 0.6, 0.6, 1],
     ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]
   );
 
@@ -82,7 +65,7 @@ export default function BoxSlides({
 
   const headingClip = useTransform(
     smoothScrollProgress,
-    [0, 0.3, 0.6, 1],
+    [0, 0.6, 0.6, 1],
     ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]
   );
 
@@ -97,7 +80,6 @@ export default function BoxSlides({
     [0, 0.25, 0.7, 1],
     [0, 1, 1, 0]
   );
-  const isInView = useInView(sectionRef, { amount: 0.6 });
 
   useEffect(() => {
     if (setscaleTransform) setscaleTransform(scaleTransform);
@@ -109,16 +91,18 @@ export default function BoxSlides({
         ref={sectionRef}
         className={`relative h-[220vh] box_padding ${!via && "pt-[100vh]"} white_color_animation`}
       >
-        <div className="sticky top-0 h-screen">
+        <div className="sticky  top-0">
           <motion.div
-            className="relative"
+            className="relative  bg-white"
+            
+            whileInView={{scale:1}}
             style={{
-              scale: scaleTransform,
+              scale:scaleTransform,
               willChange: "transform",
-              transformOrigin: "center center",
+              // transformOrigin: "center center",
+              transition:'cubic-bezier(.57,.21,.69,3.25)'
             }}
           >
-            {/* Chapter Text */}
             <div
               className={`text-white ${
                 hide === 1 ? (isHidden ? "hidden" : "") : "hidden"
@@ -128,7 +112,7 @@ export default function BoxSlides({
               <img src="./assets/img/downarrow.svg" alt="" width={"10"} />
             </div>
 
-            <div className="flex bg-white flex-col h-[100vh] m-auto overflow-hidden mx-auto">
+            <div className="flex  flex-col h-[100vh] m-auto overflow-hidden mx-auto">
               {heading && (
                 <div className="heading pt-[50px] text-center text-[#000] overflow-hidden flex flex-col gap-2">
                   <motion.span
@@ -140,7 +124,6 @@ export default function BoxSlides({
                   >
                     {subHeading}
                   </motion.span>
-
                   <motion.h2
                     className="text-[32px] text-[#000]"
                     style={{
@@ -153,11 +136,9 @@ export default function BoxSlides({
                 </div>
               )}
 
-              {/* Children */}
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, margin: "-100px" }}
+                viewport={{ once: false, marginTop: "-100px" }}
                 transition={{
                   duration: 1,
                   ease: [0.25, 0.46, 0.45, 0.94],
@@ -169,8 +150,6 @@ export default function BoxSlides({
             </div>
           </motion.div>
         </div>
-
-        {/* Background Images */}
         <div className="fixed inset-0 z-[-1]">
           <AnimatePresence mode="wait">
             {activeImage && (
