@@ -142,7 +142,7 @@ const nextUpVariants = {
   },
 };
 
-export default function Banner({ bannervideoref }) {
+export default function Banner({ sectionRef}) {
   const SLIDE_DURATION = 5000; // 5 seconds per slide
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -201,11 +201,7 @@ export default function Banner({ bannervideoref }) {
     return () => window.removeEventListener("bg:next", onNext);
   }, []);
 
-  const { scrollYProgress } = useScroll({
-    target: bannervideoref,
-    offset: ["start end", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 0.5], [100, 0]);
+  // const y = useTransform(scrollYProgress, [0, 0.5], [100, 0]);
 
   const nextSlide = () => {
     setActiveIndex((p) => (p + 1) % videoSources.length);
@@ -227,7 +223,7 @@ export default function Banner({ bannervideoref }) {
   return (
     <section
       className="h-[100vh] relative pb-[16vw] h-[100svh]"
-      ref={bannervideoref}
+      ref={sectionRef}
     >
       <motion.div
         className="fixed z-50"
@@ -281,7 +277,7 @@ export default function Banner({ bannervideoref }) {
                         initial="initial"
                         animate={state}
                         className="HeroCarousel_videoMask__9E8ZB HeroCarousel_cover__QI8qE"
-                        style={{ y }}
+                        // style={{ y }}
                       >
                         <video
                           ref={index === activeIndex ? videoRef : null}
