@@ -296,7 +296,7 @@ export default function Banner({ sectionRef}) {
             </div>
           </div>
         </div>
-        <div className="absolute  flex bottom-[12vw] w-[86%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-between items-end right-0 z-[999] text-white">
+        <div className="absolute  flex bottom-[12vw] w-[86%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-between items-end right-0 z-[1] text-white">
           <div className="video_content_container items-center flex gap-[30px] basis-[45%]">
             <div className="relative basis-[154px] shrink-0 grow-0 h-[190px] overflow-hidden">
               <AnimatePresence initial={false} mode="wait">

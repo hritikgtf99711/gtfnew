@@ -18,7 +18,7 @@ const Header = ({ ref,isHidden,setIsHidden }) => {
   return (
     <motion.div
       ref={ref}
-      className={`absolute header_main w-[86%] ${isHidden?'hide':''} left-[50%] translate-x-[-50%] top-0 z-[99999]`}
+      className={`absolute header_main w-[86%] ${isHidden?'hide':''} left-[50%] translate-x-[-50%] top-0 z-[9]`}
       animate={{ y: isHidden ? '-100%' : '0%' }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
     >

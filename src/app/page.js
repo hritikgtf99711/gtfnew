@@ -7,7 +7,7 @@ import { useRef, useState } from "react";
 import Header from "@/components/header/Index";
 import Clients from "./Client";
 import WhoWeAre from "@/components/common/WhowWeAre";
-import { useScroll, useSpring,useMotionValueEvent } from "framer-motion";
+import { useScroll, useSpring, useMotionValueEvent } from "framer-motion";
 
 export default function Home() {
   const bannervideoref = useRef();
@@ -15,9 +15,9 @@ export default function Home() {
   const [scaleTransform, setscaleTransform] = useState(0);
   const [isHidden, setIsHidden] = useState(false);
   const [activeImage, setActiveImage] = useState(null);
-  const [latestN,setlatest]=useState();
+  const [latestN, setlatest] = useState();
 
-  const sectionRefs = [useRef(), useRef(), useRef(), useRef()];
+  const sectionRefs = [useRef()];
 
   const changesImageArr = [
     "/assets/img/mide_section_img.jpg",
@@ -32,25 +32,25 @@ export default function Home() {
       target: ref,
       offset: ["start end", "end start"],
     });
-    return useSpring(scrollYProgress, { stiffness: 100, damping: 30, mass: 1});
+    return useSpring(scrollYProgress, { stiffness: 100, damping: 30, mass: 1 });
   });
-  
+
   scrollProgress.forEach((progress, index) => {
-  useMotionValueEvent(progress, "change", (latest) => {
-    setlatest(latest);
-    if (bannervideoref.current) {
-      if (index === 0) {
-        bannervideoref.current.style.opacity = latest < 0.5 ? "1" : "0";
+    useMotionValueEvent(progress, "change", (latest) => {
+      setlatest(latest);
+      if (bannervideoref.current) {
+        if (index === 0) {
+          bannervideoref.current.style.opacity = latest < 0.5 ? "1" : "0";
+        }
       }
-    }
-    
-    if (latest >= 0) {
-      setActiveImage(changesImageArr[index === 0 ? 1 : index]);
-    } else if (latest < 5 && index > 0.5 && scrollProgress[index - 1]) {
-      setActiveImage(changesImageArr[index === 1 ? 1 : index - 1]);
-    }
+
+      if (latest >= 0) {
+        setActiveImage(changesImageArr[index === 0 ? 1 : index]);
+      } else if (latest < 5 && index > 0.5 && scrollProgress[index - 1]) {
+        setActiveImage(changesImageArr[index === 1 ? 1 : index - 1]);
+      }
+    });
   });
-});
 
   return (
     <>
@@ -87,7 +87,7 @@ export default function Home() {
         <Portfolio sectionRef={sectionRefs[0]} scaleTransform={scaleTransform} smoothScrollProgress={scrollProgress[1]} isHidden={isHidden} />
       </BoxSlides>
 
-      <BoxSlides
+      {/* <BoxSlides
         scaleTransform={scaleTransform}
         setscaleTransform={setscaleTransform}
         isHidden={isHidden}
@@ -133,7 +133,7 @@ export default function Home() {
         onActive={() => setActiveImage(changesImageArr[3])}
       >
         <Clients />
-      </BoxSlides>
+      </BoxSlides> */}
     </>
   );
 }
