@@ -37,11 +37,13 @@ export default function Home() {
   
   scrollProgress.forEach((progress, index) => {
   useMotionValueEvent(progress, "change", (latest) => {
-    setlatest(latest)
-    if (index === 0) {
-      bannervideoref.current.style.opacity = latest < 0.5 ? "1" : "0";
+    setlatest(latest);
+    if (bannervideoref.current) {
+      if (index === 0) {
+        bannervideoref.current.style.opacity = latest < 0.5 ? "1" : "0";
+      }
     }
-
+    
     if (latest >= 0) {
       setActiveImage(changesImageArr[index === 0 ? 1 : index]);
     } else if (latest < 5 && index > 0.5 && scrollProgress[index - 1]) {
@@ -49,6 +51,7 @@ export default function Home() {
     }
   });
 });
+
   return (
     <>
       <Header isHidden={isHidden} setIsHidden={setIsHidden} ref={headerRef} />

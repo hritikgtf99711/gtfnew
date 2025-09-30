@@ -136,7 +136,7 @@ export default function BoxSlides({
                 </div>
               )}
 
-             {/* <motion.div
+             <motion.div
                className="relative w-full h-full flex justify-center m-auto items-center"
              >
                <motion.div className="w-full z-30 p-[40px]">
@@ -179,7 +179,7 @@ export default function BoxSlides({
                    </div>
                  </div>
                </motion.div>
-             </motion.div> */}
+             </motion.div>
             </div>
             <motion.div   
   className="absolute top-0 left-0 h-[100%] w-[100%] bg-white"
