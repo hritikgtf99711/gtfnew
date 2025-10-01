@@ -19,6 +19,8 @@ export default function Home() {
 
   const sectionRefs = [useRef()];
 
+  // , useRef(), useRef(), useRef()
+
   const changesImageArr = [
     "/assets/img/mide_section_img.jpg",
     "/assets/img/mide_section_img.jpg",

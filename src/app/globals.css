@@ -2164,3 +2164,15 @@ header.hide{transition: transform 1.5s var(--ease-expo-out);    animation: Navig
 .box_padding{
   
 }
+
+
+
+/* custom buttons */
+
+/* .custom_btns .left_btn .bg_box{
+  transition:0.3s ease-in-out
+}
+
+.custom_btns .left_btn:hover .bg_box{ 
+  left:0;
+} */

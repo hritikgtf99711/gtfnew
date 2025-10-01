@@ -18,11 +18,11 @@ const Header = ({ ref,isHidden,setIsHidden }) => {
   return (
     <motion.div
       ref={ref}
-      className={`absolute header_main w-[86%] ${isHidden?'hide':''} left-[50%] translate-x-[-50%] top-0 z-[9]`}
+      className={`absolute header_main w-[100%] ${isHidden?'hide':''} top-0 z-[9]`}
       animate={{ y: isHidden ? '-100%' : '0%' }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
     >
-      <div className="container mx-auto py-6">
+      <div className="mx-auto py-[40px] px-[100px]">
         <div className="row flex justify-between items-center">
           <figure className="logo">
             <img

@@ -22,7 +22,7 @@ export default function Portfolio({ sectionRef }) {
   const handleCardClick = (index) => console.log(`Clicked project ${index + 1}`);
 
   return (
-    <motion.div className="relative w-full h-full flex justify-center items-center">
+    <motion.div className="relative w-full  flex justify-center items-center">
       <div className="container mx-auto py-6 flex justify-center">
         <div className="flex gap-4 items-start font-serif text-black">
           <AnimatePresence>

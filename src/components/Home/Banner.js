@@ -10,27 +10,27 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Header from "../header/Index";
 
 const videoSources = [
-  "./assets/video/banner_video_1.mp4",
-  "./assets/video/banner_video_2.mp4",
-  "./assets/video/banner_video_3.mp4",
-  "./assets/video/banner_video_1.mp4",
-  "./assets/video/banner_video_2.mp4",
-  "./assets/video/banner_video_3.mp4",
-  "./assets/video/banner_video_2.mp4",
-  "./assets/video/banner_video_3.mp4",
+  "./assets/video/banner_video_4.mp4",
+  "./assets/video/banner_video_5.mp4",
+  "./assets/video/banner_video_6.mp4",
+  "./assets/video/banner_video_4.mp4",
+  "./assets/video/banner_video_5.mp4",
+  "./assets/video/banner_video_6.mp4",
+  "./assets/video/banner_video_5.mp4",
+  "./assets/video/banner_video_6.mp4",
 ];
 
 const videoContent = [
-  { title: "Creative Alchemy", nextUp: "All linked by trinity" },
-  { title: "Trinity Design", nextUp: "Future innovation" },
-  { title: "Precious Hybrid", nextUp: "Beyond boundaries" },
-  { title: "Venice Vibes", nextUp: "Artistic flow" },
-  { title: "Time Illusion", nextUp: "Timeless beauty" },
-  { title: "Creative Alchemy", nextUp: "All linked by trinity" },
-  { title: "Trinity Design", nextUp: "Future innovation" },
-  { title: "Precious Hybrid", nextUp: "Beyond boundaries" },
-  { title: "Venice Vibes", nextUp: "Artistic flow" },
-  { title: "Time Illusion", nextUp: "Timeless beauty" },
+  { title: "Creative Alchemy", nextUp: "All linked by trinity", link: "/creative-alchemy" },
+  { title: "Trinity Design", nextUp: "Future innovation", link: "/trinity-design" },
+  { title: "Precious Hybrid", nextUp: "Beyond boundaries", link: "/precious-hybrid" },
+  { title: "Venice Vibes", nextUp: "Artistic flow", link: "/venice-vibes" },
+  { title: "Time Illusion", nextUp: "Timeless beauty", link: "/time-illusion" },
+  { title: "Creative Alchemy", nextUp: "All linked by trinity", link: "/creative-alchemy" },
+  { title: "Trinity Design", nextUp: "Future innovation", link: "/trinity-design" },
+  { title: "Precious Hybrid", nextUp: "Beyond boundaries", link: "/precious-hybrid" },
+  { title: "Venice Vibes", nextUp: "Artistic flow", link: "/venice-vibes" },
+  { title: "Time Illusion", nextUp: "Timeless beauty", link: "/time-illusion" },
 ];
 
 const parentVariant = {
@@ -64,7 +64,12 @@ const parentVariant = {
 };
 
 const childVariant = {
-  initial: { scale: 1, skewX: "-4deg", translateX: "-110%", willChange: "transform" },
+  initial: {
+    scale: 1,
+    skewX: "-4deg",
+    translateX: "-110%",
+    willChange: "transform",
+  },
   active: {
     scale: 1.03784,
     skewX: "-4deg",
@@ -142,7 +147,7 @@ const nextUpVariants = {
   },
 };
 
-export default function Banner({ sectionRef}) {
+export default function Banner({ sectionRef }) {
   const SLIDE_DURATION = 5000; // 5 seconds per slide
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -153,10 +158,27 @@ export default function Banner({ sectionRef}) {
   const videoRef = useRef(null);
   const progressIntervalRef = useRef(null);
 
+  const bgVariants = {
+    initial: {
+      scaleX: 0,
+      transformOrigin: "right",
+    },
+    hover: {
+      scaleX: 1,
+      transformOrigin: "left",
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+      },
+    },
+  };
+
   // Handle mouse movement for custom cursor
   useEffect(() => {
     const handleMouseMove = (e) => {
-      setCursorPosition({ x: e.clientX, y: e.clientY });
+      const offsetX = 50; // Move button 50px to the right of the cursor
+      const offsetY = 50; // Move button 50px below the cursor
+      setCursorPosition({ x: e.clientX + offsetX, y: e.clientY + offsetY });
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -222,7 +244,7 @@ export default function Banner({ sectionRef}) {
 
   return (
     <section
-      className="h-[100vh] relative pb-[16vw] h-[100svh]"
+      className="h-[100vh] relative pb-[16vw] h-[100svh]  cursor-pointer"
       ref={sectionRef}
     >
       <motion.div
@@ -233,22 +255,24 @@ export default function Banner({ sectionRef}) {
         }}
         animate={{
           scale: isHovering ? 1.5 : 1,
-          opacity: isHovering?0:1,
+          opacity: isHovering ? 0 : 1,
         }}
-        transition={{ duration: 0.2 }}
+        transition={{ 
+          duration: 100,
+          ease:'easeInOut',
+          delay:0.3
+        }}
       >
-        <div
-          className="py-[10px] border-[1px] border-[#fff] cursor-pointer group  p-[30px] rounded-[0] flex items-center justify-center"
-        >
-       
-            <span className=" text-xs uppercase font-semibold  group-hover:translate-y-[-4px] text-white">Read More</span>
-      
+        <div className="py-[10px] border-[1px] border-[#fff] cursor-pointer group  p-[30px] rounded-[0] flex items-center justify-center">
+          <span className=" text-xs uppercase font-semibold  group-hover:translate-y-[-4px] text-white">
+            Read More
+          </span>
         </div>
       </motion.div>
 
-      <div className="HeroCarousel_heroCarousel__BYein HeroCarousel_isInView__UEmOO">
-        <div className="HeroCarousel_carouselWrapper__Mis0X">
-          <div className="HeroCarousel_bgCarousel__sRuW8">
+      <div className="HeroCarousel_heroCarousel__BYein HeroCarousel_isInView__UEmOO  cursor-pointer">
+        <div className="HeroCarousel_carouselWrapper__Mis0X  cursor-pointer">
+          <div className="HeroCarousel_bgCarousel__sRuW8  cursor-pointer">
             <div className="HeroCarousel_videos__jjh4t">
               <AnimatePresence initial={false} mode="popLayout">
                 {[
@@ -264,13 +288,14 @@ export default function Banner({ sectionRef}) {
                       initial="initial"
                       animate={state}
                       exit="next"
-                      className={`HeroCarousel_videoMask__9E8ZB ${
+                      className={`HeroCarousel_videoMask__9E8ZB cursor-pointer ${
                         state === "active"
                           ? "HeroCarousel_active__Xmb4Z"
                           : state === "prev"
                           ? "HeroCarousel_prev__j3ZjV"
                           : ""
                       }`}
+                      onClick={() => window.location.href = videoContent[index].link}
                     >
                       <motion.div
                         variants={childVariant}
@@ -297,7 +322,7 @@ export default function Banner({ sectionRef}) {
           </div>
         </div>
         <div className="absolute  flex bottom-[12vw] w-[86%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-between items-end right-0 z-[1] text-white">
-          <div className="video_content_container items-center flex gap-[30px] basis-[45%]">
+          <div className="video_content_container items-center flex gap-[50px] basis-[45%]">
             <div className="relative basis-[154px] shrink-0 grow-0 h-[190px] overflow-hidden">
               <AnimatePresence initial={false} mode="wait">
                 <motion.div
@@ -327,19 +352,22 @@ export default function Banner({ sectionRef}) {
                   initial="initial"
                   animate="animate"
                   exit="exit"
-                  className="text-[90px] leading-[110px] tracking-[1px] uppercase"
+                  className="text-[130px] leading-[110px] tracking-[1px] uppercase italic"
                 >
                   {videoContent[activeIndex].title}
                 </motion.h2>
               </AnimatePresence>
             </div>
           </div>
-          <div className="basis-[228px] cursor-normal gap-4"   onMouseEnter={() => setIsHovering(true)}
-                    onMouseLeave={() => setIsHovering(false)}>
+          <div
+            className="basis-[228px] cursor-normal gap-4"
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+          >
             <div className="text-right relative overflow-hidden">
               <div className="flex gap-[5px] items-center justify-between relative mb-[15px]">
                 <div className="flex-1 text-start">
-                  <span className="block text-[14px] opacity-90">Next up</span>
+                  <span className="block text-[14px] opacity-90 uppercase tracking-[1px]">Next up</span>
                   <div className="relative h-[22px] overflow-hidden">
                     <AnimatePresence initial={false} mode="wait">
                       <motion.h3
@@ -348,41 +376,35 @@ export default function Banner({ sectionRef}) {
                         initial="initial"
                         animate="animate"
                         exit="exit"
-                        className="text-[18px] absolute top-0 left-0 w-full pr-[4px]"
+                        className="text-[16px] absolute top-0 left-0 w-full pr-[4px] uppercase tracking-[1px]"
                       >
                         {videoContent[activeIndex].nextUp}
                       </motion.h3>
                     </AnimatePresence>
                   </div>
                 </div>
-                <div className="flex gap-[15px] items-center justify-center">
+                <div className="flex items-center justify-center gap-0">
+                  {/* Left Button */}
                   <motion.button
-                    whileHover={{
-                      scale: 1.1,
-                      backgroundColor: "rgba(255,255,255,0.2)",
-                    }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover="hover"
                     onClick={prevSlide}
-                    
-                  
-                    className="basis-[30px] z-20 cursor-pointer transition-colors p-[5px]"
+                    className="relative w-[50px] h-[50px] z-20 cursor-pointer flex items-center justify-center overflow-hidden"
                   >
-                    <ChevronLeft size={20} />
+                    <ChevronLeft size={20} className="relative z-10" />
                   </motion.button>
+
                   <div className="border-r-[0.5px] border-[#fff] h-[35px]" />
+
+                  {/* Right Button */}
                   <motion.button
-                    whileHover={{
-                      scale: 1.1,
-                      backgroundColor: "rgba(255,255,255,0.2)",
-                    }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover="hover"
                     onClick={nextSlide}
-             
-                    className="basis-[30px] z-20 cursor-pointer transition-colors p-[5px]"
+                    className="relative w-[50px] h-[50px] z-20 cursor-pointer flex items-center justify-center overflow-hidden"
                   >
-                    <ChevronRight size={20} />
+                    <ChevronRight size={20} className="relative z-10" />
                   </motion.button>
                 </div>
+
               </div>
             </div>
             <div className="bottom-[240px] left-0 w-full h-[1px] bg-white/20 z-20">
