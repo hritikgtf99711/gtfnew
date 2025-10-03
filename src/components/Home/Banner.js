@@ -7,6 +7,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { IoMdArrowDropright, IoMdArrowDropleft } from "react-icons/io";
 import Header from "../header/Index";
 
 const videoSources = [
@@ -263,14 +264,14 @@ export default function Banner({ sectionRef }) {
           delay:0.3
         }}
       >
-        <div className="py-[10px] border-[1px] border-[#fff] cursor-pointer group  p-[30px] rounded-[0] flex items-center justify-center">
-          <span className=" text-xs uppercase font-semibold  group-hover:translate-y-[-4px] text-white">
+        <div className="py-[8px] border-[1px] border-[#fff] cursor-pointer group px-[15px] rounded-[0] flex items-center justify-center">
+          <span className=" text-[14px] uppercase font-semibold  group-hover:translate-y-[-4px] text-white tracking-[2px]">
             Read More
           </span>
         </div>
       </motion.div>
 
-      <div className="HeroCarousel_heroCarousel__BYein HeroCarousel_isInView__UEmOO  cursor-pointer">
+      <div className="HeroCarousel_heroCarousel__BYein HeroCarousel_isInView__UEmOO  cursor-pointer hero_carousel">
         <div className="HeroCarousel_carouselWrapper__Mis0X  cursor-pointer">
           <div className="HeroCarousel_bgCarousel__sRuW8  cursor-pointer">
             <div className="HeroCarousel_videos__jjh4t">
@@ -321,7 +322,7 @@ export default function Banner({ sectionRef }) {
             </div>
           </div>
         </div>
-        <div className="absolute  flex bottom-[12vw] w-[86%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-between items-end right-0 z-[1] text-white">
+        <div className="absolute  flex bottom-[12vw] w-[80%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-between items-end right-0 z-[1] text-white">
           <div className="video_content_container items-center flex gap-[50px] basis-[45%]">
             <div className="relative basis-[154px] shrink-0 grow-0 h-[190px] overflow-hidden">
               <AnimatePresence initial={false} mode="wait">
@@ -383,25 +384,27 @@ export default function Banner({ sectionRef }) {
                     </AnimatePresence>
                   </div>
                 </div>
-                <div className="flex items-center justify-center gap-0">
-                  {/* Left Button */}
-                  <motion.button
-                    whileHover="hover"
-                    onClick={prevSlide}
-                    className="relative w-[50px] h-[50px] z-20 cursor-pointer flex items-center justify-center overflow-hidden"
-                  >
-                    <ChevronLeft size={20} className="relative z-10" />
-                  </motion.button>
 
-                  <div className="border-r-[0.5px] border-[#fff] h-[35px]" />
+                <div className="flex items-center justify-center gap-0 relative nav_btns">
+                  <motion.button
+                    initial={{color:'#fff'}}
+                    whileHover={{color:'#000'}}
+                    transition={{ duration: 0.1 }}
+                    onClick={prevSlide}
+                    className="relative w-[40px] h-[40px] flex items-center justify-center z-20 cursor-pointer  overflow-hidden left_btn"
+                  >
+                      <IoMdArrowDropleft size={20} className="relative z-10" />
+                  </motion.button>
 
                   {/* Right Button */}
                   <motion.button
-                    whileHover="hover"
+                    initial={{color:'#fff'}}
+                    whileHover={{color:'#000'}}
+                    transition={{ duration: 0.1 }}
                     onClick={nextSlide}
-                    className="relative w-[50px] h-[50px] z-20 cursor-pointer flex items-center justify-center overflow-hidden"
+                    className="relative w-[40px] h-[40px] z-20 cursor-pointer flex items-center justify-center overflow-hidden right_btn"
                   >
-                    <ChevronRight size={20} className="relative z-10" />
+                    <IoMdArrowDropright size={20} className="relative z-10" />
                   </motion.button>
                 </div>
 
