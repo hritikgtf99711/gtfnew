@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence, useTransform, useScroll, useSpring, useMotionValue } from "framer-motion";
+import { motion, AnimatePresence, useTransform, useScroll, useSpring } from "framer-motion";
 
 export default function BoxSlides({
   children,
@@ -15,11 +15,8 @@ export default function BoxSlides({
   onActive,
 }) {
   const [isLoading, setIsLoading] = useState(true);
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const sectionRef = useRef(null);
   const innerSecRef = useRef(null);
-
-  
 
   // Local scroll handling
   const { scrollYProgress } = useScroll({
@@ -28,9 +25,9 @@ export default function BoxSlides({
   });
 
   const { scrollYProgress1 } = useScroll({
-    target:innerSecRef,
+    target: innerSecRef,
     offset: ["start end", "end start"],
-  })
+  });
 
   // Smooth spring to avoid jerky values
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 200, damping: 30});
@@ -42,11 +39,11 @@ export default function BoxSlides({
     [200, 0, 200]    // px
   );
 
-  // const paddingTop = useTransform(
-  //   smoothProgress,
-  //   [0, 0.3],   
-  //   [0, 350] 
-  // );
+  const paddingTop = useTransform(
+    smoothProgress1,
+    [0, 0.3],   
+    [0, 350] 
+  );
 
   // Section-level transforms for scale based on scroll progress
   const scaleTransform = useTransform(
@@ -71,7 +68,6 @@ export default function BoxSlides({
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      // setIsTransitioning(true);
       setIsLoading(false);
     }, 6500);
     return () => clearTimeout(timer);
@@ -81,103 +77,35 @@ export default function BoxSlides({
     if (setscaleTransform) setscaleTransform(scaleTransform);
   }, [scaleTransform, setscaleTransform]);
 
-  // Motion value for dynamic padding
-  // const paddingX = useMotionValue(150);
-  // const smoothPaddingX = useSpring(paddingX, { stiffness: 12000, damping: 10 });
-
-  // Motion value for padding
-  const paddingX = useMotionValue(200);
-  const smoothPaddingX = useSpring(paddingX, { stiffness: 200, damping: 30 });
-
-  const paddingTop = useMotionValue(0);
-  const smoothPaddingTop = useSpring(paddingTop, { stiffness: 200, damping: 30 });
-
+  // Trigger background change when section is active in viewport
   useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current || !innerSecRef.current) return;
-
-      const sectionRect = sectionRef.current.getBoundingClientRect();
-      const innerRect = innerSecRef.current.getBoundingClientRect();
-      const vh = window.innerHeight;
-
-      // -------- Padding Left/Right --------
-      let newPaddingX = 200;
-      if (sectionRect.top > vh) {
-        newPaddingX = 200;
-      } else if (sectionRect.top <= vh && sectionRect.bottom > vh) {
-        const progress = (vh - sectionRect.top) / vh;
-        newPaddingX = 200 * (1 - progress);
-      } else if (sectionRect.top <= 0 && sectionRect.bottom >= vh) {
-        newPaddingX = 0;
-      } else if (sectionRect.bottom < vh && sectionRect.bottom > 0) {
-        const progress = sectionRect.bottom / vh;
-        newPaddingX = 200 * progress;
-      } else if (sectionRect.bottom <= 0) {
-        newPaddingX = 200;
+    const unsubscribe = scrollYProgress.on("change", (v) => {
+      if (v > 0.2 && v < 0.8 && onActive) {
+        onActive();
       }
-      paddingX.set(newPaddingX);
-
-      // -------- Padding Top --------
-      let newPaddingTop = 0;
-      if (innerRect.top > vh) {
-        newPaddingTop = 0;
-      } else if (innerRect.top <= vh && innerRect.bottom > vh) {
-        const progress = (vh - innerRect.top) / vh;
-        newPaddingTop = 350 * progress; // adjust max paddingTop
-      } else if (innerRect.top <= 0 && innerRect.bottom >= vh) {
-        newPaddingTop = 350;
-      } else if (innerRect.bottom < vh && innerRect.bottom > 0) {
-        const progress = innerRect.bottom / vh;
-        newPaddingTop = 350 * progress;
-      } else if (innerRect.bottom <= 0) {
-        newPaddingTop = 0;
-      }
-      paddingTop.set(newPaddingTop);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    });
+    return () => unsubscribe();
+  }, [scrollYProgress, onActive]);
 
   return (
     <motion.div
       ref={sectionRef}
       className={`${isFirst && 'mt-[-290px]' } relative z-[9] animated_section`}
-      // animate={{
-      //   scale: [1, 1.1, 0.95, 1.05, 1], // Elastic scale sequence
-      //   rotate: [0, 2, -1, 0.5, 0], // Optional: add slight rotation for more elasticity
-      // }}
-      // transition={{
-      //   type: 'spring',
-      //   stiffness: 100,
-      //   damping: 10,
-      //   mass: 1,
-      //   duration: 0.21,
-      //   repeat: Infinity,
-      //   repeatType: 'reverse',
-      //   repeatDelay: 0,
-      //   ease: [0.68, -0.55, 0.265, 1.55], // Custom elastic easing curve
-      // }}
-      // style={{
-      //   scale: scaleTransform,
-      //   willChange: "transform",
-      // }}
       style={{
-        paddingLeft: smoothPaddingX,
-        paddingRight: smoothPaddingX,
-        
-        transition:'padding 0.3s easeInOut'
+        scale: scaleTransform,
+        willChange: "transform",
+        paddingLeft: paddingLeftRight,
+        paddingRight: paddingLeftRight,
       }}
     >
       <motion.div ref={innerSecRef} className={`bg-white z-9 flex justify-center items-center`} 
         style={{
-          paddingTop:smoothPaddingTop,
+          paddingTop,
         }}
-      > {/*pt-[100vh]*/}
-        <div className={`relative max-w-full box_padding`}>  {/*${!via && "pt-[100vh]"}*/}
+      > 
+        <div className={`relative max-w-full box_padding`}>  
             <div className="sticky top-0">
-              <div className="relative w-full flex flex-col justify-center items-center">  {/*h-screen*/}
+              <div className="relative w-full flex flex-col justify-center items-center">  
                 {/* {heading && (
                   <div className="heading pt-[50px] text-center text-[#000] overflow-hidden flex flex-col gap-2">
                     <motion.span style={{ clipPath: subHeadingClip, opacity: subHeadingOpacity }}>

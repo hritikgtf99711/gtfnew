@@ -162,7 +162,7 @@ export default function Home() {
 
       <BoxSlides
         scaleTransform={scaleTransform}
-        setscaleTransform={setscaleTransform}
+        setscaleTransform={setscaleTransform}  // Only pass to first
         isHidden={isHidden}
         setIsHidden={setIsHidden}
         headerRef={headerRef}
@@ -181,7 +181,6 @@ export default function Home() {
 
       <BoxSlides
         scaleTransform={scaleTransform}
-        setscaleTransform={setscaleTransform}
         isHidden={isHidden}
         setIsHidden={setIsHidden}
         headerRef={headerRef}
@@ -194,7 +193,6 @@ export default function Home() {
 
       <BoxSlides
         scaleTransform={scaleTransform}
-        setscaleTransform={setscaleTransform}
         isHidden={isHidden}
         setIsHidden={setIsHidden}
         headerRef={headerRef}
@@ -207,7 +205,6 @@ export default function Home() {
 
       <BoxSlides
         scaleTransform={scaleTransform}
-        setscaleTransform={setscaleTransform}
         isHidden={isHidden}
         setIsHidden={setIsHidden}
         headerRef={headerRef}
