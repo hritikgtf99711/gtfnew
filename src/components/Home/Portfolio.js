@@ -32,8 +32,8 @@ export default function Portfolio({ smoothScrollProgress,sectionRef }) {
       className="relative w-full h-full flex justify-center m-auto items-center"
     >
       <motion.div className="w-full min-h-screen z-30 px-[80px]">
-        <div className="max-w-full mx-auto py-6 flex justify-center">
-          <div className="flex gap-4GRDESQ  Zxc] bn,.12#$6    m  
+        <div className="max-w-full mx-auto flex justify-center">
+          <div className="flex gap-[10px]  
            items-start text-black font-serif">
             <AnimatePresence>
               {frames.map((o, i) => (

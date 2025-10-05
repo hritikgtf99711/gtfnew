@@ -105,8 +105,8 @@ export default function Clients() {
 
   return (
     <section>
+        
       <div className="md:pt-[50px] w-full h-full md:px-[35px] px-[15px] py-[60px]">
-        <SparkleBackgroundPortal/>
         <div className="md:flex justify-start items-end md:mb-[0] mb-[30px] md:text-start">
           <h3 className="uppercase relative md:leading-[70px] md:text-start text-center max-h-fit leading-[normal] md:mb-[0] mb-[15px]">
             <span className="bartino-outline tracking-[2px] 2xl:text-[72px] lg:text-[62px] md:text-[50px] text-[32px] block">

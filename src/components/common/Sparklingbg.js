@@ -93,7 +93,7 @@ const SparkleBackground = () => {
     
       <canvas
         ref={canvasRef}
-        className="absolute top-0 z-[2] left-0 w-full h-full pointer-events-none opacity-[0.08]"
+        className="absolute top-0 z-[2] left-0 w-full h-full object-cover pointer-events-none opacity-[0.08]"
       />
   );
 };

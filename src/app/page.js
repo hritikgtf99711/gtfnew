@@ -211,6 +211,7 @@ export default function Home() {
         bannervideoref={bannervideoref}
         via={false}
         onActive={() => setActiveImage(changesImageArr[3])}
+        isClient={true}
       >
         <Clients />
       </BoxSlides>
