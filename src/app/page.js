@@ -8,6 +8,7 @@ import Header from "@/components/header/Index";
 import Clients from "./Client";
 import WhoWeAre from "@/components/common/WhowWeAre";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 const frames = [
   { img: "/assets/img/loader/slide_1.webp", name: "Project 1" },
@@ -31,6 +32,7 @@ export default function Home() {
   const [isImagesVisible, setIsImagesVisible] = useState(false);
   const [isLoaderCardEnd, setIsLoaderCardEnd] = useState(false);
   const [isLoaderCardVisible, setIsLoaderCardVisible] = useState(false);
+  const [activeBg, setActiveBg] = useState(-1);
   const cardRefs = useRef([]);
 
   const changesImageArr = [
@@ -39,6 +41,13 @@ export default function Home() {
     "/assets/img/mide_section_img_2.jpg",
     "/assets/img/mide_section_img_3.jpg",
     "/assets/img/portfolio/portfolio_5.jpg",
+  ];
+
+  const bgImages = [
+    "/assets/home/bg/bg_img1.webp",
+    "/assets/home/bg/bg_img2.webp",
+    "/assets/home/bg/bg_img3.webp",
+    "/assets/home/bg/bg_img4.webp",
   ];
 
   // Loader sequence
@@ -77,7 +86,9 @@ export default function Home() {
           </motion.div>
 
           <motion.div
-            className={`fixed w-full ${isLoaderCardVisible ? "hidden" : "block"}`}
+            className={`fixed w-full ${
+              isLoaderCardVisible ? "hidden" : "block"
+            }`}
             initial={{ top: "20vh" }}
             animate={{
               top: isLoaderCardEnd ? "40vh" : "20vh",
@@ -103,11 +114,13 @@ export default function Home() {
                                 key={index}
                                 className="absolute bottom-0 left-0 right-0"
                                 initial={{
-                                  clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
+                                  clipPath:
+                                    "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
                                   scale: 1.2,
                                 }}
                                 animate={{
-                                  clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                                  clipPath:
+                                    "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
                                   scale: 1,
                                 }}
                                 transition={{
@@ -160,9 +173,25 @@ export default function Home() {
         )}
       </div>
 
+      <div className="fixed inset-0 z-1">
+        {bgImages.map((src, i) => (
+          <motion.img
+            key={i}
+            src={src}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: activeBg === i ? 1 : 0 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            // optional perf hint:
+            style={{ willChange: "opacity" }}
+          />
+        ))}
+      </div>
+
       <BoxSlides
         scaleTransform={scaleTransform}
-        setscaleTransform={setscaleTransform}  // Only pass to first
+        setscaleTransform={setscaleTransform}
         isHidden={isHidden}
         setIsHidden={setIsHidden}
         headerRef={headerRef}
@@ -172,11 +201,10 @@ export default function Home() {
         subHeading={"Our Projects"}
         heading={"Projects"}
         isFirst={true}
+        onFocus={() => setActiveBg(0)} // <-- tell parent to show bgImages[0]
+        onResetTop={() => setActiveBg(-1)}
       >
-        <Portfolio
-          scaleTransform={scaleTransform}
-          isHidden={isHidden}
-        />
+        <Portfolio scaleTransform={scaleTransform} isHidden={isHidden} />
       </BoxSlides>
 
       <BoxSlides
@@ -187,6 +215,7 @@ export default function Home() {
         bannervideoref={bannervideoref}
         via={false}
         onActive={() => setActiveImage(changesImageArr[1])}
+        onFocus={() => setActiveBg(1)} // <-- bgImages[1]
       >
         <Expertise />
       </BoxSlides>
@@ -198,7 +227,10 @@ export default function Home() {
         headerRef={headerRef}
         bannervideoref={bannervideoref}
         via={false}
+        subHeading={"Who We Are"}
+        heading={"Who We Are"}
         onActive={() => setActiveImage(changesImageArr[2])}
+        onFocus={() => setActiveBg(2)} // <-- bgImages[2]
       >
         <WhoWeAre />
       </BoxSlides>
@@ -210,11 +242,32 @@ export default function Home() {
         headerRef={headerRef}
         bannervideoref={bannervideoref}
         via={false}
+        subHeading={"Our Clients"}
+        heading={"Amazing brands, Amazed Clients."}
         onActive={() => setActiveImage(changesImageArr[3])}
         isClient={true}
+        onFocus={() => setActiveBg(3)} // <-- bgImages[3]
       >
         <Clients />
       </BoxSlides>
+
+      <BoxSlides
+        scaleTransform={scaleTransform}
+        isHidden={isHidden}
+        setIsHidden={setIsHidden}
+        headerRef={headerRef}
+        bannervideoref={bannervideoref}
+        via={false}
+        subHeading={"Our Clients"}
+        heading={"Amazing brands, Amazed Clients."}
+        onActive={() => setActiveImage(changesImageArr[3])}
+        isClient={true}
+        onFocus={() => setActiveBg(4)} // <-- bgImages[3]
+      >
+        <Clients />
+      </BoxSlides>
+
+      <section className="h-screen"></section>
     </>
   );
 }

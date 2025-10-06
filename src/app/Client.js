@@ -1,125 +1,142 @@
 "use client";
-import { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import { motion, useAnimation } from "framer-motion";
 import SparkleBackgroundPortal from "@/components/common/Sparklingbg";
+import { debounce } from "lodash"; // Requires lodash for debouncing
+import Image from "next/image";
+
+// Memoized LogoItem component to prevent unnecessary re-renders
+const LogoItem = React.memo(({ logo, index, isVisible, top, bottom }) => (
+  <div>
+    {/* {top && (
+      <motion.li key={logo.id + "logo"} className={`border_wrapper ${top ? 'vertical_top' : ''} flex justify-center items-center h-[250px]`}>
+        <div className="border-bg-v"></div>
+        <div className="border-bg-h"></div>
+      </motion.li>
+    )} */}
+    
+    <motion.li
+      key={logo.id}
+      custom={index}
+      variants={{
+        hidden: { opacity: 0, scale: 0.8 },
+        visible: (i) => ({
+          opacity: 1,
+          scale: 1,
+          transition: {
+            delay: i * 0.1,
+            duration: 0.5, // Reduced duration for smoother performance
+            ease: "easeOut",
+          },
+        }),
+      }}
+      initial="hidden"
+      animate={isVisible ? "visible" : "hidden"}
+      className="border_wrapper flex justify-center items-center h-[250px]"
+      style={{ willChange: "transform, opacity" }} // Optimize rendering
+    >
+      <div className={`border-bg-v ${index>1 && (index % 5) == 0 ? 'hidden' : ''}`}></div>
+      <div className={`border-bg-h ${bottom ? 'hidden' : ''}`}></div>
+      <Image
+        src={logo.src}
+        alt={`Client logo ${logo.id}`}
+        className="h-full h-full  m-[auto] object-contain"
+        loading="lazy" // Enable lazy loading
+        width={150}
+        height={200}
+      />
+    </motion.li>
+
+    {/* {bottom && (
+      <motion.li key={logo.id + "logo"} className={`border_wrapper ${bottom ? 'vertical_bottom' : ''} flex justify-center items-center h-[250px]`}>
+        <div className="border-bg-v"></div>
+        <div className="border-bg-h"></div>
+      </motion.li>
+    )} */}
+  </div>
+));
+
 export default function Clients() {
-  const imageRef = useRef(null);
-  const coloredLineRef = useRef(null);
-  const coloredLineRef2 = useRef(null);
   const containerRef = useRef(null);
   const logoGridRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isLogoGridVisible, setIsLogoGridVisible] = useState(false);
-
-  const logoSets = [
-    { id: 1, src: "/assets/home/clients/ambience.png" },
-    { id: 2, src: "/assets/home/clients/ats.png" },
-    { id: 3, src: "/assets/home/clients/jindal-realty.png" },
-    { id: 4, src: "/assets/home/clients/homekraft.png" },
-    { id: 5, src: "/assets/home/clients/parx-laureate.png" },
-    { id: 6, src: "/assets/home/clients/raheja.png" },
-    { id: 7, src: "/assets/home/clients/tarc.png" },
-    { id: 8, src: "/assets/home/clients/ska-orion.png" },
-    { id: 9, src: "/assets/home/clients/aipl.png" },
-    { id: 10, src: "/assets/home/clients/eldeco.png" },
-  ];
-
-  // Animation controls for lines
   const lineControls = useAnimation();
-  const lineControls2 = useAnimation();
 
-  // Animation variants for image
-  const imageVariants = {
-    hidden: { scaleY: 0, opacity: 0, originY: 0 },
-    visible: {
-      scaleY: 1,
-      opacity: 1,
-      transition: { duration: 2, ease: "easeOut" },
-    },
-  };
-
-  // Animation variants for logos
-  const logoVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: (i) => ({
-      opacity: 1,
-      scale: 1,
-      transition: {
-        delay: i * 0.1, // Stagger effect
-        duration: 0.7,
-        ease: "easeInOut",
-      },
-    }),
-  };
+  // Memoized logo data
+  const logoSets = useMemo(
+    () => [
+      { id: 1, src: "/assets/home/clients/ambience.png" },
+      { id: 2, src: "/assets/home/clients/ats.png" },
+      { id: 3, src: "/assets/home/clients/jindal-realty.png" },
+      { id: 4, src: "/assets/home/clients/homekraft.png" },
+      { id: 5, src: "/assets/home/clients/parx-laureate.png" },
+      { id: 6, src: "/assets/home/clients/raheja.png" },
+      { id: 7, src: "/assets/home/clients/tarc.png" },
+      { id: 8, src: "/assets/home/clients/ska-orion.png" },
+      { id: 9, src: "/assets/home/clients/aipl.png" },
+      { id: 10, src: "/assets/home/clients/eldeco.png" },
+    ],
+    []
+  );
 
   // Animation variants for lines
   const lineVariants = {
     hidden: { scaleX: 0, originX: 0 },
     visible: {
       scaleX: 1,
-      transition: { duration: 1, ease: "easeOut" },
+      transition: { duration: 0.8, ease: "easeOut" }, // Reduced duration
     },
   };
 
-  // IntersectionObserver for logo grid
+  // Combined IntersectionObserver with debounce
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
+    const handleIntersection = debounce((entries) => {
+      entries.forEach((entry) => {
+        if (entry.target === containerRef.current) {
+          setIsVisible(entry.isIntersecting);
+          if (entry.isIntersecting) {
+            lineControls.start("visible");
+          } else {
+            lineControls.start("hidden");
+          }
+        }
+        if (entry.target === logoGridRef.current && entry.isIntersecting) {
           setIsLogoGridVisible(true);
-          observer.disconnect();
         }
-      },
-      { threshold: 0.2 }
-    );
+      });
+    }, 100); // Debounce for 100ms
 
-    if (logoGridRef.current) {
-      observer.observe(logoGridRef.current);
-    }
+    const observer = new IntersectionObserver(handleIntersection, {
+      threshold: 0.2,
+    });
 
-    return () => observer.disconnect();
-  }, []);
+    if (containerRef.current) observer.observe(containerRef.current);
+    if (logoGridRef.current) observer.observe(logoGridRef.current);
 
-  // IntersectionObserver for image
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-        if (entry.isIntersecting) {
-          lineControls.start("visible");
-          lineControls2.start("visible");
-        } else {
-          lineControls.start("hidden");
-          lineControls2.start("hidden");
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [lineControls, lineControls2]);
+    return () => {
+      observer.disconnect();
+      handleIntersection.cancel(); // Clean up debounce
+    };
+  }, [lineControls]);
 
   return (
     <section>
-        
-      <div className="md:pt-[50px] w-full h-full md:px-[35px] px-[15px] py-[60px]">
-        <div className="md:flex justify-start items-end md:mb-[0] mb-[30px] md:text-start">
+      <div className=" w-full h-full pb-[100px] px-[100px]">
+        {/* <div className="md:flex justify-start items-end md:mb-[0] mb-[30px] md:text-start">
           <h3 className="uppercase relative md:leading-[70px] md:text-start text-center max-h-fit leading-[normal] md:mb-[0] mb-[15px]">
             <span className="bartino-outline tracking-[2px] 2xl:text-[72px] lg:text-[62px] md:text-[50px] text-[32px] block">
               Amazing brands,
             </span>
-            <span className=" md:pl-[7.5rem] block font-medium 2xl:text-[65px] text-[32px] md:text-[50px] lg:text-[52px]">
+            <span className="md:pl-[7.5rem] block font-medium 2xl:text-[65px] text-[32px] md:text-[50px] lg:text-[52px]">
               Amazed Clients.
               <motion.div
-                ref={coloredLineRef}
+                ref={containerRef}
                 className="bg-gtf-blue absolute left-[33%] lg:left-[61%] bottom-[2%] h-[4px] w-[100px]"
                 variants={lineVariants}
                 initial="hidden"
                 animate={lineControls}
+                style={{ willChange: "transform" }} // Optimize rendering
               />
             </span>
           </h3>
@@ -127,32 +144,25 @@ export default function Clients() {
             <span className="block">They choose to work with us.</span>
             <span className="block">We chased the WOWasaS with them.</span>
           </p>
-        </div>
-        <div className="overflow-hidden relative w-full md:mt-[70px] main_border_cmp border-black">
+        </div> */}
+        <div className="overflow-hidden relative w-full main_border_cmp border-black">
           <motion.ul
             ref={logoGridRef}
             className="grid grid-cols-2 border-none sm:grid-cols-3 md:grid-cols-5 w-full border-[2px]"
           >
             {logoSets.map((logo, i) => (
-              <motion.li
+              <LogoItem
                 key={logo.id}
-                custom={i}
-                variants={logoVariants}
-                initial="hidden"
-                animate={isLogoGridVisible ? "visible" : "hidden"}
-                className="p-4 flex justify-center items-center"
-              >
-                <img
-                  src={logo.src}
-                  alt={`Client logo ${logo.id}`}
-                  className="w-full h-auto m-[auto] object-contain"
-                />
-              </motion.li>
+                logo={logo}
+                index={i+1}
+                isVisible={isLogoGridVisible}
+                top={i < 9}
+                bottom={logoSets.length-6 < i}
+              />
             ))}
           </motion.ul>
         </div>
       </div>
-
     </section>
   );
 }

@@ -193,20 +193,20 @@ const WhoWeAre = () => {
       >
         <motion.section
           ref={sectionRef}
-          className="flex flex-row uppercase h-screen main-container-scroll no-scrollbar min-w-[430vw] relative"
+          className="flex flex-row uppercase main-container-scroll no-scrollbar min-w-[430vw] relative pb-[200px]"
           style={{ x }}
         >
           <div
-            className="main-container-scroll no-scrollbar flex h-screen will-change-transform"
+            className="main-container-scroll no-scrollbar flex will-change-transform"
             style={{ display: "flex", width: "fit-content" }}
           >
             {/* Left Text Section */}
-            <div className="flex flex-row justify-between h-full min-w-[100vw]">
+            <div className="flex flex-row justify-between">
               <div className="grid grid-cols-12 items-center gap-[40px]">
                 <div className="w-[100vw] col-span-12 pt-[20px] px-[35px]">
-                  <h2 className="font-[Oswald] mb-[15px] text-[25px] text-left">
+                  {/* <h2 className="font-[Oswald] mb-[15px] text-[25px] text-left">
                     Who We Are?
-                  </h2>
+                  </h2> */}
                   <div>
                     {words.map((word, index) => (
                       <motion.p

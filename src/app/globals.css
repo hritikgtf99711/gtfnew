@@ -2214,3 +2214,56 @@ header.hide{transition: transform 1.5s var(--ease-expo-out);    animation: Navig
 .hero_carousel .nav_btns .right_btn:hover:after{
   transform: scaleX(1);
 }
+
+/* our team */
+
+.border_wrapper{
+  position:relative;
+}
+
+.border_wrapper .border-bg-v,
+.border_wrapper .border-bg-h{
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+
+/* .border_wrapper .border-bg-v:before{
+  height: 100%;
+    width: 1px;
+    background: #e5e5e5;
+    content: "";
+    position: absolute;
+    left: 0;
+} */
+
+.border_wrapper .border-bg-v:after{
+  height: 100%;
+  width: 1px;
+  background: #e5e5e5;
+  content: "";
+  position: absolute;
+    right: 0;
+}
+
+.border_wrapper.vertical_bottom .border-bg-h:before{
+  display: none;
+}
+
+.border_wrapper .border-bg-h:before{
+  background: #e5e5e5;
+  content: "";
+  position: absolute;
+  height: 1px;
+  width: 100%;
+  bottom: 0; 
+}
+
+/* .border_wrapper .border-bg-h:after{
+  background: #e5e5e5;
+  content: "";
+  position: absolute;
+  height: 1px;
+  width: 100%;
+  top: 0; 
+} */
