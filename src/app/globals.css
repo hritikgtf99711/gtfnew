@@ -2267,3 +2267,14 @@ header.hide{transition: transform 1.5s var(--ease-expo-out);    animation: Navig
   width: 100%;
   top: 0; 
 } */
+
+/* steps */
+ 
+.steps_section .right_col .desc{
+  transition:0.8s all ease-in-out;
+}
+
+/*.steps_section .right_col li:hover .desc{
+  height:auto;
+  transition:0.3s all ease-in-out;
+} */

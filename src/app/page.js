@@ -9,6 +9,8 @@ import Clients from "./Client";
 import WhoWeAre from "@/components/common/WhowWeAre";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import Steps from "@/components/Home/steps";
+import WhatWeDo from "@/components/Home/whatWeDo/WhatWeDo";
 
 const frames = [
   { img: "/assets/img/loader/slide_1.webp", name: "Project 1" },
@@ -44,6 +46,10 @@ export default function Home() {
   ];
 
   const bgImages = [
+    "/assets/home/bg/bg_img1.webp",
+    "/assets/home/bg/bg_img2.webp",
+    "/assets/home/bg/bg_img3.webp",
+    "/assets/home/bg/bg_img4.webp",
     "/assets/home/bg/bg_img1.webp",
     "/assets/home/bg/bg_img2.webp",
     "/assets/home/bg/bg_img3.webp",
@@ -258,13 +264,27 @@ export default function Home() {
         headerRef={headerRef}
         bannervideoref={bannervideoref}
         via={false}
-        subHeading={"Our Clients"}
-        heading={"Amazing brands, Amazed Clients."}
-        onActive={() => setActiveImage(changesImageArr[3])}
-        isClient={true}
-        onFocus={() => setActiveBg(4)} // <-- bgImages[3]
+        // subHeading={"Company Steps"}
+        // heading={"Amazing brands"}
+        onActive={() => setActiveImage(changesImageArr[4])}
+        onFocus={() => setActiveBg(4)} // <-- bgImages[4]
       >
-        <Clients />
+        <Steps />
+      </BoxSlides>
+
+      <BoxSlides
+        scaleTransform={scaleTransform}
+        isHidden={isHidden}
+        setIsHidden={setIsHidden}
+        headerRef={headerRef}
+        bannervideoref={bannervideoref}
+        via={false}
+        subHeading={"What We Do"}
+        heading={"What We Do"}
+        onActive={() => setActiveImage(changesImageArr[5])}
+        onFocus={() => setActiveBg(5)} // <-- bgImages[4]
+      >
+        <WhatWeDo />
       </BoxSlides>
 
       <section className="h-screen"></section>
