@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import Lenis from "@studio-freight/lenis";
 import { useEffect } from "react";
+import Footer from "@/components/footer/Footer";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -56,6 +57,7 @@ export default function RootLayout({ children }) {
             transition={{ duration: 0.4 }}
           >
             {children}
+            <Footer />
           </motion.div>
         </AnimatePresence>
       </body>

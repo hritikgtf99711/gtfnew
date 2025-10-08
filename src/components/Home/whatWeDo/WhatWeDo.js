@@ -1,57 +1,58 @@
 import Image from "next/image"
 import './whatWeDo.css'
+import {motion, useScroll, useTransform } from "framer-motion";
 
 const secData = [
   {
-    img:'/assets/home/whatWeDo/brand-strategies.webp',
+    img: '/assets/home/whatWeDo/1.webp',
+    title: 'Brand Strategy',
+    desc: 'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
+  },
+  {
+    img: '/assets/home/whatWeDo/2.webp',
+    title: 'Creative',
+    desc: 'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
+  },
+  {
+    img: '/assets/home/whatWeDo/3.webp',
+    title: 'communication',
+    desc: 'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
+  },
+  {
+    img: '/assets/home/whatWeDo/4.webp',
+    title: 'website_design',
+    desc: 'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
+  },
+  {
+    img: '/assets/home/whatWeDo/5.webp',
+    title: 'website_maintenance',
+    desc: 'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
+  },
+  {
+    img: '/assets/home/whatWeDo/6.webp',
+    title: 'seo',
+    desc: 'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
+  },
+  {
+    img: '/assets/home/whatWeDo/7.webp',
+    title: 'Brand Strategy',
+    desc: 'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
+  },
+  /*{
+    img:'/assets/home/whatWeDo/display-marketing.webp',
     title:'Brand Strategy',
     desc:'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
   },
-  {
-    img:'/assets/home/whatWeDo/creatives.webp',
-    title:'Creative',
-    desc:'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
-  },
-  {
-    img:'/assets/home/whatWeDo/communication.webp',
-    title:'Brand Strategy',
-    desc:'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
-  },
-  {
-    img:'/assets/home/whatWeDo/website_design.webp',
-    title:'Brand Strategy',
-    desc:'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
-  },
-  {
-    img:'/assets/home/whatWeDo/website_maintenance.webp',
-    title:'Brand Strategy',
-    desc:'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
-  },
-    {
-      img:'/assets/home/whatWeDo/seo.webp',
-      title:'Brand Strategy',
-      desc:'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
-    },
-    /*{
-      img:'/assets/home/whatWeDo/paid-ads.webp',
-      title:'Brand Strategy',
-      desc:'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
-    },
-    {
-      img:'/assets/home/whatWeDo/display-marketing.webp',
-      title:'Brand Strategy',
-      desc:'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
-    },
-  {
-    img:'/assets/home/whatWeDo/youtube-marketing.webp',
-    title:'Brand Strategy',
-    desc:'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
-  },
-  {
-    img:'/assets/home/whatWeDo/social_media_optimization.webp',
-    title:'Brand Strategy',
-    desc:'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
-  },*/
+{
+  img:'/assets/home/whatWeDo/youtube-marketing.webp',
+  title:'Brand Strategy',
+  desc:'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
+},
+{
+  img:'/assets/home/whatWeDo/social_media_optimization.webp',
+  title:'Brand Strategy',
+  desc:'We use our insight, experience, and rich industry knowledge to formulate and drive a distinct and differentiating positioning for your brand. We uncover your brand\'s coreâ€”the heart or soul of who you are and how you want to be perceived!',
+},*/
   // {
   //   img:'/assets/home/whatWeDo/social-media-marketing.webp',
   //   title:'Brand Strategy',
@@ -64,42 +65,63 @@ const secData = [
   // },
 ]
 
-export default function WhatWeDo(){
+export default function WhatWeDo() {
   const itemsPerRow = 5;
 
-  return(
-    <div className="whatWeDo_section w-full min-h-screen px-[100px] grid" style={{ gridTemplateColumns: `repeat(${itemsPerRow}, 1fr)` }}>
-      {secData && secData.map((item, index) => {
-        const rowGroup = Math.floor(index / itemsPerRow); // Determine which group of 5 items
-        const isEvenIndex = (index % 2) === 1; // Check if index (0-based) is odd in display (1-based)
-        const imageRowStart = isEvenIndex ? 2 + rowGroup * 3 : 1 + rowGroup * 3;
-        const imageRowEnd = imageRowStart + 2;
-        const contentRowStart = isEvenIndex ? 4 + rowGroup * 3 : 3 + rowGroup * 3;
-        const contentRowEnd = contentRowStart + 1;
-        const colStart = (index % itemsPerRow) + 1;
-        const colEnd = colStart + 1;
+  // Scroll handling for the section
+  const { scrollYProgress } = useScroll({
+    offset: ["start end", "end start"], // Section top visible → section bottom visible
+  });
 
-        return (
-          <>
-            <div
-              className={`single_image row-start-${imageRowStart} row-end-${imageRowEnd} col-start-${colStart} col-end-${colEnd}`}
-            >
-              <Image
-                src={item.img}
-                width={500}
-                height={500}
-                alt={item.title}
-              />
-            </div>
-            <div
-              className={`single_content row-start-${contentRowStart} row-end-${contentRowEnd} col-start-${colStart} col-end-${colEnd}`}
-            >
-              <p className="title">{item.title}</p>
-              {/* <p className="desc">{item.desc}</p> */}
-            </div>
-          </>
-        );
-      })}
-    </div>
-  )
+  // Transform Y for the second element based on scroll
+  const transformY = useTransform(scrollYProgress, [0, 0.2], [-300, 0]); // Starts at -300px and ends at 0px
+
+  return (
+    <>
+      <div className="whatWeDo_section min-h-screen px-[100px] grid grid-cols-[1fr_1fr_1fr_1.5fr_1fr] gap-[15px]">
+        {secData && secData.map((item, index) => {
+          // Check if this is the second element (index === 1)
+          const isSecondImage = index === 1;
+
+          return (
+            <>
+              {/* For the second element, apply Framer Motion */}
+
+              {isSecondImage ? (
+                 <motion.div
+                 className={`single_image single_item_${index + 1}`}
+                    style={{
+                      y: transformY, // Apply scroll-based Y transform
+                    }}
+                  >
+                    <Image
+                      src={item.img}
+                      width={500}
+                      height={500}
+                      alt={item.title}
+                      className="h-full w-full object-cover"
+                    />
+                  </motion.div>
+              ) : (
+                <div className={`single_image single_item_${index + 1}`}>
+                  <Image
+                    src={item.img}
+                    width={500}
+                    height={500}
+                    alt={item.title}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              ) }
+
+              {/* Content section */}
+              <div className={`single_content h-[200px] single_content_${index + 1}`}>
+                <p className="title">{item.title}</p>
+              </div>
+            </>
+          );
+        })}
+      </div>
+    </>
+  );
 }

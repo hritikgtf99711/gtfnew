@@ -11,6 +11,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Steps from "@/components/Home/steps";
 import WhatWeDo from "@/components/Home/whatWeDo/WhatWeDo";
+import EnquireForm from "@/components/Home/EnquireForm/EnquireForm";
+import Footer from "@/components/footer/Footer";
 
 const frames = [
   { img: "/assets/img/loader/slide_1.webp", name: "Project 1" },
@@ -287,7 +289,22 @@ export default function Home() {
         <WhatWeDo />
       </BoxSlides>
 
-      <section className="h-screen"></section>
+      <BoxSlides
+        scaleTransform={scaleTransform}
+        isHidden={isHidden}
+        setIsHidden={setIsHidden}
+        headerRef={headerRef}
+        bannervideoref={bannervideoref}
+        via={false}
+        subHeading={"tell us about your project Idea or just"}
+        heading={"say hello"}
+        onActive={() => setActiveImage(changesImageArr[5])}
+        onFocus={() => setActiveBg(5)} // <-- bgImages[4]
+      >
+        <EnquireForm />
+      </BoxSlides>
+
+      {/* <section className="h-screen"></section> */}
     </>
   );
 }
