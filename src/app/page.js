@@ -36,6 +36,7 @@ export default function Home() {
   const [isImagesVisible, setIsImagesVisible] = useState(false);
   const [isLoaderCardEnd, setIsLoaderCardEnd] = useState(false);
   const [isLoaderCardVisible, setIsLoaderCardVisible] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(true)
   const [activeBg, setActiveBg] = useState(-1);
   const cardRefs = useRef([]);
 
@@ -65,6 +66,7 @@ export default function Home() {
     const timer3 = setTimeout(() => setIsBgStart(true), 300);
     const timer5 = setTimeout(() => setIsLoaderCardEnd(true), 6000);
     const timer6 = setTimeout(() => setIsLoaderVisible(false), 6500);
+    const timer7 = setTimeout(() => setIsTransitioning(false), 6200);
 
     return () => {
       clearTimeout(timer1);
@@ -72,6 +74,7 @@ export default function Home() {
       clearTimeout(timer3);
       clearTimeout(timer5);
       clearTimeout(timer6);
+      clearTimeout(timer7);
     };
   }, []);
 
