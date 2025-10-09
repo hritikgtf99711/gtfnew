@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useTransform, useScroll, useSpring, vh } from "framer-motion";
+import { motion, useTransform, useScroll, useSpring } from "framer-motion";
 import SparkleBackgroundPortal from "./Sparklingbg";
 
 export default function BoxSlides({
@@ -26,52 +26,60 @@ export default function BoxSlides({
   // Scroll handling for section
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"], // section top visible → section bottom visible
+    offset: ["start end", "end start"],
   });
 
   // Scroll handling for heading clip path
   const { scrollYProgress: headingScrollProgress } = useScroll({
     target: sectionRef,
-    offset: ["0.5 1", "1.2 1"], // Adjusted: Start at 30% from top, end at 10% from top
+    offset: ["0.5 1", "1.2 1"],
   });
 
   // Smooth spring for section scroll
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 200, damping: 30 });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 60, damping: 30 });
 
   // Smooth spring for heading clip scroll
-  const smoothHeadingProgress = useSpring(headingScrollProgress, { stiffness: 200, damping: 30 });
+  const smoothHeadingProgress = useSpring(headingScrollProgress, { stiffness: 70, damping: 30 });
 
   const [paddingInput, setPaddingInput] = useState([0, 0.4, 1]);
-  const [paddingOutput, setPaddingOutput] = useState([200, 0, 200]);
+  const [scaleXOutput, setScaleXOutput] = useState([0.8, 1, 0.8]); // Initial guess, will be updated
 
   // Section-level transforms
-  const paddingLeftRight = useTransform(smoothProgress, paddingInput, paddingOutput);
   const paddingTop = useTransform(smoothProgress, [0, 0.3], [0, 150]);
   const scaleTransform = useTransform(smoothProgress, [0.1, 0.2, 0.3, 0.4, 0.7, 1], [0.82, 0.89, 1, 1, 1, 0.85]);
+  const scaleXTransform = useTransform(smoothProgress, paddingInput, scaleXOutput);
 
   // Heading clip path and opacity
   const subHeadingClip = useTransform(
     smoothHeadingProgress,
-    [0, 0.3, 0.7, 1], // Adjusted timing for smoother transition
+    [0, 0.3, 0.7, 1],
     ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]
   );
   const subHeadingOpacity = useTransform(smoothHeadingProgress, [0, 0.1, 0.7, 1], [0, 1, 1, 0]);
-  const subHeadingHeight = useTransform(subHeadingOpacity, [0, 1], [0, 24]); // Assuming subheading font size ~16px + padding/margin
-  const subHeadingMargin = useTransform(smoothHeadingProgress, [0, 1], [0, 100]); // Assuming subheading font size ~16px + padding/margin
-  const subHeadingMarginTop = useTransform(smoothHeadingProgress, [0, 1], [0, 100]); // Assuming subheading font size ~16px + padding/margin
+  const subHeadingHeight = useTransform(subHeadingOpacity, [0, 1], [0, 24]);
+  const subHeadingMargin = useTransform(smoothHeadingProgress, [0, 1], [0, 100]);
+  const subHeadingMarginTop = useTransform(smoothHeadingProgress, [0, 1], [0, 100]);
   const subHeadingY = useTransform(smoothHeadingProgress, [0, 0.2], [40, 0])
 
   const headingClip = useTransform(
     smoothHeadingProgress,
-    [0, 0, 1, 1], // Adjusted timing for smoother transition
+    [0, 0, 1, 1],
     ["inset(0% 0% 100% 0%)", "inset(0% 0% 0% 0%)", "inset(100% 0% 0% 0%)", "inset(100% 0% 0% 0%)"]
   );
 
   const headingOpacity = useTransform(smoothHeadingProgress, [0, 0.1, 0.7, 1], [0, 1, 1, 0]);
-  const headingHeight = useTransform(headingOpacity, [0, 1], [0, 80]); // Assuming heading font size ~64px + padding/margin
+  const headingHeight = useTransform(headingOpacity, [0, 1], [0, 80]);
   const headingMargin = useTransform(smoothHeadingProgress, [0, 1], [0, 100])
 
   const headingY = useTransform(smoothHeadingProgress, [0, 0.2], [100, 0])
+
+  const [vw, setVw] = useState(typeof window !== "undefined" ? window.innerWidth : 1920);
+
+  useEffect(() => {
+    const handleResize = () => setVw(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -80,19 +88,22 @@ export default function BoxSlides({
     return () => clearTimeout(timer);
   }, []);
 
-  // Compute dynamic padding ranges after loading (assuming height stabilizes)
-  useEffect(()=>{
-    if(!isLoading && sectionRef.current){
+  // Compute dynamic padding ranges and scaleX after loading and on resize
+  useEffect(() => {
+    if (!isLoading && sectionRef.current) {
       const VH = window.innerHeight;
       const SH = sectionRef.current.offsetHeight;
-      const p1 = VH / (SH + VH); // Reach 0 when section is fully in view (top at viewport top)
-      const p2 = (SH + VH / 2) / (SH + VH); // Start reversing when bottom reaches 50% of viewport
-      console.log('p1', p1, 'p2',p2);
-      
+      const p1 = VH / (SH + VH);
+      const p2 = (SH + VH / 2) / (SH + VH);
       setPaddingInput([0, p1, p2, 1]);
-      setPaddingOutput([200, 0, 0, 200]);
+
+      // Base padding values in px
+      const basePaddings = [200, 0, 0, 200];
+      // Convert to scaleX: (vw - 2 * padding) / vw, with a min scale to avoid zero/negative
+      const newScaleXOutput = basePaddings.map(p => Math.max(0.1, (vw - 2 * p) / vw));
+      setScaleXOutput(newScaleXOutput);
     }
-  }, [isLoading])
+  }, [isLoading, vw]);
 
   useEffect(() => {
     if (setscaleTransform) setscaleTransform(scaleTransform);
@@ -108,68 +119,55 @@ export default function BoxSlides({
     return () => unsubscribe();
   }, [scrollYProgress, onActive]);
 
-  // Debug scroll progress for heading
-  useEffect(() => {
-    const unsubscribe = smoothHeadingProgress.on("change", (v) => {
-      console.log("smoothHeadingProgress:", v);
-    });
-    return () => unsubscribe();
-  }, [smoothHeadingProgress]);
-
   useEffect(() => {
     const unsub = smoothProgress.on("change", (p) => {
-      // p ~ 0 means the section's "start end" alignment (top of section near bottom of viewport).
-      // On reverse scroll to top, this hits ~0 again before the heading centers.
       if (p <= 0.02) {
         if (resetArmedRef.current) {
-          onResetTop?.();         // tell parent to go back to -1
-          resetArmedRef.current = false; // debounce till we move away again
+          onResetTop?.();
+          resetArmedRef.current = false;
         }
       } else if (p >= 0.06) {
-        // re-arm once we’re meaningfully into the section
         resetArmedRef.current = true;
       }
     });
     return () => unsub();
   }, [smoothProgress, onResetTop]);
 
-  const wasCenteredRef = useRef(false); // debounce flag
+  const wasCenteredRef = useRef(false);
 
   useEffect(() => {
-    const unsub = paddingLeftRight.on("change", (v) => {
-      const isCenteredNow = Math.abs(v) < 1; // tolerance: 1px
+    const unsub = scaleXTransform.on("change", (v) => {
+      const isCenteredNow = v > 0.99; // Close to 1
       if (isCenteredNow && !wasCenteredRef.current) {
         wasCenteredRef.current = true;
-        onFocus?.(); // tell parent "this slide is centered"
+        onFocus?.();
       }
       if (!isCenteredNow && wasCenteredRef.current) {
-        // reset when it leaves center so it can fire again on re-entry
         wasCenteredRef.current = false;
       }
     });
     return () => unsub();
-  }, [paddingLeftRight, onFocus]);
+  }, [scaleXTransform, onFocus]);
 
   return (
-      <motion.div
-        ref={sectionRef}
-        className={`${isFirst && "mt-[-290px]"} mb-[60vh] relative z-[9] animated_section min-h-screen`} // Added min-h-screen
-        style={{
-          scale: scaleTransform,
-          willChange: "transform",
-          paddingLeft: paddingLeftRight,
-          paddingRight: paddingLeftRight,
-        }}
-      >
+    <motion.div
+      ref={sectionRef}
+      className={`${isFirst && "mt-[-200px]"} mb-[60vh] relative z-[9] animated_section min-h-[calc(100vh+200px)]`}
+      style={{
+        scaleX: scaleXTransform,
+        willChange: "transform",
+      }}
+    >
       <motion.div
         ref={innerSecRef}
-        className={`relative bg-white z-9  items-center`}
-        // style={{
-        //   willChange: "transform",
-        //   paddingTop,
-        // }}
+        className={`relative bg-white z-9 items-center h-full`}
+        style={{
+          // willChange: "transform",
+          // scaleX: scaleXTransform,
+          // paddingTop, // Uncomment if needed, but consider replacing with scaleY for optimization
+        }}
       >
-        {isClient && <SparkleBackgroundPortal/>}
+        {isClient && <SparkleBackgroundPortal />}
         
         <div className={`relative max-w-full box_padding`}>
           <div className="sticky top-0">
@@ -182,8 +180,8 @@ export default function BoxSlides({
                       y: subHeadingY,
                       opacity: subHeadingOpacity,
                       height: subHeadingHeight,
-                      marginBottom:subHeadingMargin,
-                      marginTop:subHeadingMarginTop,
+                      marginBottom: subHeadingMargin,
+                      marginTop: subHeadingMarginTop,
                       overflow: "hidden",
                       willChange: "clip-path, transform, opacity, height, marginBottom",
                     }}
@@ -197,7 +195,7 @@ export default function BoxSlides({
                       opacity: headingOpacity,
                       height: headingHeight,
                       overflow: "hidden",
-                      marginBottom:headingMargin,
+                      marginBottom: headingMargin,
                       willChange: "clip-path, transform, opacity, height, marginBottom",
                     }}
                     className="text-[64px] uppercase tracking-[2px]"

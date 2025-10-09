@@ -59,3 +59,8 @@
 .whatWeDo_section .single_content_7{
   grid-area: 7 / 2 / 8 / 3;
 }
+
+
+.single_image:hover .hoverContent{
+  scale: 1;
+}

@@ -8,6 +8,7 @@ import {
 } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { IoMdArrowDropright, IoMdArrowDropleft } from "react-icons/io";
+import { IoMdArrowDropdown } from "react-icons/io";
 import Header from "../header/Index";
 
 const videoSources = [
@@ -156,7 +157,9 @@ export default function Banner({ sectionRef }) {
   const [progress, setProgress] = useState(0);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isCursorInside, setIsCursorInside] = useState(false); // New state to track if cursor is inside Banner
   const videoRef = useRef(null);
+  const bannerRef = useRef(null); // Ref for the Banner container
   const progressIntervalRef = useRef(null);
 
   const bgVariants = {
@@ -184,7 +187,7 @@ export default function Banner({ sectionRef }) {
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [isCursorInside]);
 
   // Video playback and progress logic
   useEffect(() => {
@@ -247,33 +250,43 @@ export default function Banner({ sectionRef }) {
     <section
       className="h-[100vh] relative pb-[16vw] h-[100svh]  cursor-pointer"
       ref={sectionRef}
+      onMouseEnter={() => setIsCursorInside(true)} // Show button when cursor enters
+      onMouseLeave={() => {
+        setIsCursorInside(false); // Hide button when cursor leaves
+        setIsHovering(false); // Reset hover state
+      }}
     >
-      <motion.div
-        className="fixed z-50"
-        style={{
-          x: cursorPosition.x - 20, // Adjust for cursor size
-          y: cursorPosition.y - 20,
-        }}
-        animate={{
-          scale: isHovering ? 1.5 : 1,
-          opacity: isHovering ? 0 : 1,
-        }}
-        transition={{ 
-          duration: 100,
-          ease:'easeInOut',
-          delay:0.3
-        }}
+      {/* Conditionally render the "Read More" button */}
+      {isCursorInside && (
+        <motion.div
+          className="fixed z-50"
+          style={{
+            x: cursorPosition.x - 20, // Adjust for cursor size
+            y: cursorPosition.y - 20,
+          }}
+          animate={{
+            scale: isHovering ? 1.5 : 1,
+            opacity: isHovering ? 0 : 1,
+          }}
+          transition={{
+            duration: 0.1,
+            ease: "easeInOut",
+            delay: 0.3,
+          }}
       >
-        <div className="py-[8px] border-[1px] border-[#fff] cursor-pointer group px-[15px] rounded-[0] flex items-center justify-center">
+        <div className="py-[8px] border-[1px] border-[#fff] cursor-pointer group px-[15px] rounded-[0] flex items-center justify-center" onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}>
           <span className=" text-[14px] uppercase font-semibold  group-hover:translate-y-[-4px] text-white tracking-[2px]">
             Read More
           </span>
         </div>
       </motion.div>
 
-      <div className="HeroCarousel_heroCarousel__BYein HeroCarousel_isInView__UEmOO  cursor-pointer hero_carousel">
-        <div className="HeroCarousel_carouselWrapper__Mis0X  cursor-pointer">
-          <div className="HeroCarousel_bgCarousel__sRuW8  cursor-pointer">
+      )}
+
+      <div className="HeroCarousel_heroCarousel__BYein HeroCarousel_isInView__UEmOO  cursor-pointer hero_carousel z-[99]">
+        <div className="HeroCarousel_carouselWrapper__Mis0X  cursor-pointer z-[9]">
+          <div className="HeroCarousel_bgCarousel__sRuW8  cursor-pointer z-[99]">
             <div className="HeroCarousel_videos__jjh4t">
               <AnimatePresence initial={false} mode="popLayout">
                 {[
@@ -322,7 +335,7 @@ export default function Banner({ sectionRef }) {
             </div>
           </div>
         </div>
-        <div className="absolute  flex bottom-[12vw] w-[80%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-between items-end right-0 z-[1] text-white">
+        <div className="absolute  flex bottom-[12vw] w-[85%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-between items-end right-0 z-[9] text-white">
           <div className="video_content_container items-center flex gap-[50px] basis-[45%]">
             <div className="relative basis-[154px] shrink-0 grow-0 h-[190px] overflow-hidden">
               <AnimatePresence initial={false} mode="wait">
@@ -419,8 +432,9 @@ export default function Banner({ sectionRef }) {
             </div>
           </div>
         </div>
+        <h2 className="absolute text-[16px] tracking-[1.5px] uppercase bottom-[220px] max-w-[85%] w-full left-1/2 -translate-x-1/2 z-[9] text-white flex items-center">All Chapters <IoMdArrowDropdown /></h2>
       </div>
-      <div className="absolute top-0 left-0 bg-[#000] opacity-[.5] h-[100%] w-[100%]"></div>
+      {/* <div className="fixed top-0 left-0 bg-[#000] opacity-[.5] h-[100%] w-[100%]"></div> */}
     </section>
   );
 }

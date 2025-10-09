@@ -2278,3 +2278,24 @@ header.hide{transition: transform 1.5s var(--ease-expo-out);    animation: Navig
   height:auto;
   transition:0.3s all ease-in-out;
 } */
+
+.animate_scale_opacity{
+  animation:scaleOpacity 2s ease-in-out infinite;
+}
+
+@keyframes scaleOpacity {
+  0%{
+    scale: 1;
+    opacity:1;
+  }
+
+  40%{
+    scale: 1;
+    opacity:1;
+  }
+
+  100%{
+    scale: 0;
+    opacity:0;
+  }
+}

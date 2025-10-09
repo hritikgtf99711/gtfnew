@@ -78,231 +78,257 @@ export default function Home() {
   return (
     <>
       {isLoaderVisible && (
-        <div className="z-999 w-full fixed top-0 left-0">
-          <motion.div
-            className="fixed w-full"
-            initial={{ top: "300px", opacity: 0 }}
-            animate={{
-              top: isTextStart ? "100px" : "300px",
-              opacity: isTextEnd ? 0 : 1,
-              transition: { duration: 1.5, ease: "easeInOut" },
-            }}
-          >
-            <h3 className="text-[16px] tracking-[1px] text-center">
-              GTF Technologies
-            </h3>
-          </motion.div>
+        <>
+          <div className="z-99 w-full fixed top-0 left-0">
+            <motion.div
+              className="fixed w-full"
+              initial={{ top: "300px", opacity: 0 }}
+              animate={{
+                top: isTextStart ? "100px" : "300px",
+                opacity: isTextEnd ? 0 : 1,
+                transition: { duration: 1.5, ease: "easeInOut" },
+              }}
+            >
+              <h3 className="text-[16px] tracking-[1px] text-center">
+                GTF Technologies
+              </h3>
+            </motion.div>
 
-          <motion.div
-            className={`fixed w-full ${
-              isLoaderCardVisible ? "hidden" : "block"
-            }`}
-            initial={{ top: "20vh" }}
-            animate={{
-              top: isLoaderCardEnd ? "40vh" : "20vh",
-              transition: { duration: 0.5, ease: "easeInOut" },
-            }}
-          >
-            <div className="container mx-auto flex justify-center">
-              <div className="flex gap-4 items-start font-serif text-black w-full">
-                {frames.map((frame, i) => (
-                  <div
-                    key={i}
-                    ref={(el) => (cardRefs.current[i] = el)}
-                    className={`img_after relative overflow-hidden cursor-pointer group basis-[${
-                      i === 2 ? "80%" : "50%"
-                    }] ${i !== 2 && "hover:basis-[60%]"}`}
-                  >
-                    {i === 2 && (
-                      <div className="overflow-hidden relative h-[500px]">
-                        <AnimatePresence>
-                          {isImagesVisible &&
-                            frames.map((image, index) => (
-                              <motion.div
-                                key={index}
-                                className="absolute bottom-0 left-0 right-0"
-                                initial={{
-                                  clipPath:
-                                    "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
-                                  scale: 1.2,
-                                }}
-                                animate={{
-                                  clipPath:
-                                    "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-                                  scale: 1,
-                                }}
-                                transition={{
-                                  duration: 0.6,
-                                  delay: index * 0.4,
-                                  ease: "easeInOut",
-                                }}
-                              >
-                                <motion.img
-                                  src={image.img}
-                                  alt={image.name}
-                                  className="h-full w-full object-cover"
-                                />
-                              </motion.div>
-                            ))}
-                        </AnimatePresence>
-                        <motion.div
-                          className="absolute bg-[#ba9b53] h-full w-full z-[-1]"
-                          initial={{ scale: 0.3 }}
-                          animate={{
-                            scale: isBgStart ? 1 : 0.3,
-                            transition: { duration: 1.5, ease: "easeInOut" },
-                          }}
-                          onAnimationComplete={() => {
-                            setTimeout(() => {
-                              setIsImagesVisible(true);
-                            }, 200);
-                          }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                ))}
+            <motion.div
+              className={`fixed w-full ${
+                isLoaderCardVisible ? "hidden" : "block"
+              }`}
+              initial={{ top: "20vh" }}
+              animate={{
+                top: isLoaderCardEnd ? "40vh" : "20vh",
+                transition: { duration: 0.5, ease: "easeInOut" },
+              }}
+            >
+              <div className="container mx-auto flex justify-center">
+                <div className="flex gap-4 items-start font-serif text-black w-full">
+                  {frames.map((frame, i) => (
+                    <div
+                      key={i}
+                      ref={(el) => (cardRefs.current[i] = el)}
+                      className={`img_after relative overflow-hidden cursor-pointer group basis-[${
+                        i === 2 ? "80%" : "50%"
+                      }] ${i !== 2 && "hover:basis-[60%]"}`}
+                    >
+                      {i === 2 && (
+                        <div className="overflow-hidden relative h-[500px]">
+                          <AnimatePresence>
+                            {isImagesVisible &&
+                              frames.map((image, index) => (
+                                <motion.div
+                                  key={index}
+                                  className="absolute bottom-0 left-0 right-0"
+                                  initial={{
+                                    clipPath:
+                                      "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
+                                    scale: 1.2,
+                                  }}
+                                  animate={{
+                                    clipPath:
+                                      "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                                    scale: 1,
+                                  }}
+                                  transition={{
+                                    duration: 0.6,
+                                    delay: index * 0.4,
+                                    ease: "easeInOut",
+                                  }}
+                                >
+                                  <motion.img
+                                    src={image.img}
+                                    alt={image.name}
+                                    className="h-full w-full object-cover"
+                                  />
+                                </motion.div>
+                              ))}
+                          </AnimatePresence>
+                          <motion.div
+                            className="absolute bg-[#ba9b53] h-full w-full z-[-1]"
+                            initial={{ scale: 0.3 }}
+                            animate={{
+                              scale: isBgStart ? 1 : 0.3,
+                              transition: { duration: 1.5, ease: "easeInOut" },
+                            }}
+                            onAnimationComplete={() => {
+                              setTimeout(() => {
+                                setIsImagesVisible(true);
+                              }, 200);
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          </motion.div>
-        </div>
+            </motion.div>
+          </div>  
+          <motion.div
+            className="fixed top-0 left-0 h-screen w-screen bg-white z-9"
+            initial={{
+              top:0,
+              left: 0,
+              width: "100%",
+              height: "100vh",
+              position: "fixed",
+            }}
+            // calc(-100vh + 290px)
+            animate={{
+              top: isTransitioning ? "0" : "20vh",
+              scale: isTransitioning ? 0.85 : 1,
+              transition: { duration: 1, ease: "easeInOut" },
+            }}
+          />
+        </>
       )}
-
-      <Header isHidden={isHidden} setIsHidden={setIsHidden} ref={headerRef} />
       <Banner bannervideoref={bannervideoref} />
 
-      <div className="fixed inset-0 z-[-1]">
-        {activeImage && (
-          <img
-            src={activeImage}
-            alt="Background"
-            className="w-full h-full object-cover transition-all duration-700"
+      {!isLoaderVisible && (
+        <>
+          <Header
+            isHidden={isHidden}
+            setIsHidden={setIsHidden}
+            ref={headerRef}
           />
-        )}
-      </div>
 
-      <div className="fixed inset-0 z-1">
-        {bgImages.map((src, i) => (
-          <motion.img
-            key={i}
-            src={src}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: activeBg === i ? 1 : 0 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            // optional perf hint:
-            style={{ willChange: "opacity" }}
-          />
-        ))}
-      </div>
+          <div className="fixed inset-0 z-[-1]">
+            {activeImage && (
+              <img
+                src={activeImage}
+                alt="Background"
+                className="w-full h-full object-cover transition-all duration-700"
+              />
+            )}
+          </div>
 
-      <BoxSlides
-        scaleTransform={scaleTransform}
-        setscaleTransform={setscaleTransform}
-        isHidden={isHidden}
-        setIsHidden={setIsHidden}
-        headerRef={headerRef}
-        bannervideoref={bannervideoref}
-        via={true}
-        onActive={() => setActiveImage(changesImageArr[0])}
-        subHeading={"Our Projects"}
-        heading={"Projects"}
-        isFirst={true}
-        onFocus={() => setActiveBg(0)} // <-- tell parent to show bgImages[0]
-        onResetTop={() => setActiveBg(-1)}
-      >
-        <Portfolio scaleTransform={scaleTransform} isHidden={isHidden} />
-      </BoxSlides>
+          <div className="fixed inset-0 z-[9]">
+            {bgImages.map((src, i) => (
+              <motion.img
+                key={i}
+                src={src}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: activeBg === i ? 1 : 0 }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+                // optional perf hint:
+                style={{ willChange: "opacity" }}
+              />
+            ))}
+          </div>
 
-      <BoxSlides
-        scaleTransform={scaleTransform}
-        isHidden={isHidden}
-        setIsHidden={setIsHidden}
-        headerRef={headerRef}
-        bannervideoref={bannervideoref}
-        via={false}
-        onActive={() => setActiveImage(changesImageArr[1])}
-        onFocus={() => setActiveBg(1)} // <-- bgImages[1]
-      >
-        <Expertise />
-      </BoxSlides>
+          <BoxSlides
+            scaleTransform={scaleTransform}
+            setscaleTransform={setscaleTransform}
+            isHidden={isHidden}
+            setIsHidden={setIsHidden}
+            headerRef={headerRef}
+            bannervideoref={bannervideoref}
+            via={true}
+            onActive={() => setActiveImage(changesImageArr[0])}
+            subHeading={"Our Projects"}
+            heading={"Projects"}
+            isFirst={true}
+            onFocus={() => setActiveBg(0)} // <-- tell parent to show bgImages[0]
+            onResetTop={() => setActiveBg(-1)}
+          >
+            <Portfolio scaleTransform={scaleTransform} isHidden={isHidden} />
+          </BoxSlides>
 
-      <BoxSlides
-        scaleTransform={scaleTransform}
-        isHidden={isHidden}
-        setIsHidden={setIsHidden}
-        headerRef={headerRef}
-        bannervideoref={bannervideoref}
-        via={false}
-        subHeading={"Who We Are"}
-        heading={"Who We Are"}
-        onActive={() => setActiveImage(changesImageArr[2])}
-        onFocus={() => setActiveBg(2)} // <-- bgImages[2]
-      >
-        <WhoWeAre />
-      </BoxSlides>
+          <BoxSlides
+            scaleTransform={scaleTransform}
+            isHidden={isHidden}
+            setIsHidden={setIsHidden}
+            headerRef={headerRef}
+            bannervideoref={bannervideoref}
+            via={false}
+            onActive={() => setActiveImage(changesImageArr[1])}
+            onFocus={() => setActiveBg(1)} // <-- bgImages[1]
+          >
+            <Expertise />
+          </BoxSlides>
 
-      <BoxSlides
-        scaleTransform={scaleTransform}
-        isHidden={isHidden}
-        setIsHidden={setIsHidden}
-        headerRef={headerRef}
-        bannervideoref={bannervideoref}
-        via={false}
-        subHeading={"Our Clients"}
-        heading={"Amazing brands, Amazed Clients."}
-        onActive={() => setActiveImage(changesImageArr[3])}
-        isClient={true}
-        onFocus={() => setActiveBg(3)} // <-- bgImages[3]
-      >
-        <Clients />
-      </BoxSlides>
+          <BoxSlides
+            scaleTransform={scaleTransform}
+            isHidden={isHidden}
+            setIsHidden={setIsHidden}
+            headerRef={headerRef}
+            bannervideoref={bannervideoref}
+            via={false}
+            // subHeading={"Who We Are"}
+            // heading={"Who We Are"}
+            onActive={() => setActiveImage(changesImageArr[2])}
+            onFocus={() => setActiveBg(2)} // <-- bgImages[2]
+          >
+            <WhoWeAre />
+          </BoxSlides>
 
-      <BoxSlides
-        scaleTransform={scaleTransform}
-        isHidden={isHidden}
-        setIsHidden={setIsHidden}
-        headerRef={headerRef}
-        bannervideoref={bannervideoref}
-        via={false}
-        // subHeading={"Company Steps"}
-        // heading={"Amazing brands"}
-        onActive={() => setActiveImage(changesImageArr[4])}
-        onFocus={() => setActiveBg(4)} // <-- bgImages[4]
-      >
-        <Steps />
-      </BoxSlides>
+          <BoxSlides
+            scaleTransform={scaleTransform}
+            isHidden={isHidden}
+            setIsHidden={setIsHidden}
+            headerRef={headerRef}
+            bannervideoref={bannervideoref}
+            via={false}
+            subHeading={"Our Clients"}
+            heading={"Amazing brands, Amazed Clients."}
+            onActive={() => setActiveImage(changesImageArr[3])}
+            isClient={true}
+            onFocus={() => setActiveBg(3)} // <-- bgImages[3]
+          >
+            <Clients />
+          </BoxSlides>
 
-      <BoxSlides
-        scaleTransform={scaleTransform}
-        isHidden={isHidden}
-        setIsHidden={setIsHidden}
-        headerRef={headerRef}
-        bannervideoref={bannervideoref}
-        via={false}
-        subHeading={"What We Do"}
-        heading={"What We Do"}
-        onActive={() => setActiveImage(changesImageArr[5])}
-        onFocus={() => setActiveBg(5)} // <-- bgImages[4]
-      >
-        <WhatWeDo />
-      </BoxSlides>
+          <BoxSlides
+            scaleTransform={scaleTransform}
+            isHidden={isHidden}
+            setIsHidden={setIsHidden}
+            headerRef={headerRef}
+            bannervideoref={bannervideoref}
+            via={false}
+            // subHeading={"Company Steps"}
+            // heading={"Amazing brands"}
+            onActive={() => setActiveImage(changesImageArr[4])}
+            onFocus={() => setActiveBg(4)} // <-- bgImages[4]
+          >
+            <Steps />
+          </BoxSlides>
 
-      <BoxSlides
-        scaleTransform={scaleTransform}
-        isHidden={isHidden}
-        setIsHidden={setIsHidden}
-        headerRef={headerRef}
-        bannervideoref={bannervideoref}
-        via={false}
-        subHeading={"tell us about your project Idea or just"}
-        heading={"say hello"}
-        onActive={() => setActiveImage(changesImageArr[5])}
-        onFocus={() => setActiveBg(5)} // <-- bgImages[4]
-      >
-        <EnquireForm />
-      </BoxSlides>
+          <BoxSlides
+            scaleTransform={scaleTransform}
+            isHidden={isHidden}
+            setIsHidden={setIsHidden}
+            headerRef={headerRef}
+            bannervideoref={bannervideoref}
+            via={false}
+            subHeading={"What We Do"}
+            heading={"What We Do"}
+            onActive={() => setActiveImage(changesImageArr[5])}
+            onFocus={() => setActiveBg(5)} // <-- bgImages[4]
+          >
+            <WhatWeDo />
+          </BoxSlides>
+
+          <BoxSlides
+            scaleTransform={scaleTransform}
+            isHidden={isHidden}
+            setIsHidden={setIsHidden}
+            headerRef={headerRef}
+            bannervideoref={bannervideoref}
+            via={false}
+            subHeading={"tell us about your project Idea or just"}
+            heading={"say hello"}
+            onActive={() => setActiveImage(changesImageArr[6])}
+            onFocus={() => setActiveBg(6)} // <-- bgImages[4]
+          >
+            <EnquireForm />
+          </BoxSlides>
+        </>
+      )}
 
       {/* <section className="h-screen"></section> */}
     </>

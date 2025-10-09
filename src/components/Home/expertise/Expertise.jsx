@@ -43,11 +43,11 @@ const Expertise = () => {
 
   return (
     <section
-      className="  p-[80px] h-[100%] relative"
+      className="min-h-[calc(100vh+200px)] flex flex-col justify-center p-[80px] h-[100%] relative"
       id="experties_sec"
     >
       <SparkleBackgroundPortal/>
-      <div className="flex justify-between flex-wrap">
+      <div className="flex justify-between flex-wrap mb-[100px]">
         <h2 className="relative uppercase 2xl:leading-[70px] xl:leading-[56px] leading-[35px] md:basis-[50%] max-h-fit">
           <span className=" block font-medium text-[30px] xl:text-[48px] md:text-[50px] 2xl:text-[65px]">
             innovation market
