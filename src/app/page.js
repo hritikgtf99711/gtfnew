@@ -3,7 +3,7 @@ import Banner from "@/components/Home/Banner";
 import Portfolio from "../components/Home/Portfolio";
 import Expertise from "@/components/Home/expertise/Expertise";
 import BoxSlides from "@/components/common/BoxSlides";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Header from "@/components/header/Index";
 import Clients from "./Client";
 import WhoWeAre from "@/components/common/WhowWeAre";
@@ -36,7 +36,7 @@ export default function Home() {
   const [isImagesVisible, setIsImagesVisible] = useState(false);
   const [isLoaderCardEnd, setIsLoaderCardEnd] = useState(false);
   const [isLoaderCardVisible, setIsLoaderCardVisible] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(true)
+  const [isTransitioning, setIsTransitioning] = useState(true);
   const [activeBg, setActiveBg] = useState(-1);
   const cardRefs = useRef([]);
 
@@ -65,7 +65,7 @@ export default function Home() {
     const timer2 = setTimeout(() => setIsTextEnd(true), 2000);
     const timer3 = setTimeout(() => setIsBgStart(true), 300);
     const timer5 = setTimeout(() => setIsLoaderCardEnd(true), 6000);
-    const timer6 = setTimeout(() => setIsLoaderVisible(false), 6500);
+    const timer6 = setTimeout(() => setIsLoaderVisible(false), 7200);
     const timer7 = setTimeout(() => setIsTransitioning(false), 6200);
 
     return () => {
@@ -78,11 +78,19 @@ export default function Home() {
     };
   }, []);
 
+  useLayoutEffect(()=>{
+    if (isLoaderVisible) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+  }, [isLoaderVisible])
+
   return (
     <>
       {isLoaderVisible && (
         <>
-          <div className="z-99 w-full fixed top-0 left-0">
+          <div className="z-100 w-full fixed top-0 left-0">
             <motion.div
               className="fixed w-full"
               initial={{ top: "300px", opacity: 0 }}
@@ -169,11 +177,11 @@ export default function Home() {
                 </div>
               </div>
             </motion.div>
-          </div>  
+          </div>
           <motion.div
-            className="fixed top-0 left-0 h-screen w-screen bg-white z-9"
+            className="fixed top-0 left-0 h-screen w-screen bg-white z-99"
             initial={{
-              top:0,
+              top: 0,
               left: 0,
               width: "100%",
               height: "100vh",
@@ -181,9 +189,9 @@ export default function Home() {
             }}
             // calc(-100vh + 290px)
             animate={{
-              top: isTransitioning ? "0" : "20vh",
-              scale: isTransitioning ? 0.85 : 1,
-              transition: { duration: 1, ease: "easeInOut" },
+              top: isTransitioning ? "0" : "calc(100vh - 290px)",
+              scale: isTransitioning ? 1 : 0.85,
+              transition: { duration: 0.8, ease: "easeInOut" },
             }}
           />
         </>
