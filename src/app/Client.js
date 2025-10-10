@@ -1,7 +1,6 @@
 "use client";
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { motion, useAnimation } from "framer-motion";
-import SparkleBackgroundPortal from "@/components/common/Sparklingbg";
 import { debounce } from "lodash"; // Requires lodash for debouncing
 import Image from "next/image";
 

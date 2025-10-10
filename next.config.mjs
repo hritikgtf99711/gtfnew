@@ -1,7 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    export:'output',
-    ignoreBuildErrors: true,
+    output: 'export',
+    eslint:{
+        ignoreDuringBuilds:true
+    },
+    images: {
+        unoptimized: true,
+    },
+    // ignoreBuildErrors: true,
 };
 
 export default nextConfig;

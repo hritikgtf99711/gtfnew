@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useTransform, useScroll, useSpring } from "framer-motion";
-import SparkleBackgroundPortal from "./Sparklingbg";
 
 export default function BoxSlides({
   children,
@@ -167,8 +166,6 @@ export default function BoxSlides({
           // paddingTop, // Uncomment if needed, but consider replacing with scaleY for optimization
         }}
       >
-        {isClient && <SparkleBackgroundPortal />}
-        
         <div className={`relative max-w-full box_padding`}>
           <div className="sticky top-0">
             <div className="relative w-full flex flex-col justify-center items-center">
@@ -206,11 +203,11 @@ export default function BoxSlides({
               )}
               <motion.div
                 className="relative w-full h-full z-10"
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: isLoading ? 0 : 1,
-                  transition: { duration: 0.5, ease: "easeInOut" },
-                }}
+                // initial={{ opacity: 0 }}
+                // animate={{
+                //   opacity: isLoading ? 0 : 1,
+                //   transition: { duration: 0.5, ease: "easeInOut" },
+                // }}
               >
                 {children}
               </motion.div>

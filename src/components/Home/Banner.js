@@ -248,7 +248,7 @@ export default function Banner({ sectionRef }) {
 
   return (
     <section
-      className="h-[100vh] relative pb-[16vw] h-[100svh]  cursor-pointer"
+      className="banner_section h-[100vh] relative pb-[16vw] h-[100svh]  cursor-pointer"
       ref={sectionRef}
       onMouseEnter={() => setIsCursorInside(true)} // Show button when cursor enters
       onMouseLeave={() => {

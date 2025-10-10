@@ -1,4 +1,3 @@
-import Image from "next/image";
 
 const WhoWeAre = () => {
   return (
@@ -11,7 +10,7 @@ const WhoWeAre = () => {
         </div>
 
         <div className="flex justify-end col-span-1 right_col">
-          <Image
+          <img
           alt="who we are"
           height={1000}
           width={750}

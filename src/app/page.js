@@ -7,12 +7,13 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Header from "@/components/header/Index";
 import Clients from "./Client";
 import WhoWeAre from "@/components/common/WhowWeAre";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll } from "framer-motion";
 import Image from "next/image";
 import Steps from "@/components/Home/steps";
 import WhatWeDo from "@/components/Home/whatWeDo/WhatWeDo";
 import EnquireForm from "@/components/Home/EnquireForm/EnquireForm";
 import Footer from "@/components/footer/Footer";
+import {ThreeLogo} from "@/components/Home/logo/ThreeLogo";
 
 const frames = [
   { img: "/assets/img/loader/slide_1.webp", name: "Project 1" },
@@ -24,6 +25,7 @@ const frames = [
 
 export default function Home() {
   const bannervideoref = useRef();
+  const bannerRef = useRef();
   const headerRef = useRef();
   const [scaleTransform, setscaleTransform] = useState(0);
   const [isHidden, setIsHidden] = useState(false);
@@ -59,37 +61,53 @@ export default function Home() {
     "/assets/home/bg/bg_img4.webp",
   ];
 
+  // Scroll handling for Banner
+  const { scrollYProgress: bannerScrollProgress } = useScroll({
+    target: bannerRef,
+    offset: ["start start", "end start"],
+  });
+
+  // Reset activeBg when Banner is in view
+  useEffect(() => {
+    const unsubscribe = bannerScrollProgress.on("change", (progress) => {
+      if (progress < 0.7) {
+        setActiveBg(-1); // Reset background when Banner is in view
+      }
+    });
+    return () => unsubscribe();
+  }, [bannerScrollProgress]);
+
   // Loader sequence
   useEffect(() => {
     const timer1 = setTimeout(() => setIsTextStart(true), 0);
     const timer2 = setTimeout(() => setIsTextEnd(true), 2000);
     const timer3 = setTimeout(() => setIsBgStart(true), 300);
     const timer5 = setTimeout(() => setIsLoaderCardEnd(true), 6000);
-    const timer6 = setTimeout(() => setIsLoaderVisible(false), 7200);
-    const timer7 = setTimeout(() => setIsTransitioning(false), 6200);
+    // const timer6 = setTimeout(() => setIsLoaderVisible(false), 7200);
+    // const timer7 = setTimeout(() => setIsTransitioning(false), 6200);
 
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
       clearTimeout(timer3);
       clearTimeout(timer5);
-      clearTimeout(timer6);
-      clearTimeout(timer7);
+      // clearTimeout(timer6);
+      // clearTimeout(timer7);
     };
   }, []);
 
-  useLayoutEffect(()=>{
+  useLayoutEffect(() => {
     if (isLoaderVisible) {
       document.body.classList.add("overflow-hidden");
     } else {
       document.body.classList.remove("overflow-hidden");
     }
-  }, [isLoaderVisible])
+  }, [isLoaderVisible]);
 
   return (
     <>
-      {isLoaderVisible && (
-        <>
+      {/* {isLoaderVisible && ( */}
+        {/* <>
           <div className="z-100 w-full fixed top-0 left-0">
             <motion.div
               className="fixed w-full"
@@ -106,13 +124,16 @@ export default function Home() {
             </motion.div>
 
             <motion.div
-              className={`fixed w-full ${
-                isLoaderCardVisible ? "hidden" : "block"
-              }`}
+              className={`fixed w-full `}
               initial={{ top: "20vh" }}
               animate={{
-                top: isLoaderCardEnd ? "40vh" : "20vh",
+                top: isLoaderCardEnd ? "calc(100vh - 120px)" : "20vh",
                 transition: { duration: 0.5, ease: "easeInOut" },
+              }}
+              onAnimationComplete={() => {
+                setTimeout(() => {
+                  setIsTransitioning(false);
+                }, 500);
               }}
             >
               <div className="container mx-auto flex justify-center">
@@ -178,6 +199,7 @@ export default function Home() {
               </div>
             </motion.div>
           </div>
+
           <motion.div
             className="fixed top-0 left-0 h-screen w-screen bg-white z-99"
             initial={{
@@ -189,16 +211,22 @@ export default function Home() {
             }}
             // calc(-100vh + 290px)
             animate={{
-              top: isTransitioning ? "0" : "calc(100vh - 290px)",
+              top: isTransitioning ? "0" : "calc(100vh - 280px)",
               scale: isTransitioning ? 1 : 0.85,
               transition: { duration: 0.8, ease: "easeInOut" },
             }}
+            onAnimationComplete={() => {
+              setTimeout(() => {
+                setIsLoaderVisible(false);
+              }, 500);
+            }}
           />
-        </>
-      )}
-      <Banner bannervideoref={bannervideoref} />
+        </> */}
+      {/*)}*/}
 
-      {!isLoaderVisible && (
+      <Banner sectionRef={bannerRef} bannervideoref={bannervideoref} />
+
+      {/* {!isLoaderVisible && ( */}
         <>
           <Header
             isHidden={isHidden}
@@ -225,7 +253,7 @@ export default function Home() {
                 className="absolute inset-0 w-full h-full object-cover"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: activeBg === i ? 1 : 0 }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
                 // optional perf hint:
                 style={{ willChange: "opacity" }}
               />
@@ -248,6 +276,24 @@ export default function Home() {
             onResetTop={() => setActiveBg(-1)}
           >
             <Portfolio scaleTransform={scaleTransform} isHidden={isHidden} />
+          </BoxSlides>
+
+          <BoxSlides
+            scaleTransform={scaleTransform}
+            setscaleTransform={setscaleTransform}
+            isHidden={isHidden}
+            setIsHidden={setIsHidden}
+            headerRef={headerRef}
+            bannervideoref={bannervideoref}
+            via={true}
+            onActive={() => setActiveImage(changesImageArr[0])}
+            subHeading={"Our Projects"}
+            heading={"Projects"}
+            isFirst={true}
+            onFocus={() => setActiveBg(0)} // <-- tell parent to show bgImages[0]
+            onResetTop={() => setActiveBg(-1)}
+          >
+            <ThreeLogo />
           </BoxSlides>
 
           <BoxSlides
@@ -339,7 +385,7 @@ export default function Home() {
             <EnquireForm />
           </BoxSlides>
         </>
-      )}
+      {/* )}*/}
 
       {/* <section className="h-screen"></section> */}
     </>
