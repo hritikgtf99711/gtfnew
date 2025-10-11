@@ -31,14 +31,20 @@ export default function BoxSlides({
   // Scroll handling for heading clip path
   const { scrollYProgress: headingScrollProgress } = useScroll({
     target: sectionRef,
-    offset: ["0.5 1", "1.2 1"],
+    offset: ["0.2 1", "0.3 0"],
+  });
+
+  const { scrollYProgress: headingClipProgress } = useScroll({
+    target: sectionRef,
+    offset: ["0.3 1", "1 1"],
   });
 
   // Smooth spring for section scroll
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 60, damping: 30 });
 
   // Smooth spring for heading clip scroll
-  const smoothHeadingProgress = useSpring(headingScrollProgress, { stiffness: 70, damping: 30 });
+  const smoothHeadingProgress = useSpring(headingScrollProgress, { stiffness: 200, damping: 50 });
+  const smoothHeadingClipProgress = useSpring(headingClipProgress, { stiffness: 200, damping: 50 });
 
   const [paddingInput, setPaddingInput] = useState([0, 0.4, 1]);
   const [scaleXOutput, setScaleXOutput] = useState([0.8, 1, 0.8]); // Initial guess, will be updated
@@ -50,9 +56,9 @@ export default function BoxSlides({
 
   // Heading clip path and opacity
   const subHeadingClip = useTransform(
-    smoothHeadingProgress,
-    [0, 0.3, 0.7, 1],
-    ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]
+    smoothHeadingClipProgress,
+    [0, 0.1, 0.3, 1],
+    ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)"]
   );
   const subHeadingOpacity = useTransform(smoothHeadingProgress, [0, 0.1, 0.7, 1], [0, 1, 1, 0]);
   const subHeadingHeight = useTransform(subHeadingOpacity, [0, 1], [0, 24]);
@@ -61,9 +67,9 @@ export default function BoxSlides({
   const subHeadingY = useTransform(smoothHeadingProgress, [0, 0.2], [40, 0])
 
   const headingClip = useTransform(
-    smoothHeadingProgress,
-    [0, 0, 1, 1],
-    ["inset(0% 0% 100% 0%)", "inset(0% 0% 0% 0%)", "inset(100% 0% 0% 0%)", "inset(100% 0% 0% 0%)"]
+    smoothHeadingClipProgress,
+    [0, 0.1, 0.3, 1],
+    ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)"]
   );
 
   const headingOpacity = useTransform(smoothHeadingProgress, [0, 0.1, 0.7, 1], [0, 1, 1, 0]);
@@ -151,7 +157,7 @@ export default function BoxSlides({
   return (
     <motion.div
       ref={sectionRef}
-      className={`${isFirst && "mt-[-200px]"} mb-[60vh] relative z-[9] animated_section min-h-[calc(100vh+200px)]`}
+      className={`${isFirst && "mt-[-200px]"} mb-[60vh] relative z-[99] animated_section min-h-[calc(100vh+200px)]`}
       style={{
         scaleX: scaleXTransform,
         willChange: "transform",
@@ -171,7 +177,8 @@ export default function BoxSlides({
             <div className="relative w-full flex flex-col justify-center items-center">
               {heading && (
                 <div className="heading text-center text-[#000] flex flex-col mb-[80px]">
-                  <motion.span
+                  <motion.h2
+                  className="uppercase font-semibold tracking-[3px]"
                     style={{
                       clipPath: subHeadingClip,
                       y: subHeadingY,
@@ -184,7 +191,7 @@ export default function BoxSlides({
                     }}
                   >
                     {subHeading}
-                  </motion.span>
+                  </motion.h2>
                   <motion.h2
                     style={{
                       clipPath: headingClip,
@@ -195,14 +202,14 @@ export default function BoxSlides({
                       marginBottom: headingMargin,
                       willChange: "clip-path, transform, opacity, height, marginBottom",
                     }}
-                    className="text-[64px] uppercase tracking-[2px]"
+                    className="text-[64px] uppercase tracking-[3px] font-normal"
                   >
                     {heading}
                   </motion.h2>
                 </div>
               )}
               <motion.div
-                className="relative w-full h-full z-10"
+                className="relative w-full  z-10"
                 // initial={{ opacity: 0 }}
                 // animate={{
                 //   opacity: isLoading ? 0 : 1,

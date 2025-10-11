@@ -12,27 +12,15 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import Header from "../header/Index";
 
 const videoSources = [
-  "./assets/video/banner_video_4.mp4",
-  "./assets/video/banner_video_5.mp4",
-  "./assets/video/banner_video_6.mp4",
-  "./assets/video/banner_video_4.mp4",
-  "./assets/video/banner_video_5.mp4",
-  "./assets/video/banner_video_6.mp4",
-  "./assets/video/banner_video_5.mp4",
-  "./assets/video/banner_video_6.mp4",
+  "./assets/video/video_1.mp4",
+  "./assets/video/video_2.mp4",
+  "./assets/video/video_3.mp4",
 ];
 
 const videoContent = [
-  { title: "Creative Alchemy", nextUp: "All linked by trinity", link: "/creative-alchemy" },
-  { title: "Trinity Design", nextUp: "Future innovation", link: "/trinity-design" },
-  { title: "Precious Hybrid", nextUp: "Beyond boundaries", link: "/precious-hybrid" },
-  { title: "Venice Vibes", nextUp: "Artistic flow", link: "/venice-vibes" },
-  { title: "Time Illusion", nextUp: "Timeless beauty", link: "/time-illusion" },
-  { title: "Creative Alchemy", nextUp: "All linked by trinity", link: "/creative-alchemy" },
-  { title: "Trinity Design", nextUp: "Future innovation", link: "/trinity-design" },
-  { title: "Precious Hybrid", nextUp: "Beyond boundaries", link: "/precious-hybrid" },
-  { title: "Venice Vibes", nextUp: "Artistic flow", link: "/venice-vibes" },
-  { title: "Time Illusion", nextUp: "Timeless beauty", link: "/time-illusion" },
+  { title: "Brand Strategy & Launch", nextUp: "Digital Media Planning", link: "/creative-alchemy" },
+  { title: "Digital Media Planning", nextUp: "Data Analysis & ROI", link: "/trinity-design" },
+  { title: "Data Analysis & ROI", nextUp: "Brand Strategy & Launch", link: "/precious-hybrid" },
 ];
 
 const parentVariant = {
@@ -336,7 +324,7 @@ export default function Banner({ sectionRef }) {
           </div>
         </div>
         <div className="absolute  flex bottom-[12vw] w-[85%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-between items-end right-0 z-[9] text-white">
-          <div className="video_content_container items-center flex gap-[50px] basis-[45%]">
+          <div className="video_content_container items-center flex gap-[50px] basis-[65%]">
             <div className="relative basis-[154px] shrink-0 grow-0 h-[190px] overflow-hidden">
               <AnimatePresence initial={false} mode="wait">
                 <motion.div
@@ -366,7 +354,7 @@ export default function Banner({ sectionRef }) {
                   initial="initial"
                   animate="animate"
                   exit="exit"
-                  className="text-[130px] leading-[110px] tracking-[1px] uppercase italic"
+                  className="text-[80px] leading-[90px] tracking-[1px] uppercase italic"
                 >
                   {videoContent[activeIndex].title}
                 </motion.h2>
@@ -432,7 +420,7 @@ export default function Banner({ sectionRef }) {
             </div>
           </div>
         </div>
-        <h2 className="absolute text-[16px] tracking-[1.5px] uppercase bottom-[220px] max-w-[85%] w-full left-1/2 -translate-x-1/2 z-[9] text-white flex items-center">All Chapters <IoMdArrowDropdown /></h2>
+        <h2 className="absolute text-[16px] tracking-[1.5px] uppercase bottom-[220px] max-w-[85%] w-full left-1/2 -translate-x-1/2 z-[9] text-white flex items-center">What We Do <IoMdArrowDropdown /></h2>
       </div>
       {/* <div className="fixed top-0 left-0 bg-[#000] opacity-[.5] h-[100%] w-[100%]"></div> */}
     </section>

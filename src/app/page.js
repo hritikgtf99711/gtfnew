@@ -13,7 +13,7 @@ import Steps from "@/components/Home/steps";
 import WhatWeDo from "@/components/Home/whatWeDo/WhatWeDo";
 import EnquireForm from "@/components/Home/EnquireForm/EnquireForm";
 import Footer from "@/components/footer/Footer";
-import {ThreeLogo} from "@/components/Home/logo/ThreeLogo";
+import { ThreeLogo } from "@/components/Home/logo/ThreeLogo";
 
 const frames = [
   { img: "/assets/img/loader/slide_1.webp", name: "Project 1" },
@@ -107,7 +107,7 @@ export default function Home() {
   return (
     <>
       {/* {isLoaderVisible && ( */}
-        {/* <>
+      {/* <>
           <div className="z-100 w-full fixed top-0 left-0">
             <motion.div
               className="fixed w-full"
@@ -227,23 +227,145 @@ export default function Home() {
       <Banner sectionRef={bannerRef} bannervideoref={bannervideoref} />
 
       {/* {!isLoaderVisible && ( */}
-        <>
-          <Header
-            isHidden={isHidden}
-            setIsHidden={setIsHidden}
-            ref={headerRef}
-          />
+      <>
+        <Header isHidden={isHidden} setIsHidden={setIsHidden} ref={headerRef} />
 
-          <div className="fixed inset-0 z-[-1]">
-            {activeImage && (
-              <img
-                src={activeImage}
-                alt="Background"
-                className="w-full h-full object-cover transition-all duration-700"
-              />
-            )}
-          </div>
+        <div className="fixed inset-0 z-[-1]">
+          {activeImage && (
+            <img
+              src={activeImage}
+              alt="Background"
+              className="w-full h-full object-cover transition-all duration-700"
+            />
+          )}
+        </div>
 
+        <BoxSlides
+          scaleTransform={scaleTransform}
+          setscaleTransform={setscaleTransform}
+          isHidden={isHidden}
+          setIsHidden={setIsHidden}
+          headerRef={headerRef}
+          bannervideoref={bannervideoref}
+          via={true}
+          onActive={() => setActiveImage(changesImageArr[0])}
+          subHeading={"Chapter One"}
+          heading={"What We Do"}
+          isFirst={true}
+          onFocus={() => setActiveBg(0)} // <-- tell parent to show bgImages[0]
+          onResetTop={() => setActiveBg(-1)}
+        >
+          <WhatWeDo />
+        </BoxSlides>
+
+        <BoxSlides
+          scaleTransform={scaleTransform}
+          setscaleTransform={setscaleTransform}
+          isHidden={isHidden}
+          setIsHidden={setIsHidden}
+          headerRef={headerRef}
+          bannervideoref={bannervideoref}
+          via={true}
+          onActive={() => setActiveImage(changesImageArr[0])}
+          // subHeading={"Our Projects"}
+          // heading={"Projects"}
+          isFirst={true}
+          onFocus={() => setActiveBg(0)} // <-- tell parent to show bgImages[0]
+          onResetTop={() => setActiveBg(-1)}
+        >
+          <ThreeLogo />
+        </BoxSlides>
+
+        <BoxSlides
+          scaleTransform={scaleTransform}
+          isHidden={isHidden}
+          setIsHidden={setIsHidden}
+          headerRef={headerRef}
+          bannervideoref={bannervideoref}
+          via={false}
+          onActive={() => setActiveImage(changesImageArr[1])}
+          onFocus={() => setActiveBg(1)} // <-- bgImages[1]
+        >
+          <Expertise />
+        </BoxSlides>
+
+        <BoxSlides
+          scaleTransform={scaleTransform}
+          isHidden={isHidden}
+          setIsHidden={setIsHidden}
+          headerRef={headerRef}
+          bannervideoref={bannervideoref}
+          via={false}
+          // subHeading={"Who We Are"}
+          // heading={"Who We Are"}
+          onActive={() => setActiveImage(changesImageArr[2])}
+          onFocus={() => setActiveBg(2)} // <-- bgImages[2]
+        >
+          <WhoWeAre />
+        </BoxSlides>
+
+        <BoxSlides
+          scaleTransform={scaleTransform}
+          isHidden={isHidden}
+          setIsHidden={setIsHidden}
+          headerRef={headerRef}
+          bannervideoref={bannervideoref}
+          via={false}
+          subHeading={"Our Clients"}
+          heading={"Amazing brands, Amazed Clients."}
+          onActive={() => setActiveImage(changesImageArr[3])}
+          isClient={true}
+          onFocus={() => setActiveBg(3)} // <-- bgImages[3]
+        >
+          <Clients />
+        </BoxSlides>
+
+        <BoxSlides
+          scaleTransform={scaleTransform}
+          isHidden={isHidden}
+          setIsHidden={setIsHidden}
+          headerRef={headerRef}
+          bannervideoref={bannervideoref}
+          via={false}
+          // subHeading={"Company Steps"}
+          // heading={"Amazing brands"}
+          onActive={() => setActiveImage(changesImageArr[4])}
+          onFocus={() => setActiveBg(4)} // <-- bgImages[4]
+        >
+          <Steps />
+        </BoxSlides>
+
+        <BoxSlides
+          scaleTransform={scaleTransform}
+          isHidden={isHidden}
+          setIsHidden={setIsHidden}
+          headerRef={headerRef}
+          bannervideoref={bannervideoref}
+          via={false}
+          subHeading={"What We Do"}
+          heading={"What We Do"}
+          onActive={() => setActiveImage(changesImageArr[5])}
+          onFocus={() => setActiveBg(5)} // <-- bgImages[4]
+        >
+          <Portfolio scaleTransform={scaleTransform} isHidden={isHidden} />
+        </BoxSlides>
+
+        <BoxSlides
+          scaleTransform={scaleTransform}
+          isHidden={isHidden}
+          setIsHidden={setIsHidden}
+          headerRef={headerRef}
+          bannervideoref={bannervideoref}
+          via={false}
+          subHeading={"tell us about your project Idea or just"}
+          heading={"say hello"}
+          onActive={() => setActiveImage(changesImageArr[6])}
+          onFocus={() => setActiveBg(6)} // <-- bgImages[4]
+        >
+          <EnquireForm />
+        </BoxSlides>
+
+        {activeBg !== -1 && (
           <div className="fixed inset-0 z-[9]">
             {bgImages.map((src, i) => (
               <motion.img
@@ -259,132 +381,8 @@ export default function Home() {
               />
             ))}
           </div>
-
-          <BoxSlides
-            scaleTransform={scaleTransform}
-            setscaleTransform={setscaleTransform}
-            isHidden={isHidden}
-            setIsHidden={setIsHidden}
-            headerRef={headerRef}
-            bannervideoref={bannervideoref}
-            via={true}
-            onActive={() => setActiveImage(changesImageArr[0])}
-            subHeading={"Our Projects"}
-            heading={"Projects"}
-            isFirst={true}
-            onFocus={() => setActiveBg(0)} // <-- tell parent to show bgImages[0]
-            onResetTop={() => setActiveBg(-1)}
-          >
-            <Portfolio scaleTransform={scaleTransform} isHidden={isHidden} />
-          </BoxSlides>
-
-          <BoxSlides
-            scaleTransform={scaleTransform}
-            setscaleTransform={setscaleTransform}
-            isHidden={isHidden}
-            setIsHidden={setIsHidden}
-            headerRef={headerRef}
-            bannervideoref={bannervideoref}
-            via={true}
-            onActive={() => setActiveImage(changesImageArr[0])}
-            subHeading={"Our Projects"}
-            heading={"Projects"}
-            isFirst={true}
-            onFocus={() => setActiveBg(0)} // <-- tell parent to show bgImages[0]
-            onResetTop={() => setActiveBg(-1)}
-          >
-            <ThreeLogo />
-          </BoxSlides>
-
-          <BoxSlides
-            scaleTransform={scaleTransform}
-            isHidden={isHidden}
-            setIsHidden={setIsHidden}
-            headerRef={headerRef}
-            bannervideoref={bannervideoref}
-            via={false}
-            onActive={() => setActiveImage(changesImageArr[1])}
-            onFocus={() => setActiveBg(1)} // <-- bgImages[1]
-          >
-            <Expertise />
-          </BoxSlides>
-
-          <BoxSlides
-            scaleTransform={scaleTransform}
-            isHidden={isHidden}
-            setIsHidden={setIsHidden}
-            headerRef={headerRef}
-            bannervideoref={bannervideoref}
-            via={false}
-            // subHeading={"Who We Are"}
-            // heading={"Who We Are"}
-            onActive={() => setActiveImage(changesImageArr[2])}
-            onFocus={() => setActiveBg(2)} // <-- bgImages[2]
-          >
-            <WhoWeAre />
-          </BoxSlides>
-
-          <BoxSlides
-            scaleTransform={scaleTransform}
-            isHidden={isHidden}
-            setIsHidden={setIsHidden}
-            headerRef={headerRef}
-            bannervideoref={bannervideoref}
-            via={false}
-            subHeading={"Our Clients"}
-            heading={"Amazing brands, Amazed Clients."}
-            onActive={() => setActiveImage(changesImageArr[3])}
-            isClient={true}
-            onFocus={() => setActiveBg(3)} // <-- bgImages[3]
-          >
-            <Clients />
-          </BoxSlides>
-
-          <BoxSlides
-            scaleTransform={scaleTransform}
-            isHidden={isHidden}
-            setIsHidden={setIsHidden}
-            headerRef={headerRef}
-            bannervideoref={bannervideoref}
-            via={false}
-            // subHeading={"Company Steps"}
-            // heading={"Amazing brands"}
-            onActive={() => setActiveImage(changesImageArr[4])}
-            onFocus={() => setActiveBg(4)} // <-- bgImages[4]
-          >
-            <Steps />
-          </BoxSlides>
-
-          <BoxSlides
-            scaleTransform={scaleTransform}
-            isHidden={isHidden}
-            setIsHidden={setIsHidden}
-            headerRef={headerRef}
-            bannervideoref={bannervideoref}
-            via={false}
-            subHeading={"What We Do"}
-            heading={"What We Do"}
-            onActive={() => setActiveImage(changesImageArr[5])}
-            onFocus={() => setActiveBg(5)} // <-- bgImages[4]
-          >
-            <WhatWeDo />
-          </BoxSlides>
-
-          <BoxSlides
-            scaleTransform={scaleTransform}
-            isHidden={isHidden}
-            setIsHidden={setIsHidden}
-            headerRef={headerRef}
-            bannervideoref={bannervideoref}
-            via={false}
-            subHeading={"tell us about your project Idea or just"}
-            heading={"say hello"}
-            onActive={() => setActiveImage(changesImageArr[6])}
-            onFocus={() => setActiveBg(6)} // <-- bgImages[4]
-          >
-            <EnquireForm />
-          </BoxSlides>
-        </>
+        )}
+      </>
       {/* )}*/}
 
       {/* <section className="h-screen"></section> */}

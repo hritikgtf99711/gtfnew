@@ -25,7 +25,7 @@ const SceneLights = () => {
       <directionalLight
         ref={lightRef}
         castShadow
-        position={[5, 2, 0]} // ← coming from the left
+        position={[5, 2, 3]} // ← coming from the left
         intensity={7}
         color="white"
         shadow-mapSize-width={1024}
@@ -43,12 +43,13 @@ const SceneLights = () => {
 
 export const ThreeLogo = () => {
   return (
-    <Canvas shadows camera={{ position: [0, 0, 5], fov: 75 }} className='!h-[500px]'>
+    <div className="sticky top-0 h-[90vh]">
+    <Canvas shadows camera={{ position: [-3, 0, 5], fov: 60, }} className="w-full h-full ">
       {/* <OrbitControls /> */}
       <SceneLights />
       <Experience />
     </Canvas>
-
+    </div>
     
   )
 }

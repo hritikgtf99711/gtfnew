@@ -1,83 +1,88 @@
-import React, { useRef } from "react"
-import { gsap } from "gsap"
-import LevaControls from "./LevaControls"
+import React, { useRef } from "react";
+import { gsap } from "gsap";
+import { degToRad } from "three/src/math/MathUtils";
 
 const Experience = () => {
-  const mesh1 = useRef()
-  const mesh2 = useRef()
-  const mesh3 = useRef()
-  const groupRef = useRef();
+  const mesh1 = useRef();
+  const mesh2 = useRef();
+  const mesh3 = useRef();
+  const redDot = useRef();
 
   const handleHover = (meshRef, isHovered, color, yOffset) => {
-    if (!meshRef.current) return
+    if (!meshRef.current) return;
     gsap.to(meshRef.current.position, {
-      y: isHovered ? yOffset : meshRef.current.userData.originalY,
+      z: isHovered ? yOffset : meshRef.current.userData.originalZ,
       duration: 0.3,
       ease: "power2.out",
-    })
+    });
     gsap.to(meshRef.current.material.color, {
       r: parseInt(color.slice(1, 3), 16) / 255,
       g: parseInt(color.slice(3, 5), 16) / 255,
       b: parseInt(color.slice(5, 7), 16) / 255,
       duration: 0.3,
       ease: "power2.out",
-    })
-  }
+    });
+  };
 
   return (
-   <>
-     <group ref={groupRef} position={[0, 0, 0]} rotation={[0, 0, 0]} scale={2}>
-      {/* Mesh 1 */}
-      <mesh
-        ref={mesh1}
-        // rotation={[-Math.PI / 3 , Math.PI / 6, Math.PI / 4]}
-        position={[3, -1, -1]}
-        castShadow
-        receiveShadow
-        userData={{ originalY: -1 }}
-        onPointerOver={() => handleHover(mesh1, true, "#db4192", -0.5)}
-        onPointerOut={() => handleHover(mesh1, false, "#000000", -1)}
-      >
-        <boxGeometry args={[1.2, 4, 1]} />
-        <meshStandardMaterial color="black" />
-      </mesh>
+    <group position={[15,5,-40]} rotation={[ degToRad(-45), degToRad(-15), degToRad(35)]} scale={8}>
+      {/* Adjust group rotation to match the angled perspective */}
+      <group rotation={[0, 0, 0]}>
+        {/* Mesh 1 - Leftmost, slightly lower and rotated */}
+        <mesh
+          ref={mesh1}
+          position={[-2, -0.5, 0.3]}
+          rotation={[0, degToRad(-80), 0]}
+          castShadow
+          receiveShadow
+          userData={{ originalZ: 0.3 }}
+          onPointerOver={() => handleHover(mesh1, true, "#db4192", 1)}
+          onPointerOut={() => handleHover(mesh1, false, "#000000", 0.3)}
+        >
+          <boxGeometry args={[0.8 , 3.5, 0.7]} />
+          <meshStandardMaterial color="black" />
+        </mesh>
 
-      {/* Mesh 2 */}
-      <mesh
-        ref={mesh2}
-        // rotation={[-Math.PI / 3, Math.PI / 6, Math.PI / 4]}
-        position={[1, -1, -1]}
-        castShadow
-        // scale={1.1}
-        receiveShadow
-        userData={{ originalY: -1 }}
-        onPointerOver={() => handleHover(mesh2, true, "#f5e23b", -0.5)}
-        onPointerOut={() => handleHover(mesh2, false, "#000000", -1)}
-      >
-        <boxGeometry args={[1.2, 4, 1]} />
-        <meshStandardMaterial color="black" />
-      </mesh>
+        {/* Mesh 2 - Middle, slightly raised */}
+        <mesh
+          ref={mesh2}
+          position={[-0.8, -0.5, 0.3]}
+          rotation={[0, degToRad(-80), 0]}
+          castShadow
+          // scale={1.2}
+          receiveShadow
+          userData={{ originalZ: 0.3 }}
+          onPointerOver={() => handleHover(mesh2, true, "#f5e23b", 1)}
+          onPointerOut={() => handleHover(mesh2, false, "#000000", 0.3)}
+        >
+          <boxGeometry  args={[0.8 , 3.5, 0.7]} />
+          <meshStandardMaterial color="black" />
+        </mesh>
 
-      {/* Mesh 3 */}
-      <mesh
-        ref={mesh3}
-        // rotation={[-Math.PI / 3, Math.PI / 6, Math.PI / 4]}
-        position={[-1, -1, -1]}
-        castShadow
-        // scale={1.5}
-        receiveShadow
-        userData={{ originalY: -2 }}
-        onPointerOver={() => handleHover(mesh3, true, "#29a9dd", -1.5)}
-        onPointerOut={() => handleHover(mesh3, false, "#000000", -2)}
-      >
-        <boxGeometry args={[1.2, 4, 1]} />
-        <meshStandardMaterial color="black" />
-      </mesh>
+        {/* Mesh 3 - Rightmost, higher and rotated */}
+        <mesh
+          ref={mesh3}
+          position={[1, -1, 0.3]}
+          rotation={[0, 0, degToRad(10)]}
+          castShadow
+          scale={1.2}
+          receiveShadow
+          userData={{ originalZ: 0.3 }}
+          onPointerOver={() => handleHover(mesh3, true, "#29a9dd", 1)}
+          onPointerOut={() => handleHover(mesh3, false, "#000000", 0.3)}
+        >
+          <boxGeometry  args={[0.8 , 3.5, 0.7]} />
+          <meshStandardMaterial color="black" />
+        </mesh>
+
+        {/* Red Dot */}
+        {/* <mesh ref={redDot} position={[3, -1, 1]}>
+          <sphereGeometry args={[0.1, 32, 32]} />
+          <meshStandardMaterial color="red" />
+        </mesh> */}
+      </group>
     </group>
+  );
+};
 
-    <LevaControls mesh1={mesh1} mesh2={mesh2} mesh3={mesh3} groupRef={groupRef} />
-   </>
-  )
-}
-
-export default Experience
+export default Experience;
