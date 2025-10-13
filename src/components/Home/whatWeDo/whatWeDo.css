@@ -37,11 +37,11 @@
 }
 
 .whatWeDo_section .single_item_5{
-  grid-area: 1 / 5 / 3 / 6;
+  grid-area: 4 / 1 / 6 / 2;
 }
 
 .whatWeDo_section .single_content_5{
-  grid-area: 3 / 5 / 4 / 6;
+  grid-area: 6 / 1 / 7 / 2;
 }
 
 .whatWeDo_section .single_item_6{
@@ -63,4 +63,17 @@
 
 .single_image:hover .hoverContent{
   scale: 1;
+}
+
+.what_we_do_swiper{
+  padding-bottom: 50px;
+}
+
+.what_we_do_swiper .swiper-pagination{
+  top: unset;
+  bottom: 0;
+}
+
+.what_we_do_swiper .swiper-pagination .swiper-pagination-progressbar-fill{
+  background:#28afe4;
 }

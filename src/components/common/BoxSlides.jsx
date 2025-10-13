@@ -124,6 +124,15 @@ export default function BoxSlides({
     return () => unsubscribe();
   }, [scrollYProgress, onActive]);
 
+  // Show alert when section reaches top: 0
+  useEffect(()=>{
+    scrollYProgress.on('change', (v)=>{
+      if(v <= 0.02){ // Use a small threshold to account for minor scroll variations
+        alert("Section has reached the top of the viewport!");
+      }
+    })
+  }, [scrollYProgress])
+
   useEffect(() => {
     const unsub = smoothProgress.on("change", (p) => {
       if (p <= 0.02) {
@@ -165,7 +174,7 @@ export default function BoxSlides({
     >
       <motion.div
         ref={innerSecRef}
-        className={`relative bg-white z-9 items-center h-full`}
+        className={`relative bg-white z-9 items-center h-full pt-[40px]`}
         style={{
           // willChange: "transform",
           // scaleX: scaleXTransform,

@@ -120,6 +120,7 @@ export default function Footer() {
                   height={350}
                   width={350}
                   src="/assets/footer/map.webp"
+                  unoptimized
                 />
                 <span className="absolute h-[8px] w-[8px] bg-[#2AAEE4] animate_scale_opacity top-[37%] left-[calc(38%-15px)]"></span>
                 <span className="absolute h-[8px] w-[8px] bg-[#FDE93D] animate_scale_opacity top-[37%] left-[38%]"></span>
@@ -135,6 +136,7 @@ export default function Footer() {
                   className="h-[50px] w-auto"
                   height={84}
                   width={163}
+                  unoptimized
                 />
                 <Image
                   alt="global partner"
@@ -142,6 +144,7 @@ export default function Footer() {
                   height={60}
                   width={85}
                   className="h-[50px] w-auto"
+                  unoptimized
                 />
                 <Image
                   alt="google partner"
@@ -149,6 +152,7 @@ export default function Footer() {
                   height={67}
                   width={95}
                   className="h-[50px] w-auto"
+                  unoptimized
                 />
               </div>
             </div>

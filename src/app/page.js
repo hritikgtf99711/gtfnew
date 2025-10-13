@@ -14,6 +14,7 @@ import WhatWeDo from "@/components/Home/whatWeDo/WhatWeDo";
 import EnquireForm from "@/components/Home/EnquireForm/EnquireForm";
 import Footer from "@/components/footer/Footer";
 import { ThreeLogo } from "@/components/Home/logo/ThreeLogo";
+import { AboutUs } from "@/components/Home/aboutUs/AboutUs";
 
 const frames = [
   { img: "/assets/img/loader/slide_1.webp", name: "Project 1" },
@@ -259,6 +260,36 @@ export default function Home() {
         </BoxSlides>
 
         <BoxSlides
+  scaleTransform={scaleTransform}
+  isHidden={isHidden}
+  setIsHidden={setIsHidden}
+  headerRef={headerRef}
+  bannervideoref={bannervideoref}
+  via={false}
+  // subHeading={"Who We Are"}
+  // heading={"Who We Are"}
+  onActive={() => setActiveImage(changesImageArr[2])}
+  onFocus={() => setActiveBg(2)} // <-- bgImages[2]
+>
+  <AboutUs />
+</BoxSlides>
+
+<BoxSlides
+  scaleTransform={scaleTransform}
+  isHidden={isHidden}
+  setIsHidden={setIsHidden}
+  headerRef={headerRef}
+  bannervideoref={bannervideoref}
+  via={false}
+  // subHeading={"Who We Are"}
+  // heading={"Who We Are"}
+  onActive={() => setActiveImage(changesImageArr[2])}
+  onFocus={() => setActiveBg(2)} // <-- bgImages[2]
+>
+  <WhoWeAre />
+</BoxSlides>
+
+        {/* <BoxSlides
           scaleTransform={scaleTransform}
           setscaleTransform={setscaleTransform}
           isHidden={isHidden}
@@ -274,7 +305,7 @@ export default function Home() {
           onResetTop={() => setActiveBg(-1)}
         >
           <ThreeLogo />
-        </BoxSlides>
+        </BoxSlides> */}
 
         <BoxSlides
           scaleTransform={scaleTransform}
@@ -287,21 +318,6 @@ export default function Home() {
           onFocus={() => setActiveBg(1)} // <-- bgImages[1]
         >
           <Expertise />
-        </BoxSlides>
-
-        <BoxSlides
-          scaleTransform={scaleTransform}
-          isHidden={isHidden}
-          setIsHidden={setIsHidden}
-          headerRef={headerRef}
-          bannervideoref={bannervideoref}
-          via={false}
-          // subHeading={"Who We Are"}
-          // heading={"Who We Are"}
-          onActive={() => setActiveImage(changesImageArr[2])}
-          onFocus={() => setActiveBg(2)} // <-- bgImages[2]
-        >
-          <WhoWeAre />
         </BoxSlides>
 
         <BoxSlides
@@ -335,7 +351,7 @@ export default function Home() {
           <Steps />
         </BoxSlides>
 
-        <BoxSlides
+        {/* <BoxSlides
           scaleTransform={scaleTransform}
           isHidden={isHidden}
           setIsHidden={setIsHidden}
@@ -348,7 +364,7 @@ export default function Home() {
           onFocus={() => setActiveBg(5)} // <-- bgImages[4]
         >
           <Portfolio scaleTransform={scaleTransform} isHidden={isHidden} />
-        </BoxSlides>
+        </BoxSlides> */}
 
         <BoxSlides
           scaleTransform={scaleTransform}

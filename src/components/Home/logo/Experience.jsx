@@ -40,7 +40,7 @@ const Experience = () => {
           onPointerOut={() => handleHover(mesh1, false, "#000000", 0.3)}
         >
           <boxGeometry args={[0.8 , 3.5, 0.7]} />
-          <meshStandardMaterial color="black" />
+          <meshStandardMaterial color="black" roughness={100} metalness={7} />
         </mesh>
 
         {/* Mesh 2 - Middle, slightly raised */}

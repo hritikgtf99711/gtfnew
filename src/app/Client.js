@@ -43,6 +43,7 @@ const LogoItem = React.memo(({ logo, index, isVisible, top, bottom }) => (
         loading="lazy" // Enable lazy loading
         width={150}
         height={200}
+        unoptimized
       />
     </motion.li>
 
