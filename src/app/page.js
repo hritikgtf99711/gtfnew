@@ -15,6 +15,10 @@ import EnquireForm from "@/components/Home/EnquireForm/EnquireForm";
 import Footer from "@/components/footer/Footer";
 import { ThreeLogo } from "@/components/Home/logo/ThreeLogo";
 import { AboutUs } from "@/components/Home/aboutUs/AboutUs";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ExpertiseNew from "@/components/Home/expertise/ExpertiseNew";
+gsap.registerPlugin(ScrollTrigger);
 
 const frames = [
   { img: "/assets/img/loader/slide_1.webp", name: "Project 1" },
@@ -104,6 +108,52 @@ export default function Home() {
       document.body.classList.remove("overflow-hidden");
     }
   }, [isLoaderVisible]);
+
+  // useLayoutEffect(() => {
+  //   const ctx = gsap.context(() => {
+  //     const trigger = "#about-slide";
+  //     // Pin the same element that would otherwise be sticky for this section:
+  //     // since we passed noSticky={true}, the sticky wrapper is absent,
+  //     // so we can pin the inner container itself or a stable child.
+  //     const pinTarget = document.querySelector("#about-slide .box_padding") || document.querySelector("#about-slide");
+
+  //     if (!pinTarget) return;
+
+  //     // Explicitly set initial state (prevents "first fade" + "second repaint")
+  //   gsap.set("#about-slide .js-weare", { y: 80, autoAlpha: 0 });
+  //   gsap.set("#about-slide .js-title", { y: 120, autoAlpha: 0 });
+
+  //     const tl = gsap.timeline({
+  //       scrollTrigger: {
+  //         trigger,                 // section root
+  //         start: "top top",
+  //         end: "+=120%",           // same as your pinDistance
+  //         pin: pinTarget,          // pin only this slide
+  //         pinSpacing: true,
+  //         scrub: 0.5,
+  //         anticipatePin: 1,
+  //         invalidateOnRefresh: true,
+  //         pinReparent: true,           // ⭐ move element out of transformed ancestor
+  //       },
+  //       defaults: { ease: "power3.out",overwrite: "auto" },
+  //     });
+
+  //     // Animate only the AboutUs headings under this slide
+  //     tl.fromTo("#about-slide .js-weare",
+  //       { y: 80, autoAlpha: 0 },
+  //       { y: 0, autoAlpha: 1, duration: 0.6, immediateRender: false }
+  //     ).fromTo("#about-slide .js-title",
+  //       { y: 120, autoAlpha: 0 },
+  //       { y: 0, autoAlpha: 1, duration: 0.9, immediateRender: false },
+  //       "-=0.2"
+  //     );
+
+  //     // Call refresh in case images/fonts change sizes
+  //     ScrollTrigger.refresh();
+  //   });
+
+  //   return () => ctx.revert();
+  // }, []);
 
   return (
     <>
@@ -260,34 +310,41 @@ export default function Home() {
         </BoxSlides>
 
         <BoxSlides
-  scaleTransform={scaleTransform}
-  isHidden={isHidden}
-  setIsHidden={setIsHidden}
-  headerRef={headerRef}
-  bannervideoref={bannervideoref}
-  via={false}
-  // subHeading={"Who We Are"}
-  // heading={"Who We Are"}
-  onActive={() => setActiveImage(changesImageArr[2])}
-  onFocus={() => setActiveBg(2)} // <-- bgImages[2]
->
-  <AboutUs />
-</BoxSlides>
+          sectionId="about-slide"
+          noSticky={true} 
+          scaleTransform={scaleTransform}
+          isHidden={isHidden}
+          setIsHidden={setIsHidden}
+          headerRef={headerRef}
+          bannervideoref={bannervideoref}
+          disableScale={true}
+          via={false}
+          onActive={() => setActiveImage(changesImageArr[2])}
+          onFocus={() => setActiveBg(2)}
+          /** NEW: enable pin + scroll-tied heading animation here */
+          enablePin={true}
+          pinDistance="120%" // tweak 100%–200% to tastem
+          main_customClass="!min-h-[100vh]"
+          inner_customClass="!pt-0"
+          // animateSelectors={{ h4: ".js-weare", h1: ".js-title" }}
+        >
+          <AboutUs />
+        </BoxSlides>
 
-<BoxSlides
-  scaleTransform={scaleTransform}
-  isHidden={isHidden}
-  setIsHidden={setIsHidden}
-  headerRef={headerRef}
-  bannervideoref={bannervideoref}
-  via={false}
-  // subHeading={"Who We Are"}
-  // heading={"Who We Are"}
-  onActive={() => setActiveImage(changesImageArr[2])}
-  onFocus={() => setActiveBg(2)} // <-- bgImages[2]
->
-  <WhoWeAre />
-</BoxSlides>
+        <BoxSlides
+          scaleTransform={scaleTransform}
+          isHidden={isHidden}
+          setIsHidden={setIsHidden}
+          headerRef={headerRef}
+          bannervideoref={bannervideoref}
+          via={false}
+          // subHeading={"Who We Are"}
+          // heading={"Who We Are"}
+          onActive={() => setActiveImage(changesImageArr[2])}
+          onFocus={() => setActiveBg(2)} // <-- bgImages[2]
+        >
+          <WhoWeAre />
+        </BoxSlides>
 
         {/* <BoxSlides
           scaleTransform={scaleTransform}
@@ -306,6 +363,22 @@ export default function Home() {
         >
           <ThreeLogo />
         </BoxSlides> */}
+
+<BoxSlides
+          scaleTransform={scaleTransform}
+          isHidden={isHidden}
+          setIsHidden={setIsHidden}
+          headerRef={headerRef}
+          bannervideoref={bannervideoref}
+          via={false}
+          subHeading={"Our Works"}
+          heading={"Innovation Market"}
+          onActive={() => setActiveImage(changesImageArr[1])}
+          onFocus={() => setActiveBg(1)} // <-- bgImages[1]
+          childrenClass="h-[calc(100vh-200px)]"
+        >
+          <ExpertiseNew />
+        </BoxSlides>
 
         <BoxSlides
           scaleTransform={scaleTransform}
