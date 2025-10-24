@@ -78,7 +78,7 @@ export const AboutUs = () => {
       tl.to(hides, { autoAlpha: 0, duration: 0.5, stagger: 0.05 });
       tl.to(hides, {width:0})
       tl.to(otherText, {opacity:1, width:"auto"})
-      tl.to(paraText, {opacity:1, transform:"translateY(0)"})
+      tl.to(paraText, {opacity:1})
 
       // Phase 2 — squeeze G T F together
       // tl.to(h1, { letterSpacing: "-0.02em", wordSpacing: "0em", duration: 0.6 });

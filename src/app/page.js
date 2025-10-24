@@ -318,12 +318,12 @@ export default function Home() {
           setIsHidden={setIsHidden}
           headerRef={headerRef}
           bannervideoref={bannervideoref}
-          disableScale={true}
+          // disableScale={true}
           via={false}
           onActive={() => setActiveImage(changesImageArr[1])}
           onFocus={() => setActiveBg(2)}
           /** NEW: enable pin + scroll-tied heading animation here */
-          enablePin={true}
+          // enablePin={true}
           pinDistance="120%" // tweak 100%–200% to tastem
           main_customClass="!min-h-[100vh]"
           inner_customClass="!pt-0"
