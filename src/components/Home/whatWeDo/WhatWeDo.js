@@ -11,32 +11,32 @@ import "./whatWeDo.css";
 
 const secData = [
   {
-    img: "/assets/home/whatWeDo/brand-strategy.webp",
+    img: "/assets/home/whatWeDo/brand-strategy.jpg",
     title: "Brand Strategy",
     desc: "We use our insight, experience, and rich industry knowledge.",
   },
   {
-    img: "/assets/home/whatWeDo/creative.webp",
+    img: "/assets/home/whatWeDo/creative.jpg",
     title: "Creative",
     desc: "Launching a refined brand identity, leading to improved online presence.",
   },
   {
-    img: "/assets/home/whatWeDo/communication.webp",
+    img: "/assets/home/whatWeDo/communication.jpg",
     title: "communication",
     desc: "We use our insight, experience, and rich industry knowledge to craft and execute compelling brand campaigns.",
   },
   {
-    img: "/assets/home/whatWeDo/website-design.webp",
+    img: "/assets/home/whatWeDo/website-design.jpg",
     title: "Website Design & Developement",
     desc: "No matter what your goals are: leads, subscribers, or followers, GTF Technologies is committed to meeting and exceeding them.",
   },
   {
-    img: "/assets/home/whatWeDo/website-maintenance.webp",
+    img: "/assets/home/whatWeDo/website-maintenance.jpg",
     title: "website Maintenance",
     desc: "Recognized by Google among its top 30 partners in India, GTF Technologies commits to maximizing your return on investment.",
   },
   {
-    img: "/assets/home/whatWeDo/seo.webp",
+    img: "/assets/home/whatWeDo/seo.jpg",
     title: "Search Engine Optimization",
     desc: "Positioning your website in the first place on Google is our commitment.",
   },
@@ -46,30 +46,30 @@ const secData = [
     desc: "GTF Technologies commits tobuilding you a brand on social media with its customized services.",
   },
   {
-    img:'/assets/home/whatWeDo/display-marketing.webp',
-    title:'Display Marketing',
-    desc:'GTF Technologies is committed to persuading your target audience through a thoroughly planned display advertising campaign.',
-  },
-{
-  img:'/assets/home/whatWeDo/youtube-marketing.webp',
-  title:'Youtube Marketing',
-  desc:'Your website is your digital face. Visuals, content, and appearance are its features.',
-},
-{
-  img:'/assets/home/whatWeDo/social-media-optimization.webp',
-  title:'Social Media Optimization',
-  desc:'GTF Technologies is a prestigious website development company in India with more than 12 years experience in the industry.',
-},
-  {
-    img:'/assets/home/whatWeDo/social-media-marketing.webp',
-    title:'Social Media Marketing',
-    desc:'GTF Technologies is a team of crackerjack website maintenance engineers.',
+    img: "/assets/home/whatWeDo/display-marketing.jpg",
+    title: "Display Marketing",
+    desc: "GTF Technologies is committed to persuading your target audience through a thoroughly planned display advertising campaign.",
   },
   {
-    img:'/assets/home/whatWeDo/online-reputation.webp',
-    title:'Online Reputation Management Marketing',
-    desc:'Multiply your sales with our custom YouTube marketing services. With more than 2 billion users across the world.',
+    img: "/assets/home/whatWeDo/youtube-marketing.webp",
+    title: "Youtube Marketing",
+    desc: "Your website is your digital face. Visuals, content, and appearance are its features.",
   },
+  {
+    img: "/assets/home/whatWeDo/social-media-optimization.webp",
+    title: "Social Media Optimization",
+    desc: "GTF Technologies is a prestigious website development company in India with more than 12 years experience in the industry.",
+  },
+  //   {
+  //     img:'/assets/home/whatWeDo/social-media-marketing.webp',
+  //     title:'Social Media Marketing',
+  //     desc:'GTF Technologies is a team of crackerjack website maintenance engineers.',
+  //   },
+  //   {
+  //     img:'/assets/home/whatWeDo/online-reputation.webp',
+  //     title:'Online Reputation Management Marketing',
+  //     desc:'Multiply your sales with our custom YouTube marketing services. With more than 2 billion users across the world.',
+  //   },
 ];
 
 export default function WhatWeDo() {
@@ -81,11 +81,11 @@ export default function WhatWeDo() {
   });
 
   // Transform Y for the second element based on scroll
-  const transformY = useTransform(scrollYProgress, [0, 0.2], [-300, 0]); // Starts at -300px and ends at 0px
+  const transformY = useTransform(scrollYProgress, [0, 0.1], [-200, 0]); // Starts at -300px and ends at 0px
 
   return (
     <>
-      <section className="whatWeDo_section pb-[150px] px-[100px]">
+      {/* <section className="whatWeDo_section pb-[150px] px-[100px]">
         <Swiper
         className="what_we_do_swiper"
           pagination={{
@@ -130,9 +130,9 @@ export default function WhatWeDo() {
           ))}
 
         </Swiper>
-      </section>
+      </section> */}
 
-      {/* <div className="whatWeDo_section min-h-screen px-[100px] grid grid-cols-[1fr_1fr_1fr_1.5fr] gap-[15px]">
+      <div className="whatWeDo_section min-h-screen px-[100px] grid grid-cols-[1fr_1fr_1.8fr_1fr_1fr] gap-[15px]">
         {secData &&
           secData.map((item, index) => {
             // Check if this is the second element (index === 1)
@@ -140,7 +140,6 @@ export default function WhatWeDo() {
 
             return (
               <React.Fragment key={index}>
-
                 {isSecondImage ? (
                   <motion.div
                     className={`relative single_image single_item_${index + 1}`}
@@ -155,11 +154,13 @@ export default function WhatWeDo() {
                       alt={item.title}
                       className="h-full w-full object-cover"
                     />
-                    <div className="hoverContent absolute left-[20px] top-[30px] h-[calc(100%-60px)] w-[calc(100%-40px)] bg-white p-[40px] flex flex-col  scale-0 transition duration-300 ease-in-out">
-                      <h4 className="title uppercase text-[26px] text-center flex items-center justify-center flex-1">
+                    <div className="hoverContent absolute left-[20px] top-[30px] h-[calc(100%-60px)] w-[calc(100%-40px)] bg-white p-[20px] flex flex-col  scale-0 transition duration-300 ease-in-out">
+                      {/* <h4 className="title uppercase text-[26px] text-center flex items-center justify-center flex-1">
                         {item.title}
-                      </h4>
-                      <p className="text-center leading-[28px]">{item.desc}</p>
+                      </h4> */}
+                      <p className="text-center leading-[28px] text-[14px]">
+                        {item.desc}
+                      </p>
                     </div>
                   </motion.div>
                 ) : (
@@ -174,11 +175,13 @@ export default function WhatWeDo() {
                       className="h-full w-full object-cover"
                     />
 
-                    <div className="hoverContent absolute left-[20px] top-[30px] h-[calc(100%-60px)] w-[calc(100%-40px)] bg-white p-[40px] flex flex-col scale-0 transition duration-300 ease-in-out">
-                      <h4 className="title uppercase text-[26px] text-center flex items-center justify-center flex-1">
+                    <div className="hoverContent absolute left-[20px] top-[30px] h-[calc(100%-60px)] w-[calc(100%-40px)] bg-white p-[20px] flex flex-col scale-0 transition duration-300 ease-in-out">
+                      {/* <h4 className="title uppercase text-[26px] text-center flex items-center justify-center flex-1">
                         {item.title}
-                      </h4>
-                      <p className="text-center leading-[28px]">{item.desc}</p>
+                      </h4> */}
+                      <p className="text-center leading-[28px] text-[14px]">
+                        {item.desc}
+                      </p>
                     </div>
                   </div>
                 )}
@@ -195,7 +198,7 @@ export default function WhatWeDo() {
               </React.Fragment>
             );
           })}
-      </div> */}
+      </div>
     </>
   );
 }

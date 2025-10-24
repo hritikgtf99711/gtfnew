@@ -119,6 +119,9 @@ export default function BoxSlides({
       // 1) MASTER PROGRESS TRIGGER (start: top arrives in viewport bottom, end: bottom leaves viewport top)
       //    This mimics your framer useScroll({ offset: ["start end", "end start"] })
       // ———————————————————————————
+
+
+
       const masterST = ScrollTrigger.create({
         trigger: sectionEl,
         start: "top bottom",
@@ -129,35 +132,35 @@ export default function BoxSlides({
           // onActive when within (0.2, 0.8)
           if (p > 0.2 && p < 0.8 && onActive) onActive();
       
-          // onResetTop when very close to the very top (entering)
-          if (p <= 0.02) {
-            if (resetArmedRef.current) {
-              onResetTop?.();
-              resetArmedRef.current = false;
-            }
-          } else if (p >= 0.06) {
-            resetArmedRef.current = true;
-          }
+        //   // onResetTop when very close to the very top (entering)
+        //   if (p <= 0.02) {
+        //     if (resetArmedRef.current) {
+        //       onResetTop?.();
+        //       resetArmedRef.current = false;
+        //     }
+        //   } else if (p >= 0.06) {
+        //     resetArmedRef.current = true;
+        //   }
       
-          // ✅ Always define sx before using it
-          let sx = disableScale
-            ? 1
-            : interp(p, paddingInputRef.current, scaleXOutputRef.current);
+        //   // ✅ Always define sx before using it
+        //   let sx = disableScale
+        //     ? 1
+        //     : interp(p, paddingInputRef.current, scaleXOutputRef.current);
       
-          // Only apply transform if scaling is enabled
-          if (!disableScale) {
-            gsap.set(sectionEl, { scaleX: sx, transformOrigin: "center top" });
-          }
+        //   // Only apply transform if scaling is enabled
+        //   if (!disableScale) {
+        //     gsap.set(sectionEl, { scaleX: sx, transformOrigin: "center top" });
+        //   }
       
-          // onFocus when scaleX ~ 1
-          const isCenteredNow = sx > 0.99;
-          if (isCenteredNow && !wasCenteredRef.current) {
-            wasCenteredRef.current = true;
-            onFocus?.();
-          }
-          if (!isCenteredNow && wasCenteredRef.current) {
-            wasCenteredRef.current = false;
-          }
+        //   // onFocus when scaleX ~ 1
+        //   const isCenteredNow = sx > 0.99;
+        //   if (isCenteredNow && !wasCenteredRef.current) {
+        //     wasCenteredRef.current = true;
+        //     onFocus?.();
+        //   }
+        //   if (!isCenteredNow && wasCenteredRef.current) {
+        //     wasCenteredRef.current = false;
+        //   }
         },
       });
 
@@ -168,63 +171,67 @@ export default function BoxSlides({
       // ———————————————————————————
 
       // A) Progress for opacity/translate (0.2 -> 1 in viewport space)
-      const headingProgST = ScrollTrigger.create({
-        trigger: sectionEl,
-        start: "top+=20% bottom", // approx "0.2 1"
-        end: "bottom top",        // approx "1 0"
-        onUpdate: (self) => {
-          const p = self.progress; // 0..1 across section visibility
+
+
+      // const headingProgST = ScrollTrigger.create({
+      //   trigger: sectionEl,
+      //   start: "top+=20% bottom", // approx "0.2 1"
+      //   end: "bottom top",        // approx "1 0"
+      //   onUpdate: (self) => {
+      //     const p = self.progress; // 0..1 across section visibility
         
-          // onActive when within (0.2, 0.8)
-          if (p > 0.2 && p < 0.8 && onActive) onActive();
+      //     // onActive when within (0.2, 0.8)
+      //     if (p > 0.2 && p < 0.8 && onActive) onActive();
         
-          // onResetTop when very close to the very top (entering)
-          if (p <= 0.02) {
-            if (resetArmedRef.current) {
-              onResetTop?.();
-              resetArmedRef.current = false;
-            }
-          } else if (p >= 0.06) {
-            resetArmedRef.current = true;
-          }
+      //     // onResetTop when very close to the very top (entering)
+      //     if (p <= 0.02) {
+      //       if (resetArmedRef.current) {
+      //         onResetTop?.();
+      //         resetArmedRef.current = false;
+      //       }
+      //     } else if (p >= 0.06) {
+      //       resetArmedRef.current = true;
+      //     }
         
-          // ✅ Always define sx so we can safely use it below
-          let sx = disableScale
-            ? 1
-            : interp(p, paddingInputRef.current, scaleXOutputRef.current);
+      //     // ✅ Always define sx so we can safely use it below
+      //     let sx = disableScale
+      //       ? 1
+      //       : interp(p, paddingInputRef.current, scaleXOutputRef.current);
         
-          // Only apply the transform when scaling is enabled
-          if (!disableScale) {
-            gsap.set(sectionEl, { scaleX: sx, transformOrigin: "center top" });
-          }
+      //     // Only apply the transform when scaling is enabled
+      //     if (!disableScale) {
+      //       gsap.set(sectionEl, { scaleX: sx, transformOrigin: "center top" });
+      //     }
         
-          // onFocus when scaleX ~ 1
-          const isCenteredNow = sx > 0.99;
-          if (isCenteredNow && !wasCenteredRef.current) {
-            wasCenteredRef.current = true;
-            onFocus?.();
-          }
-          if (!isCenteredNow && wasCenteredRef.current) {
-            wasCenteredRef.current = false;
-          }
-        }
-      });
+      //     // onFocus when scaleX ~ 1
+      //     const isCenteredNow = sx > 0.99;
+      //     if (isCenteredNow && !wasCenteredRef.current) {
+      //       wasCenteredRef.current = true;
+      //       onFocus?.();
+      //     }
+      //     if (!isCenteredNow && wasCenteredRef.current) {
+      //       wasCenteredRef.current = false;
+      //     }
+      //   }
+      // });
 
       // B) Clip-path reveal (0.3 -> 1)
-      const clipProgST = ScrollTrigger.create({
-        trigger: sectionEl,
-        start: "top+=30% bottom", // ~ "0.3 1"
-        end: "bottom bottom",     // ~ "1 1"
-        onUpdate: (self) => {
-          const p = self.progress; // 0..1
-          // from "inset(100% 0 0 0)" -> "inset(0 0 0 0)"
-          const clipTop = Math.round((1 - p) * 100);
-          const clipVal = `inset(${clipTop}% 0% 0% 0%)`;
 
-          if (subHeadingNode) gsap.set(subHeadingNode, { clipPath: clipVal });
-          if (headingNode) gsap.set(headingNode, { clipPath: clipVal });
-        },
-      });
+
+      // const clipProgST = ScrollTrigger.create({
+      //   trigger: sectionEl,
+      //   start: "top+=30% bottom", // ~ "0.3 1"
+      //   end: "bottom bottom",     // ~ "1 1"
+      //   onUpdate: (self) => {
+      //     const p = self.progress; // 0..1
+      //     // from "inset(100% 0 0 0)" -> "inset(0 0 0 0)"
+      //     const clipTop = Math.round((1 - p) * 100);
+      //     const clipVal = `inset(${clipTop}% 0% 0% 0%)`;
+
+      //     if (subHeadingNode) gsap.set(subHeadingNode, { clipPath: clipVal });
+      //     if (headingNode) gsap.set(headingNode, { clipPath: clipVal });
+      //   },
+      // });
 
       // ———————————————————————————
       // 3) OPTIONAL PIN + AboutUs headings timeline while pinned
@@ -256,9 +263,9 @@ export default function BoxSlides({
       // cleanup
       return () => {
         masterST.kill();
-        headingProgST.kill();
-        clipProgST.kill();
-        if (pinTL) pinTL.scrollTrigger?.kill();
+        // headingProgST.kill();
+        // clipProgST.kill();
+        // if (pinTL) pinTL.scrollTrigger?.kill();
       };
     }, sectionRef);
 

@@ -281,15 +281,16 @@ export default function Home() {
       <>
         <Header isHidden={isHidden} setIsHidden={setIsHidden} ref={headerRef} />
 
-        <div className="fixed inset-0 z-[-1]">
+        
           {activeImage && (
-            <img
-              src={activeImage}
-              alt="Background"
-              className="w-full h-full object-cover transition-all duration-700"
-            />
+            <div className="fixed inset-0 z-[9]">
+              <img
+                src={activeImage}
+                alt="Background"
+                className="w-full h-full object-cover transition-all duration-700"
+              />
+            </div>
           )}
-        </div>
 
         <BoxSlides
           scaleTransform={scaleTransform}
@@ -311,7 +312,7 @@ export default function Home() {
 
         <BoxSlides
           sectionId="about-slide"
-          noSticky={true} 
+          noSticky={true}
           scaleTransform={scaleTransform}
           isHidden={isHidden}
           setIsHidden={setIsHidden}
@@ -319,7 +320,7 @@ export default function Home() {
           bannervideoref={bannervideoref}
           disableScale={true}
           via={false}
-          onActive={() => setActiveImage(changesImageArr[2])}
+          onActive={() => setActiveImage(changesImageArr[1])}
           onFocus={() => setActiveBg(2)}
           /** NEW: enable pin + scroll-tied heading animation here */
           enablePin={true}
@@ -331,7 +332,7 @@ export default function Home() {
           <AboutUs />
         </BoxSlides>
 
-        <BoxSlides
+        {/* <BoxSlides
           scaleTransform={scaleTransform}
           isHidden={isHidden}
           setIsHidden={setIsHidden}
@@ -344,7 +345,7 @@ export default function Home() {
           onFocus={() => setActiveBg(2)} // <-- bgImages[2]
         >
           <WhoWeAre />
-        </BoxSlides>
+        </BoxSlides> */}
 
         {/* <BoxSlides
           scaleTransform={scaleTransform}
@@ -364,7 +365,7 @@ export default function Home() {
           <ThreeLogo />
         </BoxSlides> */}
 
-<BoxSlides
+        <BoxSlides
           scaleTransform={scaleTransform}
           isHidden={isHidden}
           setIsHidden={setIsHidden}
@@ -373,14 +374,14 @@ export default function Home() {
           via={false}
           subHeading={"Our Works"}
           heading={"Innovation Market"}
-          onActive={() => setActiveImage(changesImageArr[1])}
+          onActive={() => setActiveImage(changesImageArr[2])}
           onFocus={() => setActiveBg(1)} // <-- bgImages[1]
           childrenClass="h-[calc(100vh-200px)]"
         >
           <ExpertiseNew />
         </BoxSlides>
 
-        <BoxSlides
+        {/* <BoxSlides
           scaleTransform={scaleTransform}
           isHidden={isHidden}
           setIsHidden={setIsHidden}
@@ -391,7 +392,7 @@ export default function Home() {
           onFocus={() => setActiveBg(1)} // <-- bgImages[1]
         >
           <Expertise />
-        </BoxSlides>
+        </BoxSlides> */}
 
         <BoxSlides
           scaleTransform={scaleTransform}

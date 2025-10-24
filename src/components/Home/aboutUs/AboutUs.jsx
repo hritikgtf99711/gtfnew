@@ -111,7 +111,7 @@ export const AboutUs = () => {
         G<span className="hide">urukul</span>T<span className="hide">he</span>F<span className="hide">oundation </span>
         <span className="other_txt">Technologies</span>
       </h1>
-      <p class="para text-[22px] mt-[50px] mx-auto tracking-[1px] text-center max-w-[80%]">GTF Technologies, conceptualized from Gurukul The Foundation, is a 16-year-old branding and digital media planning agency headquartered in Noida, Mumbai, Pune, and with an upcoming office in Bangalore.</p>
+      <p className="para text-[22px] mt-[50px] mx-auto tracking-[1px] text-center max-w-[80%]">GTF Technologies, conceptualized from Gurukul The Foundation, is a 16-year-old branding and digital media planning agency headquartered in Noida, Mumbai, Pune, and with an upcoming office in Bangalore.</p>
     </section>
   );
 };
