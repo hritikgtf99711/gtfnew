@@ -100,6 +100,7 @@ export const AboutUs = () => {
     >
         <div className="absolute top-0 left-0 z-[-1] opacity-5 h-[100%]">
           <Image
+          alt="about bg image"
             src={'/assets/home/about/bg.webp'}
             width={1920}
             height={1080}

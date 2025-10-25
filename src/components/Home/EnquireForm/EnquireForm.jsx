@@ -1,6 +1,8 @@
+
+
 export default function EnquireForm() {
     return (
-        <section className="enquire_section w-full px-[100px] flex items-center pb-[100px]">
+        <section className="enquire_section w-full px-[100px] flex items-center pb-[100px] min-h-[calc(100vh-100px)]">
             <form className="w-full grid grid-cols-1 md:grid-cols-2 gap-x-[80px] gap-y-[50px]">
 
                 <div>

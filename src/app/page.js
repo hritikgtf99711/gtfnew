@@ -25,7 +25,7 @@ const frames = [
   { img: "/assets/img/loader/slide_2.webp", name: "Project 2" },
   { img: "/assets/img/loader/slide_4.webp", name: "Project 4" },
   { img: "/assets/img/loader/slide_5.webp", name: "Project 5" },
-  { img: "/assets/img/loader/slide_3.webp", name: "Project 3" },
+  { img: "/assets/img/loader/slide_3.jpg", name: "Project 3" },
 ];
 
 export default function Home() {
@@ -46,6 +46,7 @@ export default function Home() {
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [activeBg, setActiveBg] = useState(-1);
   const cardRefs = useRef([]);
+  const [allowFirstImage, setAllowFirstImage] = useState(false);
 
   const changesImageArr = [
     "/assets/img/mide_section_img.jpg",
@@ -109,6 +110,33 @@ export default function Home() {
     }
   }, [isLoaderVisible]);
 
+  // NEW: gate the first slide overlay by a ScrollTrigger threshold
+  useLayoutEffect(() => {
+    const el = document.getElementById("first-slide");
+    if (!el) return;
+
+    const st = ScrollTrigger.create({
+      trigger: el,
+      // when the first slide's bottom reaches 70% from top (=> covers 30%), allow overlay
+      start: "bottom 70%",
+      end: "bottom top",
+      onEnter: () => setAllowFirstImage(true),
+      onEnterBack: () => setAllowFirstImage(true),
+      onLeaveBack: () => setAllowFirstImage(false), // scrolling up above 30% coverage -> block overlay
+    });
+
+    ScrollTrigger.refresh();
+    return () => st.kill();
+  }, []);
+
+  // NEW: whenever we're not allowed (above threshold), clear overlays immediately
+  useEffect(() => {
+    if (!allowFirstImage) {
+      setActiveImage(null);
+      setActiveBg(-1);
+    }
+  }, [allowFirstImage]);
+
   // useLayoutEffect(() => {
   //   const ctx = gsap.context(() => {
   //     const trigger = "#about-slide";
@@ -157,8 +185,8 @@ export default function Home() {
 
   return (
     <>
-      {/* {isLoaderVisible && ( */}
-      {/* <>
+      {isLoaderVisible && (
+        <>
           <div className="z-100 w-full fixed top-0 left-0">
             <motion.div
               className="fixed w-full"
@@ -187,18 +215,18 @@ export default function Home() {
                 }, 500);
               }}
             >
-              <div className="container mx-auto flex justify-center">
-                <div className="flex gap-4 items-start font-serif text-black w-full">
+              <div className="mx-auto flex justify-center w-[75%]">
+                <div className="  grid grid-cols-[1fr_1fr_1.8fr_1fr_1fr] gap-[15px] items-start font-serif text-black w-full">
                   {frames.map((frame, i) => (
                     <div
                       key={i}
                       ref={(el) => (cardRefs.current[i] = el)}
-                      className={`img_after relative overflow-hidden cursor-pointer group basis-[${
-                        i === 2 ? "80%" : "50%"
-                      }] ${i !== 2 && "hover:basis-[60%]"}`}
+                      className={`img_after relative overflow-hidden cursor-pointer group  ${
+                        i !== 2 && "hover:basis-[60%]"
+                      }`} //basis-[${i === 2 ? "80%" : "50%"}]
                     >
                       {i === 2 && (
-                        <div className="overflow-hidden relative h-[500px]">
+                        <div className="overflow-hidden relative h-[380px]">
                           <AnimatePresence>
                             {isImagesVisible &&
                               frames.map((image, index) => (
@@ -272,16 +300,19 @@ export default function Home() {
               }, 500);
             }}
           />
-        </> */}
-      {/*)}*/}
+        </>
+      )}
 
       <Banner sectionRef={bannerRef} bannervideoref={bannervideoref} />
 
-      {/* {!isLoaderVisible && ( */}
-      <>
-        <Header isHidden={isHidden} setIsHidden={setIsHidden} ref={headerRef} />
+      {!isLoaderVisible && (
+        <>
+          <Header
+            isHidden={isHidden}
+            setIsHidden={setIsHidden}
+            ref={headerRef}
+          />
 
-        
           {activeImage && (
             <div className="fixed inset-0 z-[9]">
               <img
@@ -292,47 +323,77 @@ export default function Home() {
             </div>
           )}
 
-        <BoxSlides
-          scaleTransform={scaleTransform}
-          setscaleTransform={setscaleTransform}
-          isHidden={isHidden}
-          setIsHidden={setIsHidden}
-          headerRef={headerRef}
-          bannervideoref={bannervideoref}
-          via={true}
-          onActive={() => setActiveImage(changesImageArr[0])}
-          subHeading={"Chapter One"}
-          heading={"What We Do"}
-          isFirst={true}
-          onFocus={() => setActiveBg(0)} // <-- tell parent to show bgImages[0]
-          onResetTop={() => setActiveBg(-1)}
-        >
-          <WhatWeDo />
-        </BoxSlides>
+          <BoxSlides
+            sectionId="first-slide"
+            scaleTransform={scaleTransform}
+            setscaleTransform={setscaleTransform}
+            isHidden={isHidden}
+            setIsHidden={setIsHidden}
+            headerRef={headerRef}
+            bannervideoref={bannervideoref}
+            via={true}
+            onActive={() => {                 // DOWN into slide 0 -> show bg[0]
+              setActiveBg(0);
+              setActiveImage(changesImageArr[0]); // if you want the large overlay too
+            }}
+            subHeading={"Chapter One"}
+            heading={"What We Do"}
+            isFirst={true}
+            onFocus={() => {
+              if (allowFirstImage) setActiveBg(0); // show bgImages[0]
+            }}
+            onEnterBack={() => {              // UP into slide 0 from below -> show banner
+              setActiveBg(-1);
+              setActiveImage(null);
+            }}
+            onLeaveBack={() => {              // UP above slide 0 start -> show banner
+              setActiveBg(-1);
+              setActiveImage(null);
+            }}
+            onResetTop={() => {
+              // ⬅️ clear both when you scroll back above the slide
+              setActiveBg(-1);
+              setActiveImage(null);
+            }}
+          >
+            <WhatWeDo />
+          </BoxSlides>
 
-        <BoxSlides
-          sectionId="about-slide"
-          noSticky={true}
-          scaleTransform={scaleTransform}
-          isHidden={isHidden}
-          setIsHidden={setIsHidden}
-          headerRef={headerRef}
-          bannervideoref={bannervideoref}
-          // disableScale={true}
-          via={false}
-          onActive={() => setActiveImage(changesImageArr[1])}
-          onFocus={() => setActiveBg(2)}
-          /** NEW: enable pin + scroll-tied heading animation here */
-          // enablePin={true}
-          pinDistance="120%" // tweak 100%–200% to tastem
-          main_customClass="!min-h-[100vh]"
-          inner_customClass="!pt-0"
-          // animateSelectors={{ h4: ".js-weare", h1: ".js-title" }}
-        >
-          <AboutUs />
-        </BoxSlides>
+          <BoxSlides
+            sectionId="about-slide"
+            noSticky={true}
+            scaleTransform={scaleTransform}
+            isHidden={isHidden}
+            setIsHidden={setIsHidden}
+            headerRef={headerRef}
+            bannervideoref={bannervideoref}
+            // disableScale={true}
+            via={false}
+            onActive={() => {                 // DOWN into slide 1 -> show bg[1]
+              setActiveBg(1);
+              setActiveImage(changesImageArr[1]);
+            }}
+            onEnterBack={() => {              // UP into slide 1 -> previous is slide 0
+              setActiveBg(0);
+              setActiveImage(changesImageArr[0]);
+            }}
+            onLeaveBack={() => {              // UP above slide 1 start -> previous is slide 0
+              setActiveBg(0);
+              setActiveImage(changesImageArr[0]);
+            }}
+            onFocus={() => setActiveBg(1)}
+            /** NEW: enable pin + scroll-tied heading animation here */
+            // enablePin={true}
+            pinDistance="120%" // tweak 100%–200% to tastem
+            main_customClass="!min-h-[100vh]"
+            inner_customClass="!pt-0"
+            onResetTop={() => setActiveBg(0)}
+            // animateSelectors={{ h4: ".js-weare", h1: ".js-title" }}
+          >
+            <AboutUs />
+          </BoxSlides>
 
-        {/* <BoxSlides
+          {/* <BoxSlides
           scaleTransform={scaleTransform}
           isHidden={isHidden}
           setIsHidden={setIsHidden}
@@ -347,7 +408,7 @@ export default function Home() {
           <WhoWeAre />
         </BoxSlides> */}
 
-        {/* <BoxSlides
+          {/* <BoxSlides
           scaleTransform={scaleTransform}
           setscaleTransform={setscaleTransform}
           isHidden={isHidden}
@@ -365,23 +426,26 @@ export default function Home() {
           <ThreeLogo />
         </BoxSlides> */}
 
-        <BoxSlides
-          scaleTransform={scaleTransform}
-          isHidden={isHidden}
-          setIsHidden={setIsHidden}
-          headerRef={headerRef}
-          bannervideoref={bannervideoref}
-          via={false}
-          subHeading={"Our Works"}
-          heading={"Innovation Market"}
-          onActive={() => setActiveImage(changesImageArr[2])}
-          onFocus={() => setActiveBg(1)} // <-- bgImages[1]
-          childrenClass="h-[calc(100vh-200px)]"
-        >
-          <ExpertiseNew />
-        </BoxSlides>
+          <BoxSlides
+            scaleTransform={scaleTransform}
+            isHidden={isHidden}
+            setIsHidden={setIsHidden}
+            headerRef={headerRef}
+            bannervideoref={bannervideoref}
+            via={false}
+            // subHeading={"Our Works"}
+            // heading={"Innovation Market"}
+            onActive={() => { setActiveBg(2); setActiveImage(changesImageArr[2]); }}
+            onEnterBack={() => { setActiveBg(1); setActiveImage(changesImageArr[1]); }}
+            onLeaveBack={() => { setActiveBg(1); setActiveImage(changesImageArr[1]); }}
+            onFocus={() => setActiveBg(2)} // <-- bgImages[1]
+            childrenClass=""
+            onResetTop={() => setActiveBg(1)}
+          >
+            <ExpertiseNew />
+          </BoxSlides>
 
-        {/* <BoxSlides
+          {/* <BoxSlides
           scaleTransform={scaleTransform}
           isHidden={isHidden}
           setIsHidden={setIsHidden}
@@ -394,38 +458,44 @@ export default function Home() {
           <Expertise />
         </BoxSlides> */}
 
-        <BoxSlides
-          scaleTransform={scaleTransform}
-          isHidden={isHidden}
-          setIsHidden={setIsHidden}
-          headerRef={headerRef}
-          bannervideoref={bannervideoref}
-          via={false}
-          subHeading={"Our Clients"}
-          heading={"Amazing brands, Amazed Clients."}
-          onActive={() => setActiveImage(changesImageArr[3])}
-          isClient={true}
-          onFocus={() => setActiveBg(3)} // <-- bgImages[3]
-        >
-          <Clients />
-        </BoxSlides>
+          <BoxSlides
+            scaleTransform={scaleTransform}
+            isHidden={isHidden}
+            setIsHidden={setIsHidden}
+            headerRef={headerRef}
+            bannervideoref={bannervideoref}
+            via={false}
+            subHeading={"Our Clients"}
+            heading={"Amazed Clients."}
+            onActive={() => { setActiveBg(3); setActiveImage(changesImageArr[3]); }}
+            onEnterBack={() => { setActiveBg(2); setActiveImage(changesImageArr[2]); }}
+            onLeaveBack={() => { setActiveBg(2); setActiveImage(changesImageArr[2]); }}
+            isClient={true}
+            onFocus={() => setActiveBg(3)} // <-- bgImages[3]
+            onResetTop={() => setActiveBg(2)}
+          >
+            <Clients />
+          </BoxSlides>
 
-        <BoxSlides
-          scaleTransform={scaleTransform}
-          isHidden={isHidden}
-          setIsHidden={setIsHidden}
-          headerRef={headerRef}
-          bannervideoref={bannervideoref}
-          via={false}
-          // subHeading={"Company Steps"}
-          // heading={"Amazing brands"}
-          onActive={() => setActiveImage(changesImageArr[4])}
-          onFocus={() => setActiveBg(4)} // <-- bgImages[4]
-        >
-          <Steps />
-        </BoxSlides>
+          <BoxSlides
+            scaleTransform={scaleTransform}
+            isHidden={isHidden}
+            setIsHidden={setIsHidden}
+            headerRef={headerRef}
+            bannervideoref={bannervideoref}
+            via={false}
+            // subHeading={"Company Steps"}
+            // heading={"Amazing brands"}
+            onActive={() => { setActiveBg(4); setActiveImage(changesImageArr[4]); }}
+            onEnterBack={() => { setActiveBg(3); setActiveImage(changesImageArr[3]); }}
+            onLeaveBack={() => { setActiveBg(3); setActiveImage(changesImageArr[3]); }}
+            onFocus={() => setActiveBg(4)} // <-- bgImages[4]
+            onResetTop={() => setActiveBg(3)}
+          >
+            <Steps />
+          </BoxSlides>
 
-        {/* <BoxSlides
+          {/* <BoxSlides
           scaleTransform={scaleTransform}
           isHidden={isHidden}
           setIsHidden={setIsHidden}
@@ -440,40 +510,43 @@ export default function Home() {
           <Portfolio scaleTransform={scaleTransform} isHidden={isHidden} />
         </BoxSlides> */}
 
-        <BoxSlides
-          scaleTransform={scaleTransform}
-          isHidden={isHidden}
-          setIsHidden={setIsHidden}
-          headerRef={headerRef}
-          bannervideoref={bannervideoref}
-          via={false}
-          subHeading={"tell us about your project Idea or just"}
-          heading={"say hello"}
-          onActive={() => setActiveImage(changesImageArr[6])}
-          onFocus={() => setActiveBg(6)} // <-- bgImages[4]
-        >
-          <EnquireForm />
-        </BoxSlides>
+          <BoxSlides
+            scaleTransform={scaleTransform}
+            isHidden={isHidden}
+            setIsHidden={setIsHidden}
+            headerRef={headerRef}
+            bannervideoref={bannervideoref}
+            via={false}
+            subHeading={"tell us about your project Idea or just"}
+            heading={"say hello"}
+            onFocus={() => setActiveBg(4)} // <-- bgImages[4]
+            onActive={() => { setActiveBg(4); setActiveImage(changesImageArr[4]); }}
+            onEnterBack={() => { setActiveBg(3); setActiveImage(changesImageArr[3]); }}
+            onLeaveBack={() => { setActiveBg(3); setActiveImage(changesImageArr[3]); }}
+            onResetTop={() => setActiveBg(3)}
+          >
+            <EnquireForm />
+          </BoxSlides>
 
-        {activeBg !== -1 && (
-          <div className="fixed inset-0 z-[9]">
-            {bgImages.map((src, i) => (
-              <motion.img
-                key={i}
-                src={src}
-                alt=""
-                className="absolute inset-0 w-full h-full object-cover"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: activeBg === i ? 1 : 0 }}
-                transition={{ duration: 0.2, ease: "easeInOut" }}
-                // optional perf hint:
-                style={{ willChange: "opacity" }}
-              />
-            ))}
-          </div>
-        )}
-      </>
-      {/* )}*/}
+          {activeBg !== -1 && (
+            <div className="fixed inset-0 z-[9]">
+              {bgImages.map((src, i) => (
+                <motion.img
+                  key={i}
+                  src={src}
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: activeBg === i ? 1 : 0 }}
+                  transition={{ duration: 0.2, ease: "easeInOut" }}
+                  // optional perf hint:
+                  style={{ willChange: "opacity" }}
+                />
+              ))}
+            </div>
+          )}
+        </>
+      )}
 
       {/* <section className="h-screen"></section> */}
     </>

@@ -16,7 +16,7 @@ const secData = [
     desc: "We use our insight, experience, and rich industry knowledge.",
   },
   {
-    img: "/assets/home/whatWeDo/creative.jpg",
+    img: "/assets/home/whatWeDo/creative.webp",
     title: "Creative",
     desc: "Launching a refined brand identity, leading to improved online presence.",
   },

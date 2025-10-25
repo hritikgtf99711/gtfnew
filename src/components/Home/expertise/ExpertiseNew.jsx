@@ -120,10 +120,10 @@ const ExpertiseNew = () => {
   return (
     <section
     ref={sectionRef}
-      className="flex flex-col justify-center p-[80px] h-[100%] relative"
+      className="flex flex-col justify-center p-[80px] h-[100%] relative min-h-screen" 
       id="experties_sec"
     >
-      <div className="grid grid-cols-2 justify-between  mb-[100px] gap-[150px]">
+      <div className="grid grid-cols-2 justify-between gap-[150px] mb-[100px]">
         <div className="">
           <h2 className="js-heading relative uppercase 2xl:leading-[70px] xl:leading-[56px] leading-[35px]  max-h-fit">
             <span className=" block font-medium text-[30px] xl:text-[42px] md:text-[42px] 2xl:text-[55px]">

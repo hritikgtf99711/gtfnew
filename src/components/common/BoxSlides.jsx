@@ -13,9 +13,9 @@ export default function BoxSlides({
   subHeading,
   heading,
   isFirst,
-  onActive,     // optional (kept)
-  onFocus,      // use this to: setActiveBg(index)
-  onResetTop,   // use this to: setActiveBg(-1)
+  onActive, // optional (kept)
+  onFocus, // use this to: setActiveBg(index)
+  onResetTop, // use this to: setActiveBg(-1)
   main_customClass,
   inner_customClass,
   childrenClass,
@@ -38,22 +38,22 @@ export default function BoxSlides({
         trigger: sectionEl,
         start: "top top",
         end: "bottom top",
-        onEnter:    () => onFocus?.(),      // show bg for this slide
-        onEnterBack:() => onFocus?.(),      // show bg again when scrolling back
-        onLeave:    () => onResetTop?.(),   // clear bg when passing up
-        onLeaveBack:() => onResetTop?.(),   // clear bg when scrolling back past
+        onEnter: () => onActive?.(), // show bg for this slide
+        onEnterBack: () => onFocus?.(), // show bg again when scrolling back
+        onLeave: () => onFocus?.(), // clear bg when passing up
+        onLeaveBack: () => onResetTop?.(), // clear bg when scrolling back past
       });
 
       // 2) Optional “active” range (middle visibility) callback (kept for parity)
-      ScrollTrigger.create({
-        trigger: sectionEl,
-        start: "top bottom",
-        end: "bottom top",
-        onUpdate: (self) => {
-          const p = self.progress; // 0..1 over the full pass
-          if (p > 0.2 && p < 0.8) onActive?.();
-        },
-      });
+      // ScrollTrigger.create({
+      //   trigger: sectionEl,
+      //   start: "top bottom",
+      //   end: "bottom top",
+      //   onUpdate: (self) => {
+      //     const p = self.progress; // 0..1 over the full pass
+      //     if (p > 0.2 && p < 0.8) onActive?.();
+      //   },
+      // });
 
       // 3) Smooth scale in/out (if enabled)
       if (!disableScale) {
@@ -61,10 +61,10 @@ export default function BoxSlides({
         ScrollTrigger.create({
           trigger: sectionEl,
           start: "top bottom",
-          end: "top center",
+          end: "top top",
           scrub: true,
           onUpdate: (self) => {
-            const s = gsap.utils.mapRange(0, 1, 0.9, 1, self.progress);
+            const s = gsap.utils.mapRange(0, 1, 0.8, 1, self.progress);
             gsap.to(sectionEl, { scaleX: s, duration: 0, overwrite: "auto" });
           },
         });
@@ -76,7 +76,7 @@ export default function BoxSlides({
           end: "bottom top",
           scrub: true,
           onUpdate: (self) => {
-            const s = gsap.utils.mapRange(0, 1, 1, 0.86, self.progress);
+            const s = gsap.utils.mapRange(0, 1, 1, 0.8, self.progress);
             gsap.to(sectionEl, { scaleX: s, duration: 0, overwrite: "auto" });
           },
         });
@@ -87,50 +87,64 @@ export default function BoxSlides({
       const sub = headingWrap?.querySelector("h2:first-child") || null;
       const main = headingWrap?.querySelector("h2:last-child") || null;
 
-      if (headingWrap && (sub || main)) {
-        gsap.set(headingWrap, {
-          height: 0,
-          marginBottom: 0,
-          overflow: "hidden",
-          willChange: "height, margin",
-        });
-        gsap.set([sub, main].filter(Boolean), {
-          clipPath: "inset(100% 0% 0% 0%)",
-          WebkitClipPath: "inset(100% 0% 0% 0%)",
-          opacity: 0,
-          willChange: "clip-path, opacity",
-        });
+      // if (headingWrap && (sub || main)) {
+      //   gsap.set(headingWrap, {
+      //     height: 0,
+      //     marginBottom: 0,
+      //     overflow: "hidden",
+      //     willChange: "height, margin",
+      //   });
+      //   gsap.set([sub, main].filter(Boolean), {
+      //     clipPath: "inset(100% 0% 0% 0%)",
+      //     WebkitClipPath: "inset(100% 0% 0% 0%)",
+      //     opacity: 0,
+      //     willChange: "clip-path, opacity",
+      //   });
 
-        const revealTL = gsap.timeline({
-          scrollTrigger: {
-            trigger: sectionEl,
-            start: "top 70%",
-            end: "top 50%",
-            scrub: true,
-            invalidateOnRefresh: true,
-          },
-          defaults: { ease: "power2.out" },
-        });
+      //   const revealTL = gsap.timeline({
+      //     scrollTrigger: {
+      //       trigger: sectionEl,
+      //       start: "top 70%",
+      //       end: "top 50%",
+      //       scrub: true,
+      //       invalidateOnRefresh: true,
+      //     },
+      //     defaults: { ease: "power2.out" },
+      //   });
 
-        // expand wrapper space
-        revealTL.to(headingWrap, { height: "auto", marginBottom: 80, duration: 0.6 }, 0);
+      //   // expand wrapper space
+      //   revealTL.to(
+      //     headingWrap,
+      //     { height: "auto", marginBottom: 80, duration: 0.6 },
+      //     0
+      //   );
 
-        // reveal lines
-        if (sub) {
-          revealTL.to(
-            sub,
-            { clipPath: "inset(0% 0% 0% 0%)", WebkitClipPath: "inset(0% 0% 0% 0%)", opacity: 1, duration: 0.6 },
-            0.05
-          );
-        }
-        if (main) {
-          revealTL.to(
-            main,
-            { clipPath: "inset(0% 0% 0% 0%)", WebkitClipPath: "inset(0% 0% 0% 0%)", opacity: 1, duration: 0.6 },
-            0.12
-          );
-        }
-      }
+      //   // reveal lines
+      //   if (sub) {
+      //     revealTL.to(
+      //       sub,
+      //       {
+      //         clipPath: "inset(0% 0% 0% 0%)",
+      //         WebkitClipPath: "inset(0% 0% 0% 0%)",
+      //         opacity: 1,
+      //         duration: 0.6,
+      //       },
+      //       0.05
+      //     );
+      //   }
+      //   if (main) {
+      //     revealTL.to(
+      //       main,
+      //       {
+      //         clipPath: "inset(0% 0% 0% 0%)",
+      //         WebkitClipPath: "inset(0% 0% 0% 0%)",
+      //         opacity: 1,
+      //         duration: 0.6,
+      //       },
+      //       0.12
+      //     );
+      //   }
+      // }
 
       ScrollTrigger.refresh();
     }, sectionRef);
@@ -144,7 +158,9 @@ export default function BoxSlides({
       id={sectionId}
       data-boxslide="true"
       // 🔽 ensure minimum 100vh for every slide
-      className={`${isFirst ? "mt-[-200px]" : ""} min-h-screen mb-[60vh] relative z-[99] animated_section ${main_customClass}`}
+      className={`${
+        isFirst ? "mt-[-200px]" : ""
+      } min-h-screen mb-[60vh] relative z-[99] animated_section ${main_customClass}`}
       style={{ willChange: "transform" }}
     >
       <div
@@ -164,7 +180,9 @@ export default function BoxSlides({
                   </h2>
                 </div>
               )}
-              <div className={`relative w-full z-10 ${childrenClass}`}>{children}</div>
+              <div className={`relative w-full z-10 ${childrenClass}`}>
+                {children}
+              </div>
             </div>
           </div>
         </div>
