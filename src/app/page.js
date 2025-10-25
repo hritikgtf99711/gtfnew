@@ -362,7 +362,7 @@ export default function Home() {
             <WhatWeDo />
           </BoxSlides>
 
-          {/* <BoxSlides
+          <BoxSlides
             sectionId="about-slide"
             noSticky={true}
             scaleTransform={scaleTransform}
@@ -390,7 +390,7 @@ export default function Home() {
             onResetTop={() => setActiveBg(0)}
           >
             <AboutUs />
-          </BoxSlides> */}
+          </BoxSlides>
 
           {/* <BoxSlides
           scaleTransform={scaleTransform}

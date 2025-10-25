@@ -56,31 +56,31 @@ export default function BoxSlides({
       // });
 
       // 3) Smooth scale in/out (if enabled)
-      // if (!disableScale) {
-      //   // Enter: 0.9 -> 1 while the top goes from bottom -> center
-      //   ScrollTrigger.create({
-      //     trigger: sectionEl,
-      //     start: "top bottom",
-      //     end: "top top",
-      //     scrub: true,
-      //     onUpdate: (self) => {
-      //       const s = gsap.utils.mapRange(0, 1, 0.8, 1, self.progress);
-      //       gsap.to(sectionEl, { scaleX: s, duration: 0, overwrite: "auto" });
-      //     },
-      //   });
+      if (!disableScale) {
+        // Enter: 0.9 -> 1 while the top goes from bottom -> center
+        ScrollTrigger.create({
+          trigger: sectionEl,
+          start: "top bottom",
+          end: "top top",
+          scrub: true,
+          onUpdate: (self) => {
+            const s = gsap.utils.mapRange(0, 1, 0.8, 1, self.progress);
+            gsap.to(sectionEl, { scaleX: s, duration: 0, overwrite: "auto" });
+          },
+        });
 
-      //   // Exit: 1 -> 0.86 while the bottom goes from center -> top
-      //   ScrollTrigger.create({
-      //     trigger: sectionEl,
-      //     start: "bottom center",
-      //     end: "bottom top",
-      //     scrub: true,
-      //     onUpdate: (self) => {
-      //       const s = gsap.utils.mapRange(0, 1, 1, 0.8, self.progress);
-      //       gsap.to(sectionEl, { scaleX: s, duration: 0, overwrite: "auto" });
-      //     },
-      //   });
-      // }
+        // Exit: 1 -> 0.86 while the bottom goes from center -> top
+        ScrollTrigger.create({
+          trigger: sectionEl,
+          start: "bottom center",
+          end: "bottom top",
+          scrub: true,
+          onUpdate: (self) => {
+            const s = gsap.utils.mapRange(0, 1, 1, 0.8, self.progress);
+            gsap.to(sectionEl, { scaleX: s, duration: 0, overwrite: "auto" });
+          },
+        });
+      }
 
       // 4) Heading/Subheading: collapsed by default, reveal around 50% viewport
       const headingWrap = sectionEl.querySelector(".heading");
