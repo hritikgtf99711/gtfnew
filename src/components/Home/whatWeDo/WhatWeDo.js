@@ -21,45 +21,45 @@ const secData = [
     desc: "Launching a refined brand identity, leading to improved online presence.",
   },
   {
-    img: "/assets/home/whatWeDo/communication.jpg",
-    title: "communication",
+    img: "/assets/home/whatWeDo/website-design.webp",
+    title: "Website Design & Developement",
     desc: "We use our insight, experience, and rich industry knowledge to craft and execute compelling brand campaigns.",
   },
   {
-    img: "/assets/home/whatWeDo/website-design.jpg",
-    title: "Website Design & Developement",
+    img: "/assets/home/whatWeDo/organic-marketing.webp",
+    title: "Organic Marketing",
     desc: "No matter what your goals are: leads, subscribers, or followers, GTF Technologies is committed to meeting and exceeding them.",
   },
   {
-    img: "/assets/home/whatWeDo/website-maintenance.jpg",
-    title: "website Maintenance",
+    img: "/assets/home/whatWeDo/paid-marketing.webp",
+    title: "Paid Marketing ",
     desc: "Recognized by Google among its top 30 partners in India, GTF Technologies commits to maximizing your return on investment.",
   },
-  {
-    img: "/assets/home/whatWeDo/seo.jpg",
-    title: "Search Engine Optimization",
-    desc: "Positioning your website in the first place on Google is our commitment.",
-  },
-  {
-    img: "/assets/home/whatWeDo/paid-ads.webp",
-    title: "Paid Ads",
-    desc: "GTF Technologies commits tobuilding you a brand on social media with its customized services.",
-  },
-  {
-    img: "/assets/home/whatWeDo/display-marketing.jpg",
-    title: "Display Marketing",
-    desc: "GTF Technologies is committed to persuading your target audience through a thoroughly planned display advertising campaign.",
-  },
-  {
-    img: "/assets/home/whatWeDo/youtube-marketing.webp",
-    title: "Youtube Marketing",
-    desc: "Your website is your digital face. Visuals, content, and appearance are its features.",
-  },
-  {
-    img: "/assets/home/whatWeDo/social-media-optimization.webp",
-    title: "Social Media Optimization",
-    desc: "GTF Technologies is a prestigious website development company in India with more than 12 years experience in the industry.",
-  },
+  // {
+  //   img: "/assets/home/whatWeDo/seo.jpg",
+  //   title: "Search Engine Optimization",
+  //   desc: "Positioning your website in the first place on Google is our commitment.",
+  // },
+  // {
+  //   img: "/assets/home/whatWeDo/paid-ads.webp",
+  //   title: "Paid Ads",
+  //   desc: "GTF Technologies commits tobuilding you a brand on social media with its customized services.",
+  // },
+  // {
+  //   img: "/assets/home/whatWeDo/display-marketing.jpg",
+  //   title: "Display Marketing",
+  //   desc: "GTF Technologies is committed to persuading your target audience through a thoroughly planned display advertising campaign.",
+  // },
+  // {
+  //   img: "/assets/home/whatWeDo/youtube-marketing.webp",
+  //   title: "Youtube Marketing",
+  //   desc: "Your website is your digital face. Visuals, content, and appearance are its features.",
+  // },
+  // {
+  //   img: "/assets/home/whatWeDo/social-media-optimization.webp",
+  //   title: "Social Media Optimization",
+  //   desc: "GTF Technologies is a prestigious website development company in India with more than 12 years experience in the industry.",
+  // },
   //   {
   //     img:'/assets/home/whatWeDo/social-media-marketing.webp',
   //     title:'Social Media Marketing',

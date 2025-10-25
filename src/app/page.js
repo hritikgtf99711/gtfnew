@@ -74,14 +74,14 @@ export default function Home() {
   });
 
   // Reset activeBg when Banner is in view
-  useEffect(() => {
-    const unsubscribe = bannerScrollProgress.on("change", (progress) => {
-      if (progress < 0.7) {
-        setActiveBg(-1); // Reset background when Banner is in view
-      }
-    });
-    return () => unsubscribe();
-  }, [bannerScrollProgress]);
+  // useEffect(() => {
+  //   const unsubscribe = bannerScrollProgress.on("change", (progress) => {
+  //     if (progress < 0.7) {
+  //       setActiveBg(-1); // Reset background when Banner is in view
+  //     }
+  //   });
+  //   return () => unsubscribe();
+  // }, [bannerScrollProgress]);
 
   // Loader sequence
   useEffect(() => {
@@ -137,51 +137,51 @@ export default function Home() {
     }
   }, [allowFirstImage]);
 
-  // useLayoutEffect(() => {
-  //   const ctx = gsap.context(() => {
-  //     const trigger = "#about-slide";
-  //     // Pin the same element that would otherwise be sticky for this section:
-  //     // since we passed noSticky={true}, the sticky wrapper is absent,
-  //     // so we can pin the inner container itself or a stable child.
-  //     const pinTarget = document.querySelector("#about-slide .box_padding") || document.querySelector("#about-slide");
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const trigger = "#about-slide";
+      // Pin the same element that would otherwise be sticky for this section:
+      // since we passed noSticky={true}, the sticky wrapper is absent,
+      // so we can pin the inner container itself or a stable child.
+      const pinTarget = document.querySelector("#about-slide .box_padding") || document.querySelector("#about-slide");
 
-  //     if (!pinTarget) return;
+      if (!pinTarget) return;
 
-  //     // Explicitly set initial state (prevents "first fade" + "second repaint")
-  //   gsap.set("#about-slide .js-weare", { y: 80, autoAlpha: 0 });
-  //   gsap.set("#about-slide .js-title", { y: 120, autoAlpha: 0 });
+      // Explicitly set initial state (prevents "first fade" + "second repaint")
+    gsap.set("#about-slide .js-weare", { y: 80, autoAlpha: 0 });
+    gsap.set("#about-slide .js-title", { y: 120, autoAlpha: 0 });
 
-  //     const tl = gsap.timeline({
-  //       scrollTrigger: {
-  //         trigger,                 // section root
-  //         start: "top top",
-  //         end: "+=120%",           // same as your pinDistance
-  //         pin: pinTarget,          // pin only this slide
-  //         pinSpacing: true,
-  //         scrub: 0.5,
-  //         anticipatePin: 1,
-  //         invalidateOnRefresh: true,
-  //         pinReparent: true,           // ⭐ move element out of transformed ancestor
-  //       },
-  //       defaults: { ease: "power3.out",overwrite: "auto" },
-  //     });
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger,                 // section root
+          start: "top top",
+          end: "+=120%",           // same as your pinDistance
+          pin: pinTarget,          // pin only this slide
+          pinSpacing: true,
+          scrub: 0.5,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          pinReparent: true,           // ⭐ move element out of transformed ancestor
+        },
+        defaults: { ease: "power3.out",overwrite: "auto" },
+      });
 
-  //     // Animate only the AboutUs headings under this slide
-  //     tl.fromTo("#about-slide .js-weare",
-  //       { y: 80, autoAlpha: 0 },
-  //       { y: 0, autoAlpha: 1, duration: 0.6, immediateRender: false }
-  //     ).fromTo("#about-slide .js-title",
-  //       { y: 120, autoAlpha: 0 },
-  //       { y: 0, autoAlpha: 1, duration: 0.9, immediateRender: false },
-  //       "-=0.2"
-  //     );
+      // Animate only the AboutUs headings under this slide
+      tl.fromTo("#about-slide .js-weare",
+        { y: 80, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.6, immediateRender: false }
+      ).fromTo("#about-slide .js-title",
+        { y: 120, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.9, immediateRender: false },
+        "-=0.2"
+      );
 
-  //     // Call refresh in case images/fonts change sizes
-  //     ScrollTrigger.refresh();
-  //   });
+      // Call refresh in case images/fonts change sizes
+      ScrollTrigger.refresh();
+    });
 
-  //   return () => ctx.revert();
-  // }, []);
+    return () => ctx.revert();
+  }, []);
 
   return (
     <>
@@ -332,7 +332,8 @@ export default function Home() {
             headerRef={headerRef}
             bannervideoref={bannervideoref}
             via={true}
-            onActive={() => {                 // DOWN into slide 0 -> show bg[0]
+            onActive={() => {
+              // DOWN into slide 0 -> show bg[0]
               setActiveBg(0);
               setActiveImage(changesImageArr[0]); // if you want the large overlay too
             }}
@@ -342,11 +343,13 @@ export default function Home() {
             onFocus={() => {
               if (allowFirstImage) setActiveBg(0); // show bgImages[0]
             }}
-            onEnterBack={() => {              // UP into slide 0 from below -> show banner
+            onEnterBack={() => {
+              // UP into slide 0 from below -> show banner
               setActiveBg(-1);
               setActiveImage(null);
             }}
-            onLeaveBack={() => {              // UP above slide 0 start -> show banner
+            onLeaveBack={() => {
+              // UP above slide 0 start -> show banner
               setActiveBg(-1);
               setActiveImage(null);
             }}
@@ -359,7 +362,7 @@ export default function Home() {
             <WhatWeDo />
           </BoxSlides>
 
-          <BoxSlides
+          {/* <BoxSlides
             sectionId="about-slide"
             noSticky={true}
             scaleTransform={scaleTransform}
@@ -367,7 +370,6 @@ export default function Home() {
             setIsHidden={setIsHidden}
             headerRef={headerRef}
             bannervideoref={bannervideoref}
-            // disableScale={true}
             via={false}
             onActive={() => {                 // DOWN into slide 1 -> show bg[1]
               setActiveBg(1);
@@ -382,16 +384,13 @@ export default function Home() {
               setActiveImage(changesImageArr[0]);
             }}
             onFocus={() => setActiveBg(1)}
-            /** NEW: enable pin + scroll-tied heading animation here */
-            // enablePin={true}
             pinDistance="120%" // tweak 100%–200% to tastem
             main_customClass="!min-h-[100vh]"
             inner_customClass="!pt-0"
             onResetTop={() => setActiveBg(0)}
-            // animateSelectors={{ h4: ".js-weare", h1: ".js-title" }}
           >
             <AboutUs />
-          </BoxSlides>
+          </BoxSlides> */}
 
           {/* <BoxSlides
           scaleTransform={scaleTransform}
@@ -435,9 +434,18 @@ export default function Home() {
             via={false}
             // subHeading={"Our Works"}
             // heading={"Innovation Market"}
-            onActive={() => { setActiveBg(2); setActiveImage(changesImageArr[2]); }}
-            onEnterBack={() => { setActiveBg(1); setActiveImage(changesImageArr[1]); }}
-            onLeaveBack={() => { setActiveBg(1); setActiveImage(changesImageArr[1]); }}
+            onActive={() => {
+              setActiveBg(2);
+              setActiveImage(changesImageArr[2]);
+            }}
+            onEnterBack={() => {
+              setActiveBg(1);
+              setActiveImage(changesImageArr[1]);
+            }}
+            onLeaveBack={() => {
+              setActiveBg(1);
+              setActiveImage(changesImageArr[1]);
+            }}
             onFocus={() => setActiveBg(2)} // <-- bgImages[1]
             childrenClass=""
             onResetTop={() => setActiveBg(1)}
@@ -467,9 +475,18 @@ export default function Home() {
             via={false}
             subHeading={"Our Clients"}
             heading={"Amazed Clients."}
-            onActive={() => { setActiveBg(3); setActiveImage(changesImageArr[3]); }}
-            onEnterBack={() => { setActiveBg(2); setActiveImage(changesImageArr[2]); }}
-            onLeaveBack={() => { setActiveBg(2); setActiveImage(changesImageArr[2]); }}
+            onActive={() => {
+              setActiveBg(3);
+              setActiveImage(changesImageArr[3]);
+            }}
+            onEnterBack={() => {
+              setActiveBg(2);
+              setActiveImage(changesImageArr[2]);
+            }}
+            onLeaveBack={() => {
+              setActiveBg(2);
+              setActiveImage(changesImageArr[2]);
+            }}
             isClient={true}
             onFocus={() => setActiveBg(3)} // <-- bgImages[3]
             onResetTop={() => setActiveBg(2)}
@@ -486,9 +503,18 @@ export default function Home() {
             via={false}
             // subHeading={"Company Steps"}
             // heading={"Amazing brands"}
-            onActive={() => { setActiveBg(4); setActiveImage(changesImageArr[4]); }}
-            onEnterBack={() => { setActiveBg(3); setActiveImage(changesImageArr[3]); }}
-            onLeaveBack={() => { setActiveBg(3); setActiveImage(changesImageArr[3]); }}
+            onActive={() => {
+              setActiveBg(4);
+              setActiveImage(changesImageArr[4]);
+            }}
+            onEnterBack={() => {
+              setActiveBg(3);
+              setActiveImage(changesImageArr[3]);
+            }}
+            onLeaveBack={() => {
+              setActiveBg(3);
+              setActiveImage(changesImageArr[3]);
+            }}
             onFocus={() => setActiveBg(4)} // <-- bgImages[4]
             onResetTop={() => setActiveBg(3)}
           >
@@ -520,9 +546,18 @@ export default function Home() {
             subHeading={"tell us about your project Idea or just"}
             heading={"say hello"}
             onFocus={() => setActiveBg(4)} // <-- bgImages[4]
-            onActive={() => { setActiveBg(4); setActiveImage(changesImageArr[4]); }}
-            onEnterBack={() => { setActiveBg(3); setActiveImage(changesImageArr[3]); }}
-            onLeaveBack={() => { setActiveBg(3); setActiveImage(changesImageArr[3]); }}
+            onActive={() => {
+              setActiveBg(4);
+              setActiveImage(changesImageArr[4]);
+            }}
+            onEnterBack={() => {
+              setActiveBg(3);
+              setActiveImage(changesImageArr[3]);
+            }}
+            onLeaveBack={() => {
+              setActiveBg(3);
+              setActiveImage(changesImageArr[3]);
+            }}
             onResetTop={() => setActiveBg(3)}
           >
             <EnquireForm />
