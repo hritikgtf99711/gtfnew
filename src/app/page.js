@@ -261,7 +261,7 @@ export default function Home() {
                             className="absolute bg-[#ba9b53] h-full w-full z-[-1]"
                             initial={{ scale: 0.3 }}
                             animate={{
-                              scale: isBgStart ? 1 : 0.3,
+                              scale: isBgStart ? 1 : 0.4,
                               transition: { duration: 1.5, ease: "easeInOut" },
                             }}
                             onAnimationComplete={() => {

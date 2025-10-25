@@ -11,7 +11,7 @@ import "./whatWeDo.css";
 
 const secData = [
   {
-    img: "/assets/home/whatWeDo/brand-strategy.jpg",
+    img: "/assets/home/whatWeDo/brand-strategy.webp",
     title: "Brand Strategy",
     desc: "We use our insight, experience, and rich industry knowledge.",
   },
