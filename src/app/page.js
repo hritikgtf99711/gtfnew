@@ -137,51 +137,51 @@ export default function Home() {
     }
   }, [allowFirstImage]);
 
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      const trigger = "#about-slide";
-      // Pin the same element that would otherwise be sticky for this section:
-      // since we passed noSticky={true}, the sticky wrapper is absent,
-      // so we can pin the inner container itself or a stable child.
-      const pinTarget = document.querySelector("#about-slide .box_padding") || document.querySelector("#about-slide");
+  // useLayoutEffect(() => {
+  //   const ctx = gsap.context(() => {
+  //     const trigger = "#about-slide";
+  //     // Pin the same element that would otherwise be sticky for this section:
+  //     // since we passed noSticky={true}, the sticky wrapper is absent,
+  //     // so we can pin the inner container itself or a stable child.
+  //     const pinTarget = document.querySelector("#about-slide .box_padding") || document.querySelector("#about-slide");
 
-      if (!pinTarget) return;
+  //     if (!pinTarget) return;
 
-      // Explicitly set initial state (prevents "first fade" + "second repaint")
-    gsap.set("#about-slide .js-weare", { y: 80, autoAlpha: 0 });
-    gsap.set("#about-slide .js-title", { y: 120, autoAlpha: 0 });
+  //     // Explicitly set initial state (prevents "first fade" + "second repaint")
+  //   gsap.set("#about-slide .js-weare", { y: 80, autoAlpha: 0 });
+  //   gsap.set("#about-slide .js-title", { y: 120, autoAlpha: 0 });
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger,                 // section root
-          start: "top top",
-          end: "+=120%",           // same as your pinDistance
-          pin: pinTarget,          // pin only this slide
-          pinSpacing: true,
-          scrub: 0.5,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          pinReparent: true,           // ⭐ move element out of transformed ancestor
-        },
-        defaults: { ease: "power3.out",overwrite: "auto" },
-      });
+  //     const tl = gsap.timeline({
+  //       scrollTrigger: {
+  //         trigger,                 // section root
+  //         start: "top top",
+  //         end: "+=120%",           // same as your pinDistance
+  //         pin: pinTarget,          // pin only this slide
+  //         pinSpacing: true,
+  //         scrub: 0.5,
+  //         anticipatePin: 1,
+  //         invalidateOnRefresh: true,
+  //         pinReparent: true,           // ⭐ move element out of transformed ancestor
+  //       },
+  //       defaults: { ease: "power3.out",overwrite: "auto" },
+  //     });
 
-      // Animate only the AboutUs headings under this slide
-      tl.fromTo("#about-slide .js-weare",
-        { y: 80, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.6, immediateRender: false }
-      ).fromTo("#about-slide .js-title",
-        { y: 120, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.9, immediateRender: false },
-        "-=0.2"
-      );
+  //     // Animate only the AboutUs headings under this slide
+  //     tl.fromTo("#about-slide .js-weare",
+  //       { y: 80, autoAlpha: 0 },
+  //       { y: 0, autoAlpha: 1, duration: 0.6, immediateRender: false }
+  //     ).fromTo("#about-slide .js-title",
+  //       { y: 120, autoAlpha: 0 },
+  //       { y: 0, autoAlpha: 1, duration: 0.9, immediateRender: false },
+  //       "-=0.2"
+  //     );
 
-      // Call refresh in case images/fonts change sizes
-      ScrollTrigger.refresh();
-    });
+  //     // Call refresh in case images/fonts change sizes
+  //     ScrollTrigger.refresh();
+  //   });
 
-    return () => ctx.revert();
-  }, []);
+  //   return () => ctx.revert();
+  // }, []);
 
   return (
     <>
@@ -206,13 +206,13 @@ export default function Home() {
               className={`fixed w-full `}
               initial={{ top: "20vh" }}
               animate={{
-                top: isLoaderCardEnd ? "calc(100vh - 120px)" : "20vh",
+                top: isLoaderCardEnd ? "calc(100vh)" : "20vh",
                 transition: { duration: 0.5, ease: "easeInOut" },
               }}
               onAnimationComplete={() => {
                 setTimeout(() => {
                   setIsTransitioning(false);
-                }, 500);
+                }, 0);
               }}
             >
               <div className="mx-auto flex justify-center w-[75%]">
@@ -290,14 +290,14 @@ export default function Home() {
             }}
             // calc(-100vh + 290px)
             animate={{
-              top: isTransitioning ? "0" : "calc(100vh - 280px)",
+              top: isTransitioning ? "0" : "calc(100vh - 260px)",
               scale: isTransitioning ? 1 : 0.85,
               transition: { duration: 0.8, ease: "easeInOut" },
             }}
             onAnimationComplete={() => {
               setTimeout(() => {
                 setIsLoaderVisible(false);
-              }, 500);
+              }, 100);
             }}
           />
         </>
@@ -362,7 +362,9 @@ export default function Home() {
             <WhatWeDo />
           </BoxSlides>
 
-          <BoxSlides
+          <AboutUs setActiveBg={setActiveBg} setActiveImage={setActiveImage} />
+
+          {/* <BoxSlides
             sectionId="about-slide"
             noSticky={true}
             scaleTransform={scaleTransform}
@@ -371,15 +373,15 @@ export default function Home() {
             headerRef={headerRef}
             bannervideoref={bannervideoref}
             via={false}
-            onActive={() => {                 // DOWN into slide 1 -> show bg[1]
+            onActive={() => {   
               setActiveBg(1);
               setActiveImage(changesImageArr[1]);
             }}
-            onEnterBack={() => {              // UP into slide 1 -> previous is slide 0
+            onEnterBack={() => {        
               setActiveBg(0);
               setActiveImage(changesImageArr[0]);
             }}
-            onLeaveBack={() => {              // UP above slide 1 start -> previous is slide 0
+            onLeaveBack={() => {         
               setActiveBg(0);
               setActiveImage(changesImageArr[0]);
             }}
@@ -388,9 +390,10 @@ export default function Home() {
             main_customClass="!min-h-[100vh]"
             inner_customClass="!pt-0"
             onResetTop={() => setActiveBg(0)}
+            
           >
             <AboutUs />
-          </BoxSlides>
+          </BoxSlides> */}
 
           {/* <BoxSlides
           scaleTransform={scaleTransform}
